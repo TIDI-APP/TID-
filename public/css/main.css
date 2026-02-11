@@ -1,0 +1,25 @@
+/* Asegura que el icono de hamburguesa sea blanco */
+.navbar-toggler {
+    filter: brightness(0) invert(1);
+}
+
+.custom-navbar {
+    background: #3b42f8;
+}
+
+.btn-try-free {
+    border-radius: 50px;
+    padding: 10px 25px;
+    background-color: white;
+    color: #3b42f8 !important;
+    border: none;
+}
+
+/* Ajuste para que los links no se peguen en móvil */
+@media (max-width: 991px) {
+    .navbar-nav {
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 1rem;
+    }
+}
