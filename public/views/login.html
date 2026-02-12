@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Login - Tidi AI</title>
+    <style>
+        :root {
+            --primary-blue: #3b44f6;
+            --dark-navy: #0a0c1a;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            min-height: 550px;
+        }
+
+        .brand-side {
+            background-color: var(--primary-blue);
+            background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-side {
+            padding: 60px;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 20px;
+            border: 1px solid #e1e5ee;
+            background-color: #fdfdff;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.25rem rgba(59, 68, 246, 0.1);
+        }
+
+        .btn-login {
+            background-color: var(--primary-blue);
+            border: none;
+            border-radius: 50px;
+            padding: 12px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: #2a33d1;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 68, 246, 0.3);
+        }
+
+        .social-btn {
+            border-radius: 12px;
+            border: 1px solid #e1e5ee;
+            padding: 10px;
+            transition: all 0.2s;
+            background: white;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .social-btn:hover {
+            background-color: #f8f9fa;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-11 col-xl-9 login-container">
+            <div class="row h-100">
+                
+                <div class="col-lg-5 brand-side d-none d-lg-flex">
+                    <a href="../index.html" class="logo-text">
+                        <img src="../assets/img/logo.png" alt="Logo" style="width: 40px; height: auto;" class="me-2"> Tidi
+                    </a>
+                    <h1 class="fw-bold mb-4">Welcome back!</h1>
+                    <p class="opacity-75 mb-5">Your AI assistant has missed you. Log in to check your latest financial predictions.</p>
+                    
+                    <div class="mt-auto">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-shield-lock-fill me-3"></i>
+                            <span>Secure Access</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 form-side">
+                    <div class="mb-4 d-lg-none text-center">
+                        <img src="../assets/img/logo.png" alt="Logo" style="width: 50px;" class="mb-2">
+                        <h3 class="fw-bold" style="color: var(--primary-blue);">Tidi</h3>
+                    </div>
+                    
+                    <h2 class="fw-bold mb-2">Login</h2>
+                    <p class="text-muted mb-4">New to Tidi? <a href="register.html" class="text-decoration-none fw-bold" style="color: var(--primary-blue);">Create an account</a></p>
+
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Email Address</label>
+                            <input type="email" class="form-control" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label class="form-label small fw-bold">Password</label>
+                            </div>
+                            <input type="password" class="form-control" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 btn-login mb-4">Login</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
