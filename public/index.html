@@ -1,328 +1,466 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html class="dark" lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/components.css">
-    <title>Tidi</title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3B44F6",
+                        "secondary-violet": "#7B3FF2",
+                        "accent-teal": "#2DD4BF",
+                        "neutral-gray": "#CFCFD4",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#000000",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg custom-navbar py-3">
-        <div class="container-fluid px-md-5">
-            <a class="navbar-brand d-flex align-items-center text-white fw-bold" href="#">
-                <img src="tu-logo.png" alt="Logo" width="30" height="30" class="me-2">
-                Tidi
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto gap-lg-4 py-3 py-lg-0">
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Features</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">About us</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Pricing</a></li>
-                </ul>
-                <div class="d-flex">
-                    <a href="#" class="btn btn-outline-primary w-100 fw-bold" style="border-radius: 50px;  border-color: #3b44f6;">Log in</a>
-                </div>
-                <div class="d-flex">
-                    <a href="#" class="btn btn-light btn-try-free fw-bold w-100 w-lg-auto">Sign up</a>
-                </div>
+<body class="bg-background-dark text-white overflow-x-hidden font-display">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-card border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <img alt="Tidi Logo" class="h-8 w-auto" src="./assets/img/logo.png" />
+            </div>
+            <div class="hidden md:flex items-center gap-10">
+                <a class="text-neutral-gray hover:text-white transition-colors text-sm font-medium"
+                    href="#features">Features</a>
+                <a class="text-neutral-gray hover:text-white transition-colors text-sm font-medium"
+                    href="#how-it-works">How it works</a>
+                <a class="text-neutral-gray hover:text-white transition-colors text-sm font-medium"
+                    href="#demo">Demo</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="p-2 text-neutral-gray hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">dark_mode</span>
+                </button>
+                <button
+                    class="btn-gradient px-6 py-2.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity">
+                    Get Started
+                </button>
             </div>
         </div>
     </nav>
-    </nav>
-<header class="hero-section d-flex align-items-center justify-content-center text-center text-white"
-    style="min-height: 80vh; background-color: #3b44f6; padding: 40px 20px; position: relative; overflow: hidden;">
-    
-    <div class="d-none d-lg-block" style="position: absolute; left: 5%; top: 50%; transform: translateY(-50%); opacity: 0.3;">
-        <div class="d-flex gap-2 mb-2">
-            <div style="width: 100px; height: 100px; background: white;"></div>
-            <div style="width: 100px; height: 100px; background: white;"></div>
-        </div>
-        <div style="width: 100px; height: 100px; background: white; margin: 0 auto;"></div>
-    </div>
-<div class="container" style="max-width: 900px; z-index: 2;">
-    <h1 class="fw-bold mb-4" style="font-size: clamp(2rem, 5vw, 3.5rem);">
-        The AI Revolution in <br> Personal Finance is Here.
-    </h1>
-    <p class="mx-auto" style="max-width: 700px; font-size: 1.2rem; opacity: 0.9;">
-        Start predicting your future. Our AI-driven engine automates your expenses and chats with you to optimize every dollar you spend.
-    </p>
-    <div class="d-flex justify-content-center gap-3 mt-4">
-        <a href="#" class="btn btn-light px-4 py-2 fw-bold" style="border-radius: 50px; color: #3b44f6;">Try it for free</a>
-    </div>
-</div>
-</header>
-<section class="features-section py-5 bg-light">
-    <div class="container py-lg-5">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold" style="color: #3b44f6;">Smart Functionalities</h2>
-            <p class="text-muted">Take control of your money with our cutting-edge AI tools.</p>
-        </div>
-
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm p-4 text-center feature-card">
-                    <div class="icon-circle mb-3 mx-auto shadow-sm">
-                        <i class="bi bi-cpu-fill"></i>
-                    </div>
-                    <h5 class="fw-bold">AI Predictions</h5>
-                    <p class="text-muted small">Your info goes here to describe how the AI predicts future spending habits.</p>
-                </div>
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-20 px-6 hero-gradient overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border-primary/30 text-xs font-bold text-primary mb-8">
+                <span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                NUEVA IA FINANCIERA DISPONIBLE
             </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm p-4 text-center feature-card">
-                    <div class="icon-circle mb-3 mx-auto shadow-sm">
-                        <i class="bi bi-graph-up-arrow"></i>
-                    </div>
-                    <h5 class="fw-bold">Real-time Analysis</h5>
-                    <p class="text-muted small">Your info goes here to explain how users can track their cash flow instantly.</p>
-                </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight leading-[1.1] text-gradient">
+                Controla tus finanzas <br /> con tu voz.
+            </h1>
+            <p class="text-lg md:text-xl text-neutral-gray mb-10 max-w-2xl mx-auto leading-relaxed">
+                Tidi usa inteligencia artificial para registrar, organizar y analizar tus ingresos y gastos
+                automáticamente.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+                <button
+                    class="btn-gradient w-full sm:w-auto px-10 py-4 rounded-full text-base font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
+                    Probar ahora
+                </button>
+                <button
+                    class="w-full sm:w-auto px-10 py-4 rounded-full border border-white/20 text-base font-bold hover:bg-white/5 transition-colors">
+                    Ver cómo funciona
+                </button>
             </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm p-4 text-center feature-card">
-                    <div class="icon-circle mb-3 mx-auto shadow-sm">
-                        <i class="bi bi-mic-fill"></i>
-                    </div>
-                    <h5 class="fw-bold">Audio</h5>
-                    <p class="text-muted small">You can add your expenses and income more easily.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm p-4 text-center feature-card">
-                    <div class="icon-circle mb-3 mx-auto shadow-sm">
-                        <i class="bi bi-chat-quote-fill"></i>
-                    </div>
-                    <h5 class="fw-bold">AI Financial Coach</h5>
-                    <p class="text-muted small">Your info goes here to describe the interactive chat experience.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm p-4 text-center feature-card">
-                    <div class="icon-circle mb-3 mx-auto shadow-sm">
-                        <i class="bi bi-piggy-bank-fill"></i>
-                    </div>
-                    <h5 class="fw-bold">Automated Savings</h5>
-                    <p class="text-muted small">Your info goes here to show how Tidi helps users save money effortlessly.</p>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm p-4 text-center feature-card">
-                    <div class="icon-circle mb-3 mx-auto shadow-sm">
-                        <i class="bi bi-bell-fill"></i>
-                    </div>
-                    <h5 class="fw-bold">Smart Alerts</h5>
-                    <p class="text-muted small">Your info goes here to explain the notification system for bill payments.</p>
+            <!-- Mockup Container -->
+            <div class="relative max-w-4xl mx-auto px-4">
+                <div class="absolute -inset-10 bg-primary/20 blur-[100px] rounded-full opacity-50"></div>
+                <div class="relative flex justify-center">
+                    <img alt="Tidi App Mockup" class="max-w-full h-auto drop-shadow-2xl" src="./assets/img/celularapp.png" />
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="about-section py-5">
-    <div class="container py-lg-5">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6">
-                <div class="position-relative">
-                    <div style="width: 100%; height: 400px; background-color: #3b44f6; border-radius: 30px; display: flex; align-items: center; justify-content: center; overflow: hidden;" class="shadow-lg">
-                        <i class="bi bi-rocket-takeoff text-white" style="font-size: 8rem; opacity: 0.2;"></i>
+    </section>
+    <!-- Cómo Funciona -->
+    <section class="py-24 px-6 border-y border-white/5" id="how-it-works">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-16 text-center">Cómo Funciona</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-symbols-outlined text-primary text-3xl">mic</span>
                     </div>
-                    <div class="position-absolute bottom-0 start-0 translate-middle-x d-none d-md-block" style="width: 150px; height: 150px; background: rgba(59, 68, 246, 0.1); border-radius: 50%; z-index: -1;"></div>
+                    <h3 class="text-xl font-bold mb-3">Habla</h3>
+                    <p class="text-neutral-gray">Simplemente di tus gastos en voz alta como si hablaras con un amigo.
+                    </p>
                 </div>
-            </div>
-
-            <div class="col-lg-6">
-                <h6 class="text-uppercase fw-bold mb-3" style="color: #3b44f6; letter-spacing: 2px;">About Us</h6>
-                <h2 class="fw-bold mb-4" style="font-size: 2.5rem;">We are redefining how you interact with your money.</h2>
-                <p class="text-muted mb-4" style="font-size: 1.1rem; line-height: 1.8;">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
-                <p class="text-muted mb-4">
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-                <div class="row g-4 mb-4">
-                    <div class="col-6">
-                        <h4 class="fw-bold mb-0" style="color: #3b44f6;">10k+</h4>
-                        <small class="text-muted">Active Users</small>
+                <!-- Step 2 -->
+                <div class="flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-secondary-violet/10 flex items-center justify-center mb-6 group-hover:bg-secondary-violet/20 transition-colors">
+                        <span class="material-symbols-outlined text-secondary-violet text-3xl">psychology</span>
                     </div>
-                    <div class="col-6">
-                        <h4 class="fw-bold mb-0" style="color: #3b44f6;">99%</h4>
-                        <small class="text-muted">Accuracy Rate</small>
-                    </div>
+                    <h3 class="text-xl font-bold mb-3">La IA organiza</h3>
+                    <p class="text-neutral-gray">Nuestra inteligencia procesa el lenguaje y categoriza cada transacción.
+                    </p>
                 </div>
-                <a href="#" class="btn btn-primary px-4 py-2 fw-bold" style="background-color: #3b44f6; border: none; border-radius: 50px;">Learn More</a>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="pricing-section py-5 bg-light">
-    <div class="container py-lg-5">
-        <div class="text-center mb-5">
-            <h6 class="text-uppercase fw-bold mb-3" style="color: #3b44f6; letter-spacing: 2px;">Pricing Plans</h6>
-            <h2 class="fw-bold">Choose the plan that fits your needs</h2>
-            <p class="text-muted">Simple and transparent pricing for everyone.</p>
-        </div>
-
-        <div class="row g-4 align-items-center">
-            <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-sm p-4" style="border-radius: 20px;">
-                    <div class="card-body">
-                        <h5 class="fw-bold mb-3">Basic</h5>
-                        <h2 class="fw-bold mb-4">$0 <span class="fs-6 text-muted fw-normal">/ month</span></h2>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i> Expense tracking</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i> Basic AI insights</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i> 1 Bank connection</li>
-                            <li class="mb-2 text-muted"><i class="bi bi-x text-danger me-2"></i> Priority support</li>
-                        </ul>
-                        <a href="#" class="btn btn-outline-primary w-100 fw-bold" style="border-radius: 50px; color: #3b44f6; border-color: #3b44f6;">Get Started</a>
+                <!-- Step 3 -->
+                <div class="flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-accent-teal/10 flex items-center justify-center mb-6 group-hover:bg-accent-teal/20 transition-colors">
+                        <span class="material-symbols-outlined text-accent-teal text-3xl">analytics</span>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-lg p-4 position-relative" style="border-radius: 25px; background-color: #3b44f6; transform: scale(1.08); z-index: 2;">
-                    <div class="position-absolute top-0 start-50 translate-middle">
-                        <span class="badge rounded-pill bg-warning text-dark px-3 py-2 fw-bold">MOST POPULAR</span>
-                    </div>
-                    <div class="card-body text-white">
-                        <h5 class="fw-bold mb-3">Monthly Pro</h5>
-                        <h2 class="fw-bold mb-4 text-white">$9.99 <span class="fs-6 fw-normal opacity-75">/ month</span></h2>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="bi bi-check2 text-white me-2"></i> Unlimited predictions</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-white me-2"></i> Smart categorization</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-white me-2"></i> All bank connections</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-white me-2"></i> 24/7 AI Concierge</li>
-                        </ul>
-                        <a href="#" class="btn btn-light w-100 fw-bold" style="border-radius: 50px; color: #3b44f6;">Try Free Trial</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-sm p-4" style="border-radius: 20px;">
-                    <div class="card-body">
-                        <h5 class="fw-bold mb-3">Annual Save</h5>
-                        <h2 class="fw-bold mb-4">$79.90 <span class="fs-6 text-muted fw-normal">/ year</span></h2>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i> Everything in Pro</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i> 2 Months free</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i> Priority support</li>
-                            <li class="mb-2"><i class="bi bi-check2 text-primary me-2"></i> Beta features access</li>
-                        </ul>
-                        <a href="#" class="btn btn-outline-primary w-100 fw-bold" style="border-radius: 50px; color: #3b44f6; border-color: #3b44f6;">Choose Annual</a>
-                    </div>
+                    <h3 class="text-xl font-bold mb-3">Visualiza tus resultados</h3>
+                    <p class="text-neutral-gray">Recibe insights inmediatos y reportes detallados de tu salud
+                        financiera.</p>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="mobile-app-section py-5">
-    <div class="container py-lg-5">
-        <div class="row align-items-center flex-column-reverse flex-lg-row g-5">
-            <div class="col-lg-6 text-center text-lg-start">
-                <h6 class="text-uppercase fw-bold mb-3" style="color: #3b44f6; letter-spacing: 2px;">Mobile Experience</h6>
-                <h2 class="fw-bold mb-4" style="font-size: 2.5rem;">Manage your finances effortlessly, anywhere.</h2>
-                <p class="text-muted mb-4" style="font-size: 1.1rem; line-height: 1.8;">
-                    Access Tidi's powerful AI insights and chat with your financial assistant directly from your smartphone. Our intuitive mobile app makes managing your money a seamless and enjoyable experience, designed for your busy life.
-                </p>
-                <div class="d-flex justify-content-center justify-content-lg-start gap-3 mt-4">
-                    <a href="#" class="btn btn-dark btn-lg px-4 py-2 fw-bold d-flex align-items-center" style="border-radius: 50px;">
-                        <i class="bi bi-apple me-2 fs-4"></i> App Store
-                    </a>
-                    <a href="#" class="btn btn-dark btn-lg px-4 py-2 fw-bold d-flex align-items-center" style="border-radius: 50px;">
-                        <i class="bi bi-google-play me-2 fs-4"></i> Google Play
-                    </a>
-                </div>
+    </section>
+    <!-- Features -->
+    <section class="py-24 px-6 bg-white/[0.01]" id="features">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold mb-4">Funciones Inteligentes</h2>
+                <p class="text-neutral-gray">Todo lo que necesitas para dominar tu economía personal.</p>
             </div>
-
-            <div class="col-lg-6 d-flex justify-content-center">
-                <div class="mobile-mockup-wrapper position-relative">
-                    <div style="width: 300px; height: 600px; background-color: #3b44f6; border-radius: 35px; border: 10px solid #222; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;" class="shadow-lg">
-                         <div style="width: 90%; height: 95%; background-color: #f0f2f5; border-radius: 25px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                            <img src="https://via.placeholder.com/250x550?text=Your+App+Screenshot+Here" alt="Tidi Mobile App" class="img-fluid" style="border-radius: 15px;">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-8 rounded-xl hover:border-accent-teal/50 transition-all cursor-default group">
+                    <span class="material-symbols-outlined text-accent-teal mb-6">speech_to_text</span>
+                    <h4 class="text-xl font-bold mb-3">Registro por voz inteligente</h4>
+                    <p class="text-neutral-gray text-sm leading-relaxed">Olvida los formularios infinitos. Solo habla y
+                        Tidi hace el resto.</p>
+                </div>
+                <div
+                    class="glass-card p-8 rounded-xl hover:border-secondary-violet/50 transition-all cursor-default group">
+                    <span class="material-symbols-outlined text-secondary-violet mb-6">category</span>
+                    <h4 class="text-xl font-bold mb-3">Clasificación automática</h4>
+                    <p class="text-neutral-gray text-sm leading-relaxed">Algoritmos avanzados que aprenden de tus
+                        hábitos de gasto.</p>
+                </div>
+                <div class="glass-card p-8 rounded-xl hover:border-primary/50 transition-all cursor-default group">
+                    <span class="material-symbols-outlined text-primary mb-6">monitoring</span>
+                    <h4 class="text-xl font-bold mb-3">Dashboard en tiempo real</h4>
+                    <p class="text-neutral-gray text-sm leading-relaxed">Tu situación financiera actualizada al segundo
+                        con gráficos interactivos.</p>
+                </div>
+                <div class="glass-card p-8 rounded-xl hover:border-accent-teal/50 transition-all cursor-default group">
+                    <span class="material-symbols-outlined text-accent-teal mb-6">description</span>
+                    <h4 class="text-xl font-bold mb-3">Reportes financieros</h4>
+                    <p class="text-neutral-gray text-sm leading-relaxed">Exporta reportes detallados para tu contador o
+                        para tu propio análisis.</p>
+                </div>
+                <div
+                    class="glass-card p-8 rounded-xl hover:border-secondary-violet/50 transition-all cursor-default group lg:col-span-2">
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="flex-1">
+                            <span class="material-symbols-outlined text-secondary-violet mb-6">business_center</span>
+                            <h4 class="text-xl font-bold mb-3">Control personal y empresarial</h4>
+                            <p class="text-neutral-gray text-sm leading-relaxed">Separa tus gastos personales de los de
+                                tu negocio en una sola cuenta.</p>
                         </div>
-                        <div style="width: 100px; height: 8px; background-color: #222; border-radius: 5px; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);"></div>
+                        <div class="flex-1 flex gap-2">
+                            <div
+                                class="h-20 w-full bg-white/5 rounded-lg border border-white/10 flex items-center justify-center text-xs">
+                                Personal</div>
+                            <div
+                                class="h-20 w-full bg-primary/20 rounded-lg border border-primary/30 flex items-center justify-center text-xs">
+                                Business</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<footer class="py-5 mt-5" style="background-color: #0a0c1a; color: rgba(255,255,255,0.8);">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-                <a class="navbar-brand d-flex align-items-center text-white fw-bold mb-3" href="#">
-                    <img src="tu-logo.png" alt="Logo" width="30" height="30" class="me-2">
-                    Tidi
-                </a>
-                <p class="small pe-lg-5">
-                    Revolutionizing personal finance with artificial intelligence. Predict, save, and grow your wealth with the smartest engine in the market.
+    </section>
+    <!-- Visual Demo Dashboard -->
+    <section class="py-24 px-6 relative overflow-hidden" id="demo">
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[120px] rounded-full">
+        </div>
+        <div class="max-w-6xl mx-auto relative">
+            <div class="glass-card rounded-2xl p-8 border-white/20 shadow-2xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+                    <div>
+                        <h3 class="text-2xl font-bold">Resumen Financiero</h3>
+                        <p class="text-neutral-gray text-sm">Octubre 2023</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="px-4 py-2 glass-card rounded-lg text-center">
+                            <p class="text-xs text-neutral-gray mb-1">Balance total</p>
+                            <p class="font-bold text-lg">$12,450.00</p>
+                        </div>
+                        <div class="px-4 py-2 glass-card border-accent-teal/30 rounded-lg text-center">
+                            <p class="text-xs text-accent-teal mb-1">Ingresos</p>
+                            <p class="font-bold text-lg text-accent-teal">+$4,200</p>
+                        </div>
+                        <div class="px-4 py-2 glass-card border-red-500/30 rounded-lg text-center">
+                            <p class="text-xs text-red-400 mb-1">Gastos</p>
+                            <p class="font-bold text-lg text-red-400">-$2,150</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mock Chart Area -->
+                <div class="grid md:grid-cols-2 gap-8 h-64">
+                    <div class="bg-white/5 rounded-xl border border-white/10 flex items-end justify-between p-6 gap-2">
+                        <div class="w-full bg-primary/40 h-[40%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/60 h-[65%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/40 h-[30%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/80 h-[90%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/60 h-[55%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/90 h-[100%] rounded-t-sm"></div>
+                    </div>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-6 flex flex-col justify-center">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Vivienda</span>
+                                <div class="w-1/2 bg-white/10 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-secondary-violet w-[70%] h-full"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Alimentación</span>
+                                <div class="w-1/2 bg-white/10 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-accent-teal w-[45%] h-full"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Ocio</span>
+                                <div class="w-1/2 bg-white/10 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-primary w-[30%] h-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Benefits -->
+    <section class="py-24 px-6 bg-white/[0.01]">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+            <div class="flex flex-col gap-4">
+                <span class="material-symbols-outlined text-primary">schedule</span>
+                <h5 class="font-bold">Ahorra tiempo</h5>
+                <p class="text-sm text-neutral-gray leading-relaxed">Reduce el tiempo de registro en un 90% comparado
+                    con apps manuales.</p>
+            </div>
+            <div class="flex flex-col gap-4">
+                <span class="material-symbols-outlined text-accent-teal">verified_user</span>
+                <h5 class="font-bold">Reduce errores</h5>
+                <p class="text-sm text-neutral-gray leading-relaxed">La IA garantiza que no olvides registrar ninguna
+                    transacción importante.</p>
+            </div>
+            <div class="flex flex-col gap-4">
+                <span class="material-symbols-outlined text-secondary-violet">insights</span>
+                <h5 class="font-bold">Toma mejores decisiones</h5>
+                <p class="text-sm text-neutral-gray leading-relaxed">Insights basados en datos reales para optimizar tu
+                    capacidad de ahorro.</p>
+            </div>
+            <div class="flex flex-col gap-4">
+                <span class="material-symbols-outlined text-primary">settings_suggest</span>
+                <h5 class="font-bold">Automatiza todo</h5>
+                <p class="text-sm text-neutral-gray leading-relaxed">Conexión con bancos y contabilidad automatizada sin
+                    esfuerzo.</p>
+            </div>
+        </div>
+    </section>
+    <!-- Final CTA -->
+    <!-- Pricing Section -->
+    <section class="py-24 px-6 border-y border-white/5" id="pricing">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Planes para tu libertad financiera</h2>
+                <p class="text-neutral-gray max-w-2xl mx-auto">Elige el plan que mejor se adapte a tus necesidades y
+                    comienza a transformar tus finanzas hoy mismo.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Basic Plan -->
+                <div class="glass-card p-8 rounded-xl flex flex-col h-full">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-2">Gratis</h3>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-4xl font-black">$0</span>
+                            <span class="text-neutral-gray">/mes</span>
+                        </div>
+                        <p class="text-sm text-neutral-gray mt-4">Ideal para empezar.</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-accent-teal text-lg">check_circle</span>
+                            Registro por voz básico
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-accent-teal text-lg">check_circle</span>
+                            1 cuenta conectada
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-accent-teal text-lg">check_circle</span>
+                            Reportes mensuales
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full py-3 rounded-full border border-white/20 font-bold hover:bg-white/5 transition-colors">Empezar
+                        ahora</button>
+                </div>
+                <!-- Pro Plan (Featured) -->
+                <div
+                    class="glass-card p-8 rounded-xl flex flex-col h-full relative border-secondary-violet/50 shadow-[0_0_40px_rgba(123,63,242,0.15)]">
+                    <div
+                        class="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary-violet px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase">
+                        Popular
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-2 text-secondary-violet">Pro</h3>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-4xl font-black">$9.99</span>
+                            <span class="text-neutral-gray">/mes</span>
+                        </div>
+                        <p class="text-sm text-neutral-gray mt-4">Para usuarios avanzados.</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
+                            IA avanzada de clasificación
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
+                            Cuentas ilimitadas
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
+                            Exportación de datos
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
+                            Soporte prioritario
+                        </li>
+                    </ul>
+                    <button
+                        class="btn-gradient w-full py-3 rounded-full font-bold shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">Elegir
+                        Pro</button>
+                </div>
+                <!-- Business Plan -->
+                <div class="glass-card p-8 rounded-xl flex flex-col h-full">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-2">Business</h3>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-4xl font-black">$29.99</span>
+                            <span class="text-neutral-gray">/mes</span>
+                        </div>
+                        <p class="text-sm text-neutral-gray mt-4">Control total empresarial.</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Múltiples usuarios
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Gestión de nómina básica
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            API de integración
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Consultoría financiera trimestral
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full py-3 rounded-full border border-white/20 font-bold hover:bg-white/5 transition-colors">Contactar
+                        ventas</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-32 px-6 text-center relative">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">Tu dinero merece inteligencia.</h2>
+            <p class="text-neutral-gray text-lg mb-12">Únete a miles de personas que ya transformaron su relación con el
+                dinero.</p>
+            <button
+                class="btn-gradient px-12 py-5 rounded-full text-lg font-bold shadow-2xl shadow-primary/40 hover:scale-105 transition-transform">
+                Empieza gratis
+            </button>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-16 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <img alt="Tidi Logo" class="h-8 w-auto rounded-none" src="./assets/img/logo.png" />
+                </div>
+                <p class="text-neutral-gray text-sm max-w-sm leading-relaxed">
+                    La plataforma financiera de próxima generación impulsada por IA. Gestiona tu dinero con el poder de
+                    tu voz.
                 </p>
-                <div class="d-flex gap-3 mt-4">
-                    <a href="#" class="text-white opacity-75 fs-5"><i class="bi bi-twitter-x"></i></a>
-                    <a href="#" class="text-white opacity-75 fs-5"><i class="bi bi-linkedin"></i></a>
-                    <a href="#" class="text-white opacity-75 fs-5"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-white opacity-75 fs-5"><i class="bi bi-github"></i></a>
+                <div class="flex gap-4 mt-8">
+                    <a class="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">language</span>
+                    </a>
+                    <a class="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">share</span>
+                    </a>
+                    <a class="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">alternate_email</span>
+                    </a>
                 </div>
             </div>
-
-            <div class="col-lg-2 col-md-6">
-                <h6 class="text-white fw-bold mb-4">Product</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-reset small hover-link">Features</a></li>
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-reset small hover-link">Pricing</a></li>
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-reset small hover-link">AI Chatbot</a></li>
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-reset small hover-link">Integrations</a></li>
+            <div>
+                <h6 class="font-bold mb-6 text-white">Producto</h6>
+                <ul class="space-y-4 text-sm text-neutral-gray">
+                    <li><a class="hover:text-white transition-colors" href="#">Funcionalidades</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Precios</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">API</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Seguridad</a></li>
                 </ul>
             </div>
-
-            <div class="col-lg-2 col-md-6">
-                <h6 class="text-white fw-bold mb-4">Company</h6>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-reset small hover-link">About Us</a></li>
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-reset small hover-link">Careers</a></li>
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-reset small hover-link">Privacy Policy</a></li>
-                    <li class="mb-2"><a href="#" class="text-decoration-none text-reset small hover-link">Terms of Service</a></li>
+            <div>
+                <h6 class="font-bold mb-6 text-white">Legal</h6>
+                <ul class="space-y-4 text-sm text-neutral-gray">
+                    <li><a class="hover:text-white transition-colors" href="#">Privacidad</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Términos</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Cookies</a></li>
                 </ul>
             </div>
-
-            <div class="col-lg-4 col-md-6">
-                <h6 class="text-white fw-bold mb-4">Stay updated</h6>
-                <p class="small">Join our newsletter to receive the latest financial tips and AI updates.</p>
-                <form class="mt-3">
-                    <div class="input-group">
-                        <input type="email" class="form-control bg-dark border-secondary text-white" placeholder="Enter your email" style="border-radius: 50px 0 0 50px;">
-                        <button class="btn btn-primary" type="button" style="background-color: #3b44f6; border: none; border-radius: 0 50px 50px 0; padding-left: 20px; padding-right: 20px;">
-                            Join
-                        </button>
-                    </div>
-                </form>
+        </div>
+        <div
+            class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-gray/50">
+            <p>© 2024 Tidi AI Technologies Inc. Todos los derechos reservados.</p>
+            <div class="flex gap-6">
+                <a class="hover:text-white transition-colors" href="#">Status</a>
+                <a class="hover:text-white transition-colors" href="#">Soporte</a>
             </div>
         </div>
-
-        <hr class="my-5 border-secondary opacity-25">
-
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <p class="small mb-0">&copy; 2026 Tidi AI Inc. All rights reserved.</p>
-            <p class="small mb-0">Designed for the future of finance.</p>
-        </div>
-    </div>
-</footer>
+    </footer>
 </body>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>
