@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/TIDI-APP/TID-#readme",
   "dependencies": {
+    "belvo": "^0.28.0",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
     "express": "^5.2.1"
   }
 }

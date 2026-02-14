@@ -1,0 +1,6 @@
+# The PR title should include the correct label
+if !github.pr_title.match(/\[Snyk\]/) &&
+	!github.pr_labels.include?("dependencies") &&
+	!github.pr_title.match(/^\[(?:Added|Changed|Docs|Fixed|Migrations|Other|Removed|Security)\]/)
+	fail "Please provide a valid PR title label: [Added]/[Changed]/[Docs]/[Fixed]/[Migrations]/[Other]/[Removed]/[Security]."
+end
