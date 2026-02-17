@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script>
+if (localStorage.getItem("theme") !== "light") {
+    document.documentElement.classList.add("dark");
+}
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Login - Tidi AI</title>
+
+    <style>
+        :root {
+            --primary-blue: #3b44f6;
+
+            /* Light mode */
+            --bg-body: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-main: #0a0c1a;
+            --text-muted: #6c757d;
+            --input-bg: #fdfdff;
+            --border-color: #e1e5ee;
+        }
+
+        body.dark {
+            /* Dark mode */
+            --bg-body: #0a0c1a;
+            --bg-card: #12142c;
+            --text-main: #ffffff;
+            --text-muted: #b5b5c3;
+            --input-bg: #1c1f3a;
+            --border-color: #2e3260;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .login-container {
+            background: var(--bg-card);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .brand-side {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-side {
+            padding: 60px;
+        }
+
+        .form-control {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 12px;
+            padding: 12px 20px;
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.25rem rgba(59, 68, 246, 0.15);
+        }
+
+        .btn-login {
+            background-color: var(--primary-blue);
+            border: none;
+            border-radius: 50px;
+            padding: 12px;
+            font-weight: bold;
+        }
+
+        .theme-toggle {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+    </style>
+</head>
+
+<!-- 👇 DARK MODE POR DEFECTO -->
+<body class="dark">
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-11 col-xl-9 login-container">
+            <div class="row h-100">
+
+                <div class="col-lg-5 brand-side d-none d-lg-flex">
+                    <h1 class="fw-bold mb-4">Welcome back!</h1>
+                    <p class="opacity-75">Your AI assistant has missed you.</p>
+                </div>
+
+                <div class="col-lg-7 form-side">
+
+                    <!-- Theme toggle -->
+                    <div class="d-flex justify-content-end mb-3">
+                        <button id="themeToggle" class="btn btn-outline-secondary theme-toggle">
+                            <i class="bi bi-sun-fill"></i>
+                        </button>
+                    </div>
+
+                    <h2 class="fw-bold mb-2">Login</h2>
+                    <p class="text-muted mb-4">
+                        New to Tidi?
+                        <a href="#" class="fw-bold text-decoration-none" style="color: var(--primary-blue);">
+                            Create an account
+                        </a>
+                    </p>
+
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Email Address</label>
+                            <input type="email" class="form-control" placeholder="name@example.com" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Password</label>
+                            <input type="password" class="form-control" placeholder="Enter your password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-login w-100 mb-3 text-white">
+                            Login
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const body = document.body;
+const toggleBtn = document.getElementById("themeToggle");
+const icon = toggleBtn.querySelector("i");
+
+/* Prioridad: localStorage */
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "light") {
+    body.classList.remove("dark");
+    icon.classList.replace("bi-sun-fill", "bi-moon-fill");
+}
+
+/* Toggle */
+toggleBtn.addEventListener("click", () => {
+    body.classList.toggle("dark");
+
+    if (body.classList.contains("dark")) {
+        icon.classList.replace("bi-moon-fill", "bi-sun-fill");
+        localStorage.setItem("theme", "dark");
+    } else {
+        icon.classList.replace("bi-sun-fill", "bi-moon-fill");
+        localStorage.setItem("theme", "light");
+    }
+});
+</script>
+
+</body>
+</html>
