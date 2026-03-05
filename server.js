@@ -1,71 +1,114 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const mysql = require('mysql2/promise');
 
 const app = express();
-const port = 3000
-
+const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/api/test-prometeo', async (req, res) =>{
-        const KEY = "twQ0ZeEfCNgzpPW2zK7n9jQG2dBnl2LtnBDDJAx0ZVu6aBgyyp2Rm5Hu24uZIxzH"
-        let params = new URLSearchParams()
-        params.append('provider','test')
-        params.append('username','12345')
-        params.append('password','gfdsa')
+app.get('/api/test-prometeo', async (req, res) => {
+    let conexionDB;
+    try {
+        conexionDB = await mysql.createConnection({
+            host: '157.180.40.190',
+            user: 'root',
+            password: 'scORHWprCvp26Gz1zwPQgSsokHyPC2',
+            database: 'tidi_database'
+        });
 
-        const respuesta = await fetch('https://banking.sandbox.prometeoapi.com/login/',{
+        const KEY = "twQ0ZeEfCNgzpPW2zK7n9jQG2dBnl2LtnBDDJAx0ZVu6aBgyyp2Rm5Hu24uZIxzH";
+        let params = new URLSearchParams();
+        params.append('provider', 'test');
+        params.append('username', '12345');
+        params.append('password', 'gfdsa');
+
+        const respuesta = await fetch('https://banking.sandbox.prometeoapi.com/login/', {
             method: 'post',
             headers: {
-            'X-API-Key' : KEY,
-            'accept' : 'application/json',
-            'content-type' : 'application/x-www-form-urlencoded'
+                'X-API-Key': KEY,
+                'accept': 'application/json',
+                'content-type': 'application/x-www-form-urlencoded'
             },
             body: params
-        })
-        const data = await respuesta.json()
+        });
         
-        console.log('enviando esta llave:', data)
+        if (!respuesta.ok) throw new Error("Fallo en login con Prometeo");
+        const data = await respuesta.json();
 
         const urlFinal = `https://banking.sandbox.prometeoapi.com/account/?key=${data.key}`;
-        const getData = await fetch( urlFinal,{
+        const getData = await fetch(urlFinal, {
             method: 'get',
             headers: {
-                'accept':'application/json',
-                'X-API-Key': 'twQ0ZeEfCNgzpPW2zK7n9jQG2dBnl2LtnBDDJAx0ZVu6aBgyyp2Rm5Hu24uZIxzH',
+                'accept': 'application/json',
+                'X-API-Key': KEY,
             }
-        })
+        });
+        
+        if (!getData.ok) throw new Error("Fallo al obtener cuentas");
         const accountsData = await getData.json();
 
-        console.log('-CUENTAS-');
-        console.log(accountsData.accounts); 
-        
+        // Extraemos la cuenta USD completa
+        const cuentaSeleccionada = accountsData.accounts[1];
 
-        const accountNumber = accountsData.accounts[1].number;
-        const accountCurrency = accountsData.accounts[1].currency;
+        // Guardamos la cuenta en la BD (omitimos id_local para que se autogenere)
+        const sqlCuenta = 'INSERT IGNORE INTO accounts (prometeo_id, name, number, currency, balance) VALUES (?, ?, ?, ?, ?)';
+        await conexionDB.query(sqlCuenta, [
+            cuentaSeleccionada.id, 
+            cuentaSeleccionada.name, 
+            cuentaSeleccionada.number, 
+            cuentaSeleccionada.currency, 
+            cuentaSeleccionada.balance
+        ]);
 
-        const urlMovimientos = `https://banking.sandbox.prometeoapi.com/account/${accountNumber}/movement/?currency=${accountCurrency}&date_start=01/01/2023&date_end=31/12/2025&key=${data.key}`
+        const urlMovimientos = `https://banking.sandbox.prometeoapi.com/account/${cuentaSeleccionada.number}/movement/?currency=${cuentaSeleccionada.currency}&date_start=01/01/2023&date_end=31/12/2025&key=${data.key}`;
         
         const getMovements = await fetch(urlMovimientos, {
             method: 'get',
             headers: {
                 'accept': 'application/json',
-                'X-API-Key': KEY,            
+                'X-API-Key': KEY,
             }
-        })
+        });
 
+        if (!getMovements.ok) {
+            const errorText = await getMovements.text();
+            throw new Error(`Prometeo dice: Error ${getMovements.status} - ${errorText}`);
+        }
         const dataMovements = await getMovements.json();
+        
+        const movimientos = dataMovements.movements || [];
 
-    
-        console.log('dice prometeo', dataMovements)
-        res.json(dataMovements)
-    });
-    
+        // Preparamos los datos para la tabla de movimientos
+        const valoresParaInsertar = movimientos.map(mov => {
+            const partes = mov.date.split('/');
+            const fechaMySQL = `${partes[2]}-${partes[1]}-${partes[0]}`;
+            const debitSQL = mov.debit === '' ? 0 : parseFloat(mov.debit);
+            const creditSQL = mov.credit === '' ? 0 : parseFloat(mov.credit);
 
+            // El orden aquí debe coincidir con el INSERT de abajo
+            return [mov.id, cuentaSeleccionada.id, mov.reference, fechaMySQL, mov.detail, debitSQL, creditSQL];
+        });
 
+        if (valoresParaInsertar.length > 0) {
+            // Omitimos id_local, MySQL lo llenará automáticamente
+            const sqlMovimientos = 'INSERT IGNORE INTO movements (prometeo_id, account_id, reference, date, detail, debit, credit) VALUES ?';
+            await conexionDB.query(sqlMovimientos, [valoresParaInsertar]);
+        }
 
-app.listen(port, ()=>{
-    console.log(`servidro dewsplegado http://localhost:${port}`)
-})
+        await conexionDB.end();
+
+        res.json({ status: 'success', message: 'Cuentas y movimientos guardados con Auto-Increment exitosamente' });
+
+    } catch (error) {
+        if (conexionDB) await conexionDB.end();
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`servidor desplegado http://localhost:${port}`);
+});
