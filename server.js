@@ -88,12 +88,10 @@ app.get('/api/test-prometeo', async (req, res) => {
             const debitSQL = mov.debit === '' ? 0 : parseFloat(mov.debit);
             const creditSQL = mov.credit === '' ? 0 : parseFloat(mov.credit);
 
-            // El orden aquí debe coincidir con el INSERT de abajo
             return [mov.id, cuentaSeleccionada.id, mov.reference, fechaMySQL, mov.detail, debitSQL, creditSQL];
         });
 
         if (valoresParaInsertar.length > 0) {
-            // Omitimos id_local, MySQL lo llenará automáticamente
             const sqlMovimientos = 'INSERT IGNORE INTO movements (prometeo_id, account_id, reference, date, detail, debit, credit) VALUES ?';
             await conexionDB.query(sqlMovimientos, [valoresParaInsertar]);
         }
@@ -108,6 +106,18 @@ app.get('/api/test-prometeo', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+
+
+app.get('/api/calcular-credito', async(req,res)=>{
+    let connectioDB;
+    try{
+        
+    }
+    catch{
+
+    }
+})
 
 app.listen(port, () => {
     console.log(`servidor desplegado http://localhost:${port}`);
