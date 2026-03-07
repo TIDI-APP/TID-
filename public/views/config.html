@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIDI - Configuración</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/dashboard.css">
+</head>
+
+<body>
+
+  <!-- Overlay -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- SIDEBAR DESKTOP -->
+  <div class="desktop-sidebar d-none d-lg-block">
+    <div class="sidebar-header">
+      <h5>Tidi</h5>
+    </div>
+    <div class="sidebar-links">
+      <a href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a>
+      <a href="chatbot.html"><i class="bi bi-robot"></i> Chatbot</a>
+      <a href="baul.html"><i class="bi bi-piggy-bank"></i> Baul</a>
+      <a href="dashboard.html"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
+      <a href="#" class="text-primary"><i class="bi bi-gear"></i> Configuración</a>
+      <a href="login.html" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <!-- SIDEBAR MOBILE -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="sidebar-header">
+      <h5>Tidi</h5>
+      <i class="bi bi-x-lg close-btn" id="closeSidebar"></i>
+    </div>
+    <div class="sidebar-links">
+      <a href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a>
+      <a href="chatbot.html"><i class="bi bi-robot"></i> Chatbot</a>
+      <a href="baul.html"><i class="bi bi-piggy-bank"></i> Baul</a>
+      <a href="dashboard.html"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
+      <a href="#" class="text-primary"><i class="bi bi-gear"></i> Configuración</a>
+      <a href="login.html" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="app-content">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-list d-lg-none" id="menuToggle" style="font-size:26px; cursor:pointer;"></i>
+        <h5 class="mb-0">Configuración de Cuenta</h5>
+      </div>
+      <button id="themeToggle" class="btn btn-sm btn-outline-light">
+        <i class="bi bi-moon"></i>
+      </button>
+    </div>
+
+    <!-- User Profile Section -->
+    <div class="row g-4 mt-2">
+      <div class="col-12 col-md-4">
+        <div class="card-custom text-center fade-in show">
+          <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 100px; height: 100px; font-size: 36px;">
+            JH
+          </div>
+          <h4>Jhonatan</h4>
+          <p class="text-white-50 mb-4">jhonatan@example.com</p>
+          <button class="btn btn-outline-light w-100">Editar Perfil</button>
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-8">
+        <div class="card-custom fade-in show">
+           <h5 class="mb-4">Detalles de la Cuenta</h5>
+           
+           <div class="mb-3 p-3 rounded d-flex justify-content-between align-items-center" style="background: var(--input-bg); border: 1px solid var(--border);">
+              <div>
+                 <strong>Plan actual</strong>
+                 <div class="small text-white-50">Suscripción premium</div>
+              </div>
+              <span class="badge bg-success px-3 py-2">Pro</span>
+           </div>
+
+           <div class="mb-3 p-3 rounded d-flex justify-content-between align-items-center" style="background: var(--input-bg); border: 1px solid var(--border);">
+              <div>
+                 <strong>Cuentas conectadas</strong>
+                 <div class="small text-white-50">Bancos y tarjetas sincronizadas</div>
+              </div>
+              <span class="fs-5 fw-bold">2</span>
+           </div>
+
+           <div class="mb-3 p-3 rounded d-flex justify-content-between align-items-center" style="background: var(--input-bg); border: 1px solid var(--border);">
+              <div>
+                 <strong>Notificaciones Push</strong>
+                 <div class="small text-white-50">Recibe alertas de gastos y saldos</div>
+              </div>
+              <div class="form-check form-switch fs-4">
+                 <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+           </div>
+
+           <div class="mb-3 p-3 rounded d-flex justify-content-between align-items-center" style="background: var(--input-bg); border: 1px solid var(--border);">
+              <div>
+                 <strong>Reportes Mensuales</strong>
+                 <div class="small text-white-50">Enviados automáticamente por email</div>
+              </div>
+              <div class="form-check form-switch fs-4">
+                 <input class="form-check-input" type="checkbox" role="switch" checked>
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Bar (Mobile) -->
+  <div class="bottom-container d-lg-none">
+    <div class="bottom-bar">
+      <div class="nav-item">
+        <a href="chatbot.html" class="text-white"><i class="bi bi-robot"></i></a>
+      </div>
+      <div class="nav-item">
+        <a href="dashboard.html" class="text-white"><i class="bi bi-house"></i></a>
+      </div>
+      <div class="spacer"></div>
+      <div class="nav-item">
+        <a href="baul.html" class="text-white"><i class="bi bi-cash-stack"></i></a>
+      </div>
+      <div class="nav-item">
+        <a href="config.html" class="text-primary"><i class="bi bi-person"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Sidebar logic
+    const sidebar = document.getElementById("mobileSidebar");
+    const overlay = document.getElementById("menuOverlay");
+    const closeSidebar = document.getElementById("closeSidebar");
+    const menuToggle = document.getElementById("menuToggle");
+    const themeToggle = document.getElementById("themeToggle");
+
+    if(themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("light-mode");
+            localStorage.setItem("lightMode", document.body.classList.contains("light-mode"));
+        });
+        if(localStorage.getItem("lightMode") === "true") {
+           document.body.classList.add("light-mode");
+        }
+    }
+
+    if(menuToggle) {
+        menuToggle.addEventListener("click", () => {
+            sidebar.classList.add("active");
+            overlay.classList.add("active");
+        });
+    }
+
+    if(closeSidebar && overlay) {
+        const closeMenu = () => {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+        };
+        closeSidebar.addEventListener("click", closeMenu);
+        overlay.addEventListener("click", closeMenu);
+    }
+  </script>
+</body>
+
+</html>

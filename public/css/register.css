@@ -79,3 +79,59 @@
             color: white;
             margin-bottom: 40px;
         }
+
+        /* Dark Mode Overrides */
+        [data-bs-theme="dark"] body {
+            background-color: #000000;
+            color: #e1e5ee;
+        }
+
+        [data-bs-theme="dark"] .register-container {
+            background: #0a0c1a;
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        [data-bs-theme="dark"] .form-side h2,
+        [data-bs-theme="dark"] .form-side h3,
+        [data-bs-theme="dark"] .form-side .form-check-label {
+            color: white;
+        }
+
+        [data-bs-theme="dark"] .form-label {
+            color: #d1d5db;
+        }
+
+        [data-bs-theme="dark"] .form-control {
+            background-color: #151828;
+            border-color: #2a2e45;
+            color: white;
+        }
+
+        [data-bs-theme="dark"] .form-control::placeholder {
+            color: #8c92a5;
+        }
+
+        [data-bs-theme="dark"] .form-control:focus {
+            background-color: #1a1e33;
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        [data-bs-theme="dark"] .social-btn {
+            background-color: #151828;
+            border-color: #2a2e45;
+            color: #e1e5ee;
+        }
+
+        [data-bs-theme="dark"] .social-btn:hover {
+            background-color: #1a1e33;
+        }
+
+        [data-bs-theme="dark"] .text-muted {
+            color: #a0a6b5 !important;
+        }
+
+        [data-bs-theme="dark"] .btn-link {
+            color: #e1e5ee !important;
+        }

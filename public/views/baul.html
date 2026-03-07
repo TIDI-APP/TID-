@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIDI - Mi Baúl</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/dashboard.css">
+</head>
+
+<body>
+
+  <!-- Overlay -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- SIDEBAR DESKTOP -->
+  <div class="desktop-sidebar d-none d-lg-block">
+    <div class="sidebar-header">
+      <h5>Tidi</h5>
+    </div>
+    <div class="sidebar-links">
+      <a href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a>
+      <a href="chatbot.html"><i class="bi bi-robot"></i> Chatbot</a>
+      <a href="#" class="text-primary"><i class="bi bi-piggy-bank"></i> Baul</a>
+      <a href="#" id="desktopCrediturbo"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
+      <a href="config.html"><i class="bi bi-gear"></i> Configuración</a>
+      <a href="login.html" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <!-- SIDEBAR MOBILE -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="sidebar-header">
+      <h5>Tidi</h5>
+      <i class="bi bi-x-lg close-btn" id="closeSidebar"></i>
+    </div>
+    <div class="sidebar-links">
+      <a href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a>
+      <a href="chatbot.html"><i class="bi bi-robot"></i> Chatbot</a>
+      <a href="#" class="text-primary"><i class="bi bi-piggy-bank"></i> Baul</a>
+      <a href="#" id="mobileCrediturbo"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
+      <a href="config.html"><i class="bi bi-gear"></i> Configuración</a>
+      <a href="login.html" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+    </div>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="app-content">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-list d-lg-none" id="menuToggle" style="font-size:26px; cursor:pointer;"></i>
+        <h5 class="mb-0">Mi Baúl de Ahorros</h5>
+      </div>
+      <button id="themeToggle" class="btn btn-sm btn-outline-light">
+        <i class="bi bi-moon"></i>
+      </button>
+    </div>
+
+    <p class="text-white-50 fade-in show">Aquí puedes separar y guardar tu dinero de forma segura para tus metas.</p>
+
+    <div class="row g-4 mb-4 fade-in show">
+      <!-- Card Baul 1 -->
+      <div class="col-12 col-md-6">
+        <div class="card-custom">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+             <div class="d-flex align-items-center gap-3">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                   <i class="bi bi-car-front fs-3"></i>
+                </div>
+                <div>
+                   <h5 class="mb-0">Coche Nuevo</h5>
+                   <small class="text-white-50">Meta: $10,000</small>
+                </div>
+             </div>
+             <h4 class="text-primary mb-0">$4,500</h4>
+          </div>
+          <div class="progress mb-2 rounded-pill" style="height: 8px; background: rgba(255,255,255,0.1);">
+            <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 45%;"></div>
+          </div>
+          <div class="d-flex justify-content-between text-white-50 small mt-2">
+             <span>45% completado</span>
+             <a href="#" class="text-primary text-decoration-none">Añadir fondos</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Card Baul 2 -->
+      <div class="col-12 col-md-6">
+        <div class="card-custom">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+             <div class="d-flex align-items-center gap-3">
+                <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                   <i class="bi bi-airplane fs-3"></i>
+                </div>
+                <div>
+                   <h5 class="mb-0">Viaje a Japón</h5>
+                   <small class="text-white-50">Meta: $3,000</small>
+                </div>
+             </div>
+             <h4 class="text-success mb-0">$2,100</h4>
+          </div>
+          <div class="progress mb-2 rounded-pill" style="height: 8px; background: rgba(255,255,255,0.1);">
+            <div class="progress-bar bg-success rounded-pill" role="progressbar" style="width: 70%;"></div>
+          </div>
+          <div class="d-flex justify-content-between text-white-50 small mt-2">
+             <span>70% completado</span>
+             <a href="#" class="text-success text-decoration-none">Añadir fondos</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agregar Baul Btn -->
+    <div class="card-custom text-center cursor-pointer mb-5 border-dashed fade-in show" style="border: 2px dashed rgba(255,255,255,0.2);" id="btnGenerarBaul">
+       <i class="bi bi-plus-circle text-primary mb-2 d-block" style="font-size: 2rem;"></i>
+       <h5>Crear Nuevo Baúl</h5>
+       <p class="text-white-50 small mb-0">Comienza a ahorrar para una nueva meta</p>
+    </div>
+
+  </div>
+
+  <!-- MODAL NUEVO BAUL -->
+  <div class="modal fade" id="baulModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content custom-modal border-0 shadow-lg text-center p-3">
+        <div class="modal-header border-0 pb-0 justify-content-end">
+           <button type="button" class="btn-close btn-close-white opacity-50" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body pt-0">
+           
+           <div class="mb-4">
+              <i class="bi bi-piggy-bank-fill text-primary fs-1"></i>
+           </div>
+           
+           <h5 class="modal-title mb-4">Nuevo Baúl</h5>
+           
+           <form id="baulForm" class="text-start">
+              
+              <div class="mb-4 text-center">
+                <div class="input-group input-group-lg justify-content-center">
+                  <span class="input-group-text bg-transparent border-0 text-white-50 fs-2 px-1">$</span>
+                  <input type="number" class="form-control bg-transparent border-0 text-white fs-1 text-center px-0 w-auto fw-bold focus-ring-none" placeholder="0" required style="max-width: 150px; outline:none; box-shadow:none;">
+                </div>
+                <small class="text-white-50">Cantidad Objetivo</small>
+              </div>
+
+              <div class="mb-4">
+                <label class="small text-white-50 mb-2">Nombre de la meta</label>
+                <input type="text" class="form-control custom-input rounded-pill py-2 px-3" placeholder="Ej. Moto nueva" required style="background: rgba(255,255,255,0.05);">
+              </div>
+
+              <button type="submit" class="btn w-100 rounded-pill py-3 fw-bold text-white shadow-sm" style="background: var(--primary);">Crear Baúl</button>
+           </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CREDITURBO -->
+  <div class="modal fade" id="crediturboModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-modal text-center p-4">
+        <div class="modal-header border-0 pb-0 justify-content-end">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body pt-0">
+          <i class="bi bi-lightning-charge text-warning" style="font-size: 4rem;"></i>
+          <h3 class="mt-3">Crediturbo</h3>
+          <p class="text-white-50 mt-2">Próximamente... estamos preparando las mejores opciones de crédito para ti.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar (Mobile) -->
+  <div class="bottom-container d-lg-none">
+    <div class="bottom-bar">
+      <div class="nav-item">
+        <a href="chatbot.html" class="text-white"><i class="bi bi-robot"></i></a>
+      </div>
+      <div class="nav-item text-primary">
+        <i class="bi bi-cash-stack"></i>
+      </div>
+      <div class="spacer"></div>
+      <div class="nav-item" id="bottomCrediturbo" style="cursor: pointer;">
+        <i class="bi bi-lightning-charge"></i>
+      </div>
+      <div class="nav-item">
+        <a href="config.html" class="text-white"><i class="bi bi-gear"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Theme logic
+    const themeToggle = document.getElementById("themeToggle");
+    if(themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("light-mode");
+            localStorage.setItem("lightMode", document.body.classList.contains("light-mode"));
+        });
+        if(localStorage.getItem("lightMode") === "true") {
+           document.body.classList.add("light-mode");
+        }
+    }
+
+    // Sidebar logic
+    const sidebar = document.getElementById("mobileSidebar");
+    const overlay = document.getElementById("menuOverlay");
+    const closeSidebar = document.getElementById("closeSidebar");
+    const menuToggle = document.getElementById("menuToggle");
+
+    if(menuToggle) {
+        menuToggle.addEventListener("click", () => {
+            sidebar.classList.add("active");
+            overlay.classList.add("active");
+        });
+    }
+
+    if(closeSidebar && overlay) {
+        const closeMenu = () => {
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+        };
+        closeSidebar.addEventListener("click", closeMenu);
+        overlay.addEventListener("click", closeMenu);
+    }
+
+    // Modal Crediturbo
+    const crediturboModalEl = document.getElementById('crediturboModal');
+    const crediturboModal = crediturboModalEl ? new bootstrap.Modal(crediturboModalEl) : null;
+    const addCrediturboListeners = (prefix) => {
+        const btn = document.getElementById(prefix + 'Crediturbo');
+        if (btn) btn.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            sidebar.classList.remove("active");
+            overlay.classList.remove("active");
+            if(crediturboModal) crediturboModal.show(); 
+        });
+    };
+    addCrediturboListeners('desktop');
+    addCrediturboListeners('mobile');
+    addCrediturboListeners('bottom');
+
+    // Baul Modal Logic
+    const baulModalEl = document.getElementById('baulModal');
+    const baulModal = baulModalEl ? new bootstrap.Modal(baulModalEl) : null;
+    const btnGenerarBaul = document.getElementById('btnGenerarBaul');
+    const baulForm = document.getElementById('baulForm');
+
+    if (btnGenerarBaul && baulModal) {
+        btnGenerarBaul.addEventListener('click', () => {
+            baulModal.show();
+        });
+    }
+
+    if (baulForm) {
+        baulForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (baulModal) baulModal.hide();
+        });
+    }
+  </script>
+</body>
+
+</html>

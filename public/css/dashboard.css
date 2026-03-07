@@ -1,3 +1,12 @@
+.light-mode {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --text: #1f2937;
+    --border: rgba(0, 0, 0, 0.1);
+    --modal-bg: #ffffff;
+    --input-bg: #f3f4f6;
+}
+
 :root {
     --bg: #0a0b13;
     --card: #12131c;
@@ -5,12 +14,9 @@
     --primary: #6840f3;
     --primary-light: #826ef6;
     --soft: #221646;
-}
-
-.light-mode {
-    --bg: #edeafe;
-    --card: #ffffff;
-    --text: #0a0b13;
+    --border: rgba(255, 255, 255, 0.05);
+    --modal-bg: #0a0b13;
+    --input-bg: #141622;
 }
 
 body {
@@ -23,11 +29,11 @@ body {
 
 /* Sidebar */
 .sidebar {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--card);
     backdrop-filter: blur(20px);
     height: 100vh;
     padding: 30px 20px;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid var(--border);
 }
 
 .sidebar a {
@@ -51,7 +57,7 @@ body {
     background: var(--card);
     border-radius: 20px;
     padding: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
     transition: .4s ease;
 }
 
@@ -86,7 +92,7 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, .05);
+    border-top: 1px solid var(--border);
     position: relative;
 }
 
@@ -135,6 +141,27 @@ body {
 
     50% {
         transform: translateX(-50%) scale(1.1);
+    }
+}
+
+/* Micrófono Desktop */
+.desktop-mic {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    left: auto;
+    top: auto;
+    transform: none;
+    z-index: 1000;
+    animation: breatheDesktop 3s infinite ease-in-out;
+}
+
+@keyframes breatheDesktop {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
     }
 }
 
@@ -393,8 +420,9 @@ body {
     left: 0;
     width: 250px;
     height: 100vh;
-    background: #111;
+    background: var(--card);
     padding: 20px;
+    border-right: 1px solid var(--border);
     z-index: 1000;
 }
 
@@ -412,13 +440,17 @@ body {
 
 /* Modal estilo Tidi */
 .custom-modal {
-    background: #0a0b13;
+    background: var(--modal-bg);
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
     backdrop-filter: blur(20px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-    color: white;
+    color: var(--text);
     animation: modalFade .3s ease;
+}
+
+.light-mode .custom-modal .btn-close {
+    filter: invert(1);
 }
 
 @keyframes modalFade {
@@ -450,18 +482,22 @@ body {
 
 /* Inputs estilo glass */
 .custom-input {
-    background: #141622;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--input-bg);
+    border: 1px solid var(--border);
     border-radius: 14px;
-    color: white;
+    color: var(--text);
     transition: .3s ease;
 }
 
 .custom-input:focus {
-    border-color: #6840f3;
+    border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(104, 64, 243, 0.2);
-    background: #141622;
-    color: white;
+    background: var(--input-bg);
+    color: var(--text);
+}
+
+.light-mode .text-white-50 {
+    color: #6b7280 !important;
 }
 
 /* Botón guardar */
