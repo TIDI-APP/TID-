@@ -112,12 +112,47 @@ app.get('/api/test-prometeo', async (req, res) => {
 app.get('/api/calcular-credito', async(req,res)=>{
     let connectioDB;
     try{
-        
-    }
-    catch{
+        conexionDB = await mysql.createConnection({
+            host: '157.180.40.190',
+            user: 'root',
+            password: 'scORHWprCvp26Gz1zwPQgSsokHyPC2',
+            database: 'tidi_database'
+        });
 
+        // 1. Consultamos el promedio en dólares
+        const sqlCalculo = `
+            SELECT AVG(credit) AS promedio_ingresos 
+            FROM movements 
+            WHERE detail LIKE '%sueldo%';
+        `;
+        const [resultados] = await conexionDB.query(sqlCalculo);
+        const promedioSueldoUSD = resultados[0].promedio_ingresos || 0;
+
+        // 2. Tasa de cambio estática
+        const valorDolar = 3500;
+        
+        // 3. Conversión y regla de negocio
+        const promedioPesos = promedioSueldoUSD * valorDolar;
+        const disponible = promedioPesos / 2;
+        const factorPrestamo = disponible / 24100;
+        const prestamoAprobado = factorPrestamo * 1000000;
+
+        await conexionDB.end();
+
+        // 4. Enviamos la respuesta estructurada al frontend
+        res.json({
+            status: 'success',
+            promedio_ingresos_usd: promedioSueldoUSD,
+            promedio_ingresos_cop: promedioPesos,
+            cupo_aprobado: prestamoAprobado
+        });
+
+    } catch (error) {
+        if (conexionDB) await conexionDB.end();
+        console.error(error);
+        res.status(500).json({ error: error.message });
     }
-})
+});
 
 app.listen(port, () => {
     console.log(`servidor desplegado http://localhost:${port}`);
