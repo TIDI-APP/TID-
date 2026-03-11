@@ -20,14 +20,20 @@
   },
   "homepage": "https://github.com/TIDI-APP/TID-#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "express-sslify": "^1.2.0",
     "fastify": "^5.8.1",
     "fs": "^0.0.1-security",
     "groq-sdk": "^0.37.0",
-    "multer": "^2.1.1"
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pg": "^8.20.0"
   }
 }

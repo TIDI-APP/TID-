@@ -10,10 +10,10 @@ let currentType = "";
 // Income
 document.getElementById('openIncome')?.addEventListener('click', () => {
     currentType = "Ingreso";
-    if(modalTitle) modalTitle.innerText = "Nuevo Ingreso";
-    if(modalIconContainer) modalIconContainer.innerHTML = '<i class="bi bi-arrow-down-circle-fill text-success fs-1"></i>';
-    if(btnSaveTransaction) btnSaveTransaction.style.background = "var(--primary)";
-    if(financeModal) financeModal.show();
+    if (modalTitle) modalTitle.innerText = "Nuevo Ingreso";
+    if (modalIconContainer) modalIconContainer.innerHTML = '<i class="bi bi-arrow-down-circle-fill text-success fs-1"></i>';
+    if (btnSaveTransaction) btnSaveTransaction.style.background = "var(--primary)";
+    if (financeModal) financeModal.show();
 });
 
 // Expense
@@ -21,15 +21,15 @@ document.getElementById('openExpense')?.addEventListener('click', () => {
     currentType = "Gasto";
     modalTitle.innerText = "Nuevo Gasto";
     modalIconContainer.innerHTML = '<i class="bi bi-arrow-up-circle-fill text-danger fs-1"></i>';
-    if(btnSaveTransaction) btnSaveTransaction.style.background = "var(--soft)";
-    if(financeModal) financeModal.show();
+    if (btnSaveTransaction) btnSaveTransaction.style.background = "var(--soft)";
+    if (financeModal) financeModal.show();
 });
 
 const financeForm = document.getElementById('financeForm');
 if (financeForm) {
     financeForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        if(financeModal) financeModal.hide();
+        if (financeModal) financeModal.hide();
     });
 }
 
@@ -55,16 +55,16 @@ const btnUpdateBalance = document.getElementById('btnUpdateBalance');
 const newBalanceInput = document.getElementById('newBalanceInput');
 const balanceValue = document.getElementById('balanceValue');
 
-if(editBalanceBtn && editBalanceModal) {
+if (editBalanceBtn && editBalanceModal) {
     editBalanceBtn.addEventListener('click', () => {
         newBalanceInput.value = '';
         editBalanceModal.show();
     });
 }
-if(btnUpdateBalance) {
+if (btnUpdateBalance) {
     btnUpdateBalance.addEventListener('click', () => {
         const val = parseFloat(newBalanceInput.value);
-        if(!isNaN(val)) {
+        if (!isNaN(val)) {
             balanceValue.innerText = "$" + val.toFixed(2);
             editBalanceModal.hide();
         }
@@ -130,7 +130,7 @@ let isRecording = false;
 const sendAudioToBackend = async (audioBlob) => {
     try {
         if (voiceTextDisplay) voiceTextDisplay.innerText = "Transcribiendo con IA...";
-        
+
         const formData = new FormData();
         // Le pasamos un nombre de archivo temporal para que Multer lo intercepte bien
         formData.append('audio', audioBlob, 'grabacion.webm');
@@ -142,7 +142,7 @@ const sendAudioToBackend = async (audioBlob) => {
         });
 
         const data = await response.json();
-        
+
         if (response.ok) {
             console.log("IA Transcripción completada:", data);
             if (voiceTextDisplay) {
@@ -163,17 +163,17 @@ const sendAudioToBackend = async (audioBlob) => {
 };
 
 const setupMicBtn = (btn) => {
-    if(!btn) return;
-    
+    if (!btn) return;
+
     // Iniciar el Grabador
     const startRecording = async (e) => {
-        if(e) e.preventDefault();
-        if(isRecording) return;
+        if (e) e.preventDefault();
+        if (isRecording) return;
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream);
-            
+
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
                     audioChunks.push(event.data);
@@ -184,7 +184,7 @@ const setupMicBtn = (btn) => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                 audioChunks = [];
                 sendAudioToBackend(audioBlob);
-                
+
                 // Detener los hilos del micrófono para la privacidad
                 stream.getTracks().forEach(track => track.stop());
             };
@@ -192,10 +192,10 @@ const setupMicBtn = (btn) => {
             audioChunks = [];
             mediaRecorder.start();
             isRecording = true;
-            
+
             showVoiceSheet();
             if (voiceTextDisplay) voiceTextDisplay.innerText = "Te escucho. Habla ahora...";
-            
+
         } catch (err) {
             console.error("Microphone access denied or error:", err);
             if (voiceTextDisplay) voiceTextDisplay.innerText = "Por favor acepta los permisos del micrófono.";
@@ -204,9 +204,9 @@ const setupMicBtn = (btn) => {
 
     // Detener el Grabador
     const stopRecording = (e) => {
-        if(e) e.preventDefault();
-        if(!isRecording) return;
-        
+        if (e) e.preventDefault();
+        if (!isRecording) return;
+
         isRecording = false;
         if (mediaRecorder && mediaRecorder.state !== "inactive") {
             mediaRecorder.stop();
@@ -223,9 +223,9 @@ const setupMicBtn = (btn) => {
     btn.addEventListener("mouseleave", stopRecording); // Added safety catch if mouse leaves button
 
     // Mobile touch triggers
-    btn.addEventListener("touchstart", startRecording, {passive: false});
-    btn.addEventListener("touchend", stopRecording, {passive: false});
-    btn.addEventListener("touchcancel", stopRecording, {passive: false});
+    btn.addEventListener("touchstart", startRecording, { passive: false });
+    btn.addEventListener("touchend", stopRecording, { passive: false });
+    btn.addEventListener("touchcancel", stopRecording, { passive: false });
 };
 
 setupMicBtn(document.getElementById("iaButton"));
@@ -272,7 +272,7 @@ const addSidebarListeners = (prefix) => {
     const crediturboBtn = document.getElementById(prefix + 'Crediturbo');
 
     if (chatbotBtn) chatbotBtn.addEventListener('click', (e) => { e.preventDefault(); window.location.href = 'chatbot.html'; });
-    if (crediturboBtn) crediturboBtn.addEventListener('click', (e) => { e.preventDefault(); closeMenu(); if(crediturboModal) crediturboModal.show(); });
+    if (crediturboBtn) crediturboBtn.addEventListener('click', (e) => { e.preventDefault(); closeMenu(); if (crediturboModal) crediturboModal.show(); });
 };
 
 addSidebarListeners('desktop');

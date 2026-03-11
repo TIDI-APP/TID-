@@ -1,69 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Login - Tidi AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="/public/css/login.css">
 </head>
+
 <body>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-11 col-xl-9 login-container">
-            <div class="row h-100">
-                
-                <div class="col-lg-5 brand-side d-none d-lg-flex">
-                    <a href="../index.html" class="logo-text">
-                        <img src="../assets/img/logo.png" alt="Logo" style="width: 40px; height: auto;" class="me-2"> Tidi
-                    </a>
-                    <h1 class="fw-bold mb-4">Welcome back!</h1>
-                    <p class="opacity-75 mb-5">Your AI assistant has missed you. Log in to check your latest financial predictions.</p>
-                    
-                    <div class="mt-auto">
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="bi bi-shield-lock-fill me-3"></i>
-                            <span>Secure Access</span>
-                        </div>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-11 col-xl-9 login-container">
+                <div class="row h-100">
 
-                <div class="col-lg-7 form-side position-relative">
-                    <button class="theme-toggle btn btn-link text-decoration-none position-absolute top-0 end-0 p-4 text-secondary" style="z-index: 10;">
-                        <span class="material-symbols-outlined fs-4">light_mode</span>
-                    </button>
-                    <div class="mb-4 d-lg-none text-center">
-                        <img src="../assets/img/logo.png" alt="Logo" style="width: 50px;" class="mb-2">
-                        <h3 class="fw-bold" style="color: var(--primary-blue);">Tidi</h3>
-                    </div>
-                    
-                    <h2 class="fw-bold mb-2">Login</h2>
-                    <p class="text-muted mb-4">New to Tidi? <a href="register.html" class="text-decoration-none fw-bold" style="color: var(--primary-blue);">Create an account</a></p>
+                    <div class="col-lg-5 brand-side d-none d-lg-flex">
+                        <a href="../index.html" class="logo-text">
+                            <img src="../assets/img/logo.png" alt="Logo" style="width: 40px; height: auto;"
+                                class="me-2"> Tidi
+                        </a>
+                        <h1 class="fw-bold mb-4">Welcome back!</h1>
+                        <p class="opacity-75 mb-5">Your AI assistant has missed you. Log in to check your latest
+                            financial predictions.</p>
 
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">Email Address</label>
-                            <input type="email" class="form-control" placeholder="name@example.com" required>
-                        </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between">
-                                <label class="form-label small fw-bold">Password</label>
+                        <div class="mt-auto">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-shield-lock-fill me-3"></i>
+                                <span>Secure Access</span>
                             </div>
-                            <input type="password" class="form-control" placeholder="Enter your password" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100 btn-login mb-4">Login</button>
-                    </form>
-                </div>
+                    </div>
 
+                    <div class="col-lg-7 form-side position-relative">
+                        <button
+                            class="theme-toggle btn btn-link text-decoration-none position-absolute top-0 end-0 p-4 text-secondary"
+                            style="z-index: 10;">
+                            <span class="material-symbols-outlined fs-4">light_mode</span>
+                        </button>
+                        <div class="mb-4 d-lg-none text-center">
+                            <img src="../assets/img/logo.png" alt="Logo" style="width: 50px;" class="mb-2">
+                            <h3 class="fw-bold" style="color: var(--primary-blue);">Tidi</h3>
+                        </div>
+
+                        <h2 class="fw-bold mb-2">Login</h2>
+                        <p class="text-muted mb-4">New to Tidi? <a href="register.html"
+                                class="text-decoration-none fw-bold" style="color: var(--primary-blue);">Create an
+                                account</a></p>
+
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Email Address</label>
+                                <input type="email" class="form-control" placeholder="name@example.com" required>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <label class="form-label small fw-bold">Password</label>
+                                </div>
+                                <input type="password" class="form-control" placeholder="Enter your password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 btn-login mb-4">Login</button>
+
+                            <div class="position-relative mb-4">
+                                <hr class="border-secondary opacity-25">
+                                <span
+                                    class="position-absolute top-50 start-50 translate-middle bg-body px-3 text-muted small fw-medium">or
+                                    log in with</span>
+                            </div>
+
+                            <a href="/auth/google"
+                                class="btn w-100 d-flex align-items-center justify-content-center gap-2 mb-3 google-btn"
+                                style="border: 1px solid #ced4da; background-color: var(--bs-body-bg); color: var(--bs-body-color); transition: background-color 0.2s; text-decoration: none;">
+                                <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                        fill="#4285F4" />
+                                    <path
+                                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                        fill="#34A853" />
+                                    <path
+                                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                                        fill="#FBBC05" />
+                                    <path
+                                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"
+                                        fill="#EA4335" />
+                                </svg>
+                                Continue with Google
+                            </a>
+                        </form>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/theme-toggle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/theme-toggle.js"></script>
 </body>
+
 </html>
