@@ -1,0 +1,528 @@
+.light-mode {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --text: #1f2937;
+    --border: rgba(0, 0, 0, 0.1);
+    --modal-bg: #ffffff;
+    --input-bg: #f3f4f6;
+}
+
+:root {
+    --bg: #0a0b13;
+    --card: #12131c;
+    --text: #ffffff;
+    --primary: #6840f3;
+    --primary-light: #826ef6;
+    --soft: #221646;
+    --border: rgba(255, 255, 255, 0.05);
+    --modal-bg: #0a0b13;
+    --input-bg: #141622;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    transition: all .4s ease;
+    overflow-x: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    background: var(--card);
+    backdrop-filter: blur(20px);
+    height: 100vh;
+    padding: 30px 20px;
+    border-right: 1px solid var(--border);
+}
+
+.sidebar a {
+    color: var(--text);
+    opacity: .7;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    transition: .3s;
+}
+
+.sidebar a:hover {
+    opacity: 1;
+    transform: translateX(5px);
+}
+
+/* Cards */
+.card-custom {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid var(--border);
+    transition: .4s ease;
+}
+
+.card-custom:hover {
+    transform: translateY(-5px);
+}
+
+/* Balance */
+.balance {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border-radius: 25px;
+    padding: 30px;
+    color: white;
+    box-shadow: 0 20px 40px rgba(104, 64, 243, .4);
+}
+
+/* === BOTTOM NAV PRO CLEAN === */
+
+.bottom-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+
+.bottom-bar {
+    height: 75px;
+    background: var(--card);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    position: relative;
+}
+
+.nav-item i {
+    font-size: 20px;
+    opacity: .6;
+    transition: .3s;
+}
+
+.nav-item i:hover {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+.spacer {
+    width: 70px;
+}
+
+/* Botón montaña REAL */
+.mic-floating {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -38px;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6840f3, #826ef6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 26px;
+    box-shadow: 0 20px 45px rgba(104, 64, 243, .5);
+    animation: breathe 3s infinite ease-in-out;
+    cursor: pointer;
+    z-index: 150;
+}
+
+@keyframes breathe {
+
+    0%,
+    100% {
+        transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.1);
+    }
+}
+
+/* Micrófono Desktop */
+.desktop-mic {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    left: auto;
+    top: auto;
+    transform: none;
+    z-index: 1000;
+    animation: breatheDesktop 3s infinite ease-in-out;
+}
+
+@keyframes breatheDesktop {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+
+
+/* Fade animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: .8s ease;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media(min-width:992px) {
+
+    .bottom-bar,
+    .ia-btn {
+        display: none;
+    }
+}
+
+/* Fondo animado suave */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, #221646 0%, transparent 40%),
+        radial-gradient(circle at 70% 70%, #2f2479 0%, transparent 40%);
+    animation: bgMove 25s infinite alternate ease-in-out;
+    z-index: -1;
+    opacity: .6;
+}
+
+@keyframes bgMove {
+    0% {
+        transform: translate(-5%, -5%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-15%, -10%) rotate(15deg);
+    }
+}
+
+/* Smooth transitions global */
+* {
+    transition: all .35s cubic-bezier(.4, .0, .2, 1);
+}
+
+/* Balance number animation */
+.balance h2 {
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Bottom Sheet IA */
+.voice-sheet {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: var(--card);
+    border-radius: 30px 30px 0 0;
+    padding: 30px;
+    box-shadow: 0 -20px 40px rgba(0, 0, 0, .6);
+    transition: .6s cubic-bezier(.16, 1, .3, 1);
+    backdrop-filter: blur(30px);
+}
+
+.voice-sheet.active {
+    bottom: 0;
+}
+
+/* Voice waves */
+.wave {
+    width: 10px;
+    height: 40px;
+    background: var(--primary);
+    margin: 0 5px;
+    border-radius: 20px;
+    animation: wave 1s infinite ease-in-out;
+}
+
+.wave:nth-child(2) {
+    animation-delay: .1s;
+}
+
+.wave:nth-child(3) {
+    animation-delay: .2s;
+}
+
+.wave:nth-child(4) {
+    animation-delay: .3s;
+}
+
+@keyframes wave {
+
+    0%,
+    100% {
+        height: 20px;
+    }
+
+    50% {
+        height: 60px;
+    }
+}
+
+/* Ripple effect */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple .6s linear;
+    background: rgba(255, 255, 255, .3);
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+
+.nav-item i {
+    font-size: 20px;
+    opacity: .6;
+}
+
+.nav-item i:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+@media(max-width:991px) {
+    body {
+        padding-bottom: 120px;
+    }
+}
+
+/* ================================
+   MOBILE SIDEBAR PRO
+================================ */
+
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .6);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: .4s ease;
+    z-index: 180;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background: var(--card);
+    padding: 30px 20px;
+    box-shadow: 20px 0 60px rgba(0, 0, 0, .6);
+    transition: .5s cubic-bezier(.16, 1, .3, 1);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-sidebar.active {
+    left: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.sidebar-header h5 {
+    font-weight: 600;
+}
+
+.close-btn {
+    cursor: pointer;
+    opacity: .6;
+    transition: .3s;
+}
+
+.close-btn:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+.sidebar-links a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 15px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: .3s;
+    font-weight: 500;
+}
+
+.sidebar-links a i {
+    font-size: 18px;
+}
+
+.sidebar-links a:hover {
+    background: rgba(104, 64, 243, .15);
+    color: var(--primary-soft);
+    transform: translateX(6px);
+}
+
+.menu-overlay {
+    z-index: 180;
+    pointer-events: none;
+}
+
+.menu-overlay.active {
+    pointer-events: auto;
+}
+
+.mobile-sidebar {
+    z-index: 200;
+}
+
+.app-content {
+    padding: 20px 20px 120px 20px;
+}
+
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.desktop-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background: var(--card);
+    padding: 20px;
+    border-right: 1px solid var(--border);
+    z-index: 1000;
+}
+
+
+.app-content {
+    padding: 20px;
+}
+
+@media (min-width: 992px) {
+    .app-content {
+        margin-left: 250px;
+    }
+}
+
+
+/* Modal estilo Tidi */
+.custom-modal {
+    background: var(--modal-bg);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    color: var(--text);
+    animation: modalFade .3s ease;
+}
+
+.light-mode .custom-modal .btn-close {
+    filter: invert(1);
+}
+
+@keyframes modalFade {
+    from {
+        transform: translateY(30px) scale(.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Botón gradiente Tidi */
+.btn-gradient {
+    background: linear-gradient(135deg, #6840f3, #826ef6);
+    border: none;
+    border-radius: 14px;
+    padding: 12px;
+    font-weight: 500;
+    transition: .3s ease;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(104, 64, 243, 0.4);
+}
+
+/* Inputs estilo glass */
+.custom-input {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    transition: .3s ease;
+}
+
+.custom-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(104, 64, 243, 0.2);
+    background: var(--input-bg);
+    color: var(--text);
+}
+
+.light-mode .text-white-50 {
+    color: #6b7280 !important;
+}
+
+/* Botón guardar */
+.btn-success-custom {
+    background: #2f2479;
+    border: none;
+    border-radius: 14px;
+    padding: 12px;
+    transition: .3s ease;
+}
+
+.btn-success-custom:hover {
+    background: #6840f3;
+    transform: translateY(-2px);
+}
+
+
+.finance-form {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all .4s ease;
+}
+
+.finance-form.active {
+    max-height: 500px;
+    opacity: 1;
+}

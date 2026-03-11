@@ -1,0 +1,49 @@
+TIDI_PROJECT/
+├── .env                    # Credenciales (DB_USER, GOOGLE_APPLICATION_CREDENTIALS, BELVO_SECRET)
+├── google-key.json         # Archivo de credenciales de Google Cloud (protegido)
+├── package.json            # Dependencias (express, mysql2/pg, @google-cloud/vision, @google-cloud/speech)
+├── server.js               # Punto de entrada (Configura Express y rutas)
+│
+├── db/                     # BASE DE DATOS SQL
+│   ├── schema.sql          # Tablas (users, transactions, categories, ai_logs, financial_scores)
+│   └── queries.js          # Exporta funciones SQL comunes (pool.query)
+│
+├── src/                    # BACKEND (Lógica del Servidor)
+│   ├── controllers/        # Controlan la entrada y salida de datos
+│   │   ├── authController.js       # Login y Registro (Funcionalidad 1 y 2)
+│   │   ├── financeController.js    # Saldo, Categorías y Score (3, 4, 9)
+│   │   ├── aiController.js         # Orquestador de consejos (8)
+│   │   └── mediaController.js      # Recibe audio/imagen y llama a las APIs de Google
+│   │
+│   ├── services/           # Integración con APIs externas
+│   │   ├── googleVision.js         # Conexión con Google Vision API (Funcionalidad 10)
+│   │   ├── googleSpeech.js         # Conexión con Google Speech-to-Text (Funcionalidad 5)
+│   │   ├── aiAdvisor.js            # Lógica de IA para consejos (Funcionalidad 6 y 8)
+│   │   └── belvoService.js         # Conexión con API Belvo (Funcionalidad 7)
+│   │
+│   ├── routes/             # Endpoints de la API
+│   │   ├── api.routes.js           # Rutas para el CRUD de finanzas
+│   │   └── external.routes.js      # Rutas para procesar Audio/OCR/Belvo
+│   │
+│   └── middlewares/
+│       ├── authMiddleware.js       # Verifica sesiones/JWT
+│       └── multerConfig.js         # Maneja la subida temporal de archivos .jpg y .wav
+│
+├── public/                 # FRONTEND (PWA - Archivos Estáticos)
+│   ├── index.html          # Estructura principal de la App
+│   ├── manifest.json       # Configuración PWA (Instalable en móvil)
+│   ├── sw.js               # Service Worker (Caché y acceso Offline)
+│   │
+│   ├── css/
+│   │   ├── main.css        # Estilos generales
+│   │   └── components.css  # Estilos de botones, modales y gráficas
+│   │
+│   ├── js/                 # Lógica del cliente
+│   │   ├── app.js          # Control de navegación y estado de la UI
+│   │   ├── recorder.js     # Captura de Audio del Micro (MediaRecorder API)
+│   │   ├── camera.js       # Captura de Fotos para Facturas
+│   │   ├── api.js          # Cliente Fetch para hablar con el backend
+│   │   └── pwa-handler.js  # Lógica de instalación y Service Worker
+│   │
+│   └── assets/             # Iconos de la app y recursos visuales
+└── uploads/                # Carpeta temporal para audios y fotos antes de enviarlos a Google

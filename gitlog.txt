@@ -1,0 +1,23 @@
+﻿commit cd8f357f5abed756825d49067199e61cb09d3f40
+Author: Dayron <dayronttorres@gmail.com>
+Date:   Thu Mar 5 16:22:33 2026 -0500
+
+    add images
+
+diff --git a/public/assets/img/celularapp.png b/public/assets/img/celularapp.png
+index 3c6b217..16c1117 100644
+Binary files a/public/assets/img/celularapp.png and b/public/assets/img/celularapp.png differ
+
+commit a7ce0e70f389ad64c9d4d6b6de2f1d889d5fb903
+Author: Dayron <dayronttorres@gmail.com>
+Date:   Thu Mar 5 16:20:48 2026 -0500
+
+    add images
+
+diff --git a/public/assets/img/celularapp.png b/public/assets/img/celularapp.png
+new file mode 100644
+index 0000000..3c6b217
+Binary files /dev/null and b/public/assets/img/celularapp.png differ
+diff --git a/public/assets/img/logo.png b/public/assets/img/logo.png
+index c1ae729..4db8424 100644
+Binary files a/public/assets/img/logo.png and b/public/assets/img/logo.png differ
