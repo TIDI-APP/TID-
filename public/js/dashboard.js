@@ -548,15 +548,12 @@ function closeMenu() {
 }
 
 // --------- Modals & Sidebar Actions --------- //
-const crediturboModalEl = document.getElementById('crediturboModal');
-const crediturboModal = crediturboModalEl ? new bootstrap.Modal(crediturboModalEl) : null;
-
 const addSidebarListeners = (prefix) => {
     const chatbotBtn = document.getElementById(prefix + 'Chatbot');
     const crediturboBtn = document.getElementById(prefix + 'Crediturbo');
 
     if (chatbotBtn) chatbotBtn.addEventListener('click', (e) => { e.preventDefault(); window.location.href = 'chatbot.html'; });
-    if (crediturboBtn) crediturboBtn.addEventListener('click', (e) => { e.preventDefault(); closeMenu(); if (crediturboModal) crediturboModal.show(); });
+    if (crediturboBtn) crediturboBtn.addEventListener('click', (e) => { e.preventDefault(); window.location.href = 'crediturbo.html'; });
 };
 
 addSidebarListeners('desktop');

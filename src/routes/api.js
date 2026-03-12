@@ -167,6 +167,41 @@ router.patch('/api/profile', authMiddleware, async (req, res) => {
     }
 });
 
+// Calcular crédito basado en ingresos del usuario
+router.get('/api/calcular-credito', authMiddleware, async (req, res) => {
+    try {
+        const transactions = await db.getTransactionsByUser(req.user.id);
+
+        const ingresos = transactions
+            .map(t => t.data)
+            .filter(d => d && (d.tipo || '').toLowerCase().includes('ingreso') && d.valor > 0)
+            .map(d => parseFloat(d.valor));
+
+        if (ingresos.length === 0) {
+            return res.status(422).json({ error: 'No tienes ingresos registrados. Agrega al menos uno para calcular tu crédito.' });
+        }
+
+        const promedioIngresos = ingresos.reduce((a, b) => a + b, 0) / ingresos.length;
+        const disponible = promedioIngresos / 2;
+        const factorPrestamo = disponible / 24100;
+        const cupoAprobado = factorPrestamo * 1000000;
+
+        const tasaInteres = 0.012;
+        const meses = 168;
+        const cuotaMensual = cupoAprobado * (tasaInteres / (1 - Math.pow(1 + tasaInteres, -meses)));
+
+        res.json({
+            status: 'success',
+            promedio_ingresos: promedioIngresos,
+            cupo_aprobado: cupoAprobado,
+            cuota_mensual: cuotaMensual
+        });
+    } catch (error) {
+        console.error('Error calcular-credito:', error);
+        res.status(500).json({ error: 'Error al calcular el crédito.' });
+    }
+});
+
 router.post('/api/chat', async (req, res) => {
     const { message, history = [] } = req.body;
     if (!message) return res.status(400).json({ error: 'Mensaje requerido' });
