@@ -62,7 +62,9 @@ router.post('/api/transcribe', authMiddleware, upload.single('audio'), async (re
 
     } catch (error) {
         console.error('Error in /api/transcribe:', error);
+        // Intentar borrar tanto la ruta original como la renombrada (.webm)
         try { if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path); } catch (_) {}
+        try { if (req.file && fs.existsSync(req.file.path + '.webm')) fs.unlinkSync(req.file.path + '.webm'); } catch (_) {}
         res.status(500).json({ error: 'Transcription failed.', details: error.message });
     }
 });
@@ -173,13 +175,13 @@ router.get('/api/test-prometeo', async (req, res) => {
     let conexionDB;
     try {
         conexionDB = await mysql.createConnection({
-            host: '157.180.40.190',
-            user: 'root',
-            password: 'scORHWprCvp26Gz1zwPQgSsokHyPC2',
-            database: 'tidi_database'
+            host: process.env.PROMETEO_DB_HOST,
+            user: process.env.PROMETEO_DB_USER,
+            password: process.env.PROMETEO_DB_PASSWORD,
+            database: process.env.PROMETEO_DB_NAME
         });
 
-        const KEY = "twQ0ZeEfCNgzpPW2zK7n9jQG2dBnl2LtnBDDJAx0ZVu6aBgyyp2Rm5Hu24uZIxzH";
+        const KEY = process.env.PROMETEO_API_KEY;
         let params = new URLSearchParams();
         params.append('provider', 'test');
         params.append('username', '12345');
@@ -260,10 +262,10 @@ router.get('/api/calcular-credito', async (req, res) => {
     let conexionDB;
     try {
         conexionDB = await mysql.createConnection({
-            host: '157.180.40.190',
-            user: 'root',
-            password: 'scORHWprCvp26Gz1zwPQgSsokHyPC2',
-            database: 'tidi_database'
+            host: process.env.PROMETEO_DB_HOST,
+            user: process.env.PROMETEO_DB_USER,
+            password: process.env.PROMETEO_DB_PASSWORD,
+            database: process.env.PROMETEO_DB_NAME
         });
 
         const sqlCalculo = `
