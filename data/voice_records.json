@@ -150,5 +150,71 @@
       "valor": 50000,
       "categoria": "Comida"
     }
+  },
+  {
+    "id": "1773262786513",
+    "timestamp": "2026-03-11T20:59:46.513Z",
+    "text": " Hola, muy buenas tardes",
+    "analysis": {
+      "tipo": null,
+      "titulo": "Hola, muy buenas tardes",
+      "valor": null,
+      "categoria": null
+    }
+  },
+  {
+    "id": "1773262833325",
+    "timestamp": "2026-03-11T21:00:33.325Z",
+    "text": " me acabo de gastar 30 mil en la barbería",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Barbería",
+      "valor": 30000,
+      "categoria": "Servicios personales"
+    }
+  },
+  {
+    "id": "1773262854188",
+    "timestamp": "2026-03-11T21:00:54.188Z",
+    "text": " Me acaba de gastar 120 mil en una cuota de Parque de Ríos.",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Cuota Parque de Ríos",
+      "valor": 120000,
+      "categoria": "Servicios"
+    }
+  },
+  {
+    "id": "1773263683351",
+    "timestamp": "2026-03-11T21:14:43.351Z",
+    "text": " I just spent $20 on the barber shop.",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Barber shop",
+      "valor": 20,
+      "categoria": null
+    }
+  },
+  {
+    "id": "1773267940644",
+    "timestamp": "2026-03-11T22:25:40.644Z",
+    "text": " me gaste 30 mil en una motilada",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Motilada",
+      "valor": 30000,
+      "categoria": null
+    }
+  },
+  {
+    "id": "1773268052212",
+    "timestamp": "2026-03-11T22:27:32.212Z",
+    "text": " Me acabo de gastar un millón en un portátil.",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Portátil",
+      "valor": 1000000,
+      "categoria": null
+    }
   }
 ]
