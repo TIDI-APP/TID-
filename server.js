@@ -4,6 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 const passport = require('./src/config/passport');
 
 const authRoutes = require('./src/routes/auth');
@@ -16,10 +17,14 @@ app.use(express.static(__dirname));
 app.use(express.json());
 app.use(cors());
 
+const sessionsDir = path.join(__dirname, 'sessions');
+if (!fs.existsSync(sessionsDir)) fs.mkdirSync(sessionsDir);
+
 app.use(session({
+    store: new FileStore({ path: sessionsDir, ttl: 86400, reapInterval: 3600 }),
     secret: process.env.SESSION_SECRET || 'secret',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
 }));
 
 app.use(passport.initialize());
