@@ -436,20 +436,29 @@ setupMicBtn(document.getElementById("iaButton"));
 setupMicBtn(document.getElementById("iaButtonDesktop"));
 
 // 📷 Escanear factura
-const invoiceFileInput = document.getElementById('invoiceFileInput');
+const scanModal = new bootstrap.Modal(document.getElementById('scanModal'));
+const invoiceCameraInput = document.getElementById('invoiceCameraInput');
+const invoiceGalleryInput = document.getElementById('invoiceGalleryInput');
 
 const setupScanBtn = (btn) => {
     if (!btn) return;
-    btn.addEventListener('click', () => invoiceFileInput.click());
+    btn.addEventListener('click', () => scanModal.show());
 };
 
 setupScanBtn(document.getElementById('scanButton'));
 setupScanBtn(document.getElementById('scanButtonDesktop'));
 
-invoiceFileInput.addEventListener('change', async () => {
-    const file = invoiceFileInput.files[0];
+document.getElementById('btnUseCamera').addEventListener('click', () => {
+    scanModal.hide();
+    invoiceCameraInput.click();
+});
+document.getElementById('btnUploadFile').addEventListener('click', () => {
+    scanModal.hide();
+    invoiceGalleryInput.click();
+});
+
+const handleInvoiceFile = async (file) => {
     if (!file) return;
-    invoiceFileInput.value = '';
 
     showVoiceSheet();
     if (voiceTextDisplay) voiceTextDisplay.innerText = 'Analizando factura con IA...';
@@ -493,6 +502,15 @@ invoiceFileInput.addEventListener('change', async () => {
     }
 
     setTimeout(() => hideVoiceSheet(), 3500);
+};
+
+invoiceCameraInput.addEventListener('change', () => {
+    handleInvoiceFile(invoiceCameraInput.files[0]);
+    invoiceCameraInput.value = '';
+});
+invoiceGalleryInput.addEventListener('change', () => {
+    handleInvoiceFile(invoiceGalleryInput.files[0]);
+    invoiceGalleryInput.value = '';
 });
 
 // 🌊 Ripple effect

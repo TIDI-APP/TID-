@@ -175,8 +175,32 @@
 
     </div>
 
-    <!-- Input oculto para imagen -->
-    <input type="file" id="invoiceFileInput" accept="image/*" style="display:none;">
+    <!-- Inputs ocultos para imagen -->
+    <input type="file" id="invoiceCameraInput" accept="image/*" capture="environment" style="display:none;">
+    <input type="file" id="invoiceGalleryInput" accept="image/*,application/pdf" style="display:none;">
+
+    <!-- MODAL ESCANEAR FACTURA -->
+    <div class="modal fade" id="scanModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content custom-modal border-0 shadow-lg p-3">
+          <div class="modal-header border-0 pb-0 justify-content-end">
+            <button type="button" class="btn-close btn-close-white opacity-50" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body pt-1 text-center">
+            <i class="bi bi-receipt fs-1 mb-3 d-block" style="color: var(--primary-light);"></i>
+            <h6 class="fw-bold mb-4">Escanear Factura</h6>
+            <div class="d-grid gap-3">
+              <button id="btnUseCamera" class="btn btn-gradient rounded-pill py-2 text-white fw-semibold">
+                <i class="bi bi-camera-fill me-2"></i>Tomar foto
+              </button>
+              <button id="btnUploadFile" class="btn rounded-pill py-2 fw-semibold" style="background: rgba(255,255,255,0.07); color: var(--text); border: 1px solid var(--border);">
+                <i class="bi bi-folder2-open me-2"></i>Subir archivo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- MODAL FINANZAS PRO NEW-->
     <div class="modal fade" id="financeModal" tabindex="-1">
