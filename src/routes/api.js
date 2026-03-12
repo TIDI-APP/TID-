@@ -167,38 +167,137 @@ router.patch('/api/profile', authMiddleware, async (req, res) => {
     }
 });
 
-// Calcular crédito basado en ingresos del usuario
-router.get('/api/calcular-credito', authMiddleware, async (req, res) => {
+// Prometeo — conexión y guardado de cuenta + movimientos en BD
+router.get('/api/test-prometeo', async (req, res) => {
+    const mysql = require('mysql2/promise');
+    let conexionDB;
     try {
-        const transactions = await db.getTransactionsByUser(req.user.id);
+        conexionDB = await mysql.createConnection({
+            host: '157.180.40.190',
+            user: 'root',
+            password: 'scORHWprCvp26Gz1zwPQgSsokHyPC2',
+            database: 'tidi_database'
+        });
 
-        const ingresos = transactions
-            .map(t => t.data)
-            .filter(d => d && (d.tipo || '').toLowerCase().includes('ingreso') && d.valor > 0)
-            .map(d => parseFloat(d.valor));
+        const KEY = "twQ0ZeEfCNgzpPW2zK7n9jQG2dBnl2LtnBDDJAx0ZVu6aBgyyp2Rm5Hu24uZIxzH";
+        let params = new URLSearchParams();
+        params.append('provider', 'test');
+        params.append('username', '12345');
+        params.append('password', 'gfdsa');
 
-        if (ingresos.length === 0) {
-            return res.status(422).json({ error: 'No tienes ingresos registrados. Agrega al menos uno para calcular tu crédito.' });
+        const respuesta = await fetch('https://banking.sandbox.prometeoapi.com/login/', {
+            method: 'post',
+            headers: {
+                'X-API-Key': KEY,
+                'accept': 'application/json',
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+            body: params
+        });
+
+        if (!respuesta.ok) throw new Error("Fallo en login con Prometeo");
+        const data = await respuesta.json();
+
+        const urlFinal = `https://banking.sandbox.prometeoapi.com/account/?key=${data.key}`;
+        const getData = await fetch(urlFinal, {
+            method: 'get',
+            headers: { 'accept': 'application/json', 'X-API-Key': KEY }
+        });
+
+        if (!getData.ok) throw new Error("Fallo al obtener cuentas");
+        const accountsData = await getData.json();
+
+        const cuentaSeleccionada = accountsData.accounts[1];
+
+        const sqlCuenta = 'INSERT IGNORE INTO accounts (prometeo_id, name, number, currency, balance) VALUES (?, ?, ?, ?, ?)';
+        await conexionDB.query(sqlCuenta, [
+            cuentaSeleccionada.id,
+            cuentaSeleccionada.name,
+            cuentaSeleccionada.number,
+            cuentaSeleccionada.currency,
+            cuentaSeleccionada.balance
+        ]);
+
+        const urlMovimientos = `https://banking.sandbox.prometeoapi.com/account/${cuentaSeleccionada.number}/movement/?currency=${cuentaSeleccionada.currency}&date_start=01/01/2023&date_end=31/12/2025&key=${data.key}`;
+        const getMovements = await fetch(urlMovimientos, {
+            method: 'get',
+            headers: { 'accept': 'application/json', 'X-API-Key': KEY }
+        });
+
+        if (!getMovements.ok) {
+            const errorText = await getMovements.text();
+            throw new Error(`Prometeo dice: Error ${getMovements.status} - ${errorText}`);
+        }
+        const dataMovements = await getMovements.json();
+        const movimientos = dataMovements.movements || [];
+
+        const valoresParaInsertar = movimientos.map(mov => {
+            const partes = mov.date.split('/');
+            const fechaMySQL = `${partes[2]}-${partes[1]}-${partes[0]}`;
+            const debitSQL = mov.debit === '' ? 0 : parseFloat(mov.debit);
+            const creditSQL = mov.credit === '' ? 0 : parseFloat(mov.credit);
+            return [mov.id, cuentaSeleccionada.id, mov.reference, fechaMySQL, mov.detail, debitSQL, creditSQL];
+        });
+
+        if (valoresParaInsertar.length > 0) {
+            const sqlMovimientos = 'INSERT IGNORE INTO movements (prometeo_id, account_id, reference, date, detail, debit, credit) VALUES ?';
+            await conexionDB.query(sqlMovimientos, [valoresParaInsertar]);
         }
 
-        const promedioIngresos = ingresos.reduce((a, b) => a + b, 0) / ingresos.length;
-        const disponible = promedioIngresos / 2;
+        await conexionDB.end();
+        res.json({ status: 'success', message: 'Cuentas y movimientos guardados exitosamente' });
+
+    } catch (error) {
+        if (conexionDB) await conexionDB.end();
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Prometeo — calcular crédito desde movimientos guardados
+router.get('/api/calcular-credito', async (req, res) => {
+    const mysql = require('mysql2/promise');
+    let conexionDB;
+    try {
+        conexionDB = await mysql.createConnection({
+            host: '157.180.40.190',
+            user: 'root',
+            password: 'scORHWprCvp26Gz1zwPQgSsokHyPC2',
+            database: 'tidi_database'
+        });
+
+        const sqlCalculo = `
+            SELECT AVG(credit) AS promedio_ingresos
+            FROM movements
+            WHERE detail LIKE '%sueldo%';
+        `;
+        const [resultados] = await conexionDB.query(sqlCalculo);
+        const promedioSueldoUSD = resultados[0].promedio_ingresos || 0;
+
+        const valorDolar = 3500;
+        const promedioPesos = promedioSueldoUSD * valorDolar;
+        const disponible = promedioPesos / 2;
         const factorPrestamo = disponible / 24100;
-        const cupoAprobado = factorPrestamo * 1000000;
+        const prestamoAprobado = factorPrestamo * 1000000;
 
         const tasaInteres = 0.012;
         const meses = 168;
-        const cuotaMensual = cupoAprobado * (tasaInteres / (1 - Math.pow(1 + tasaInteres, -meses)));
+        const cuotaMensual = prestamoAprobado * (tasaInteres / (1 - Math.pow(1 + tasaInteres, -meses)));
+
+        await conexionDB.end();
 
         res.json({
             status: 'success',
-            promedio_ingresos: promedioIngresos,
-            cupo_aprobado: cupoAprobado,
+            promedio_ingresos_usd: promedioSueldoUSD,
+            promedio_ingresos_cop: promedioPesos,
+            cupo_aprobado: prestamoAprobado,
             cuota_mensual: cuotaMensual
         });
+
     } catch (error) {
-        console.error('Error calcular-credito:', error);
-        res.status(500).json({ error: 'Error al calcular el crédito.' });
+        if (conexionDB) await conexionDB.end();
+        console.error(error);
+        res.status(500).json({ error: error.message });
     }
 });
 

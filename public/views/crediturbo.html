@@ -58,46 +58,40 @@
     </div>
 
     <div class="text-center mb-5 fade-in show">
-      <i class="bi bi-lightning-charge text-warning" style="font-size: 3rem;"></i>
       <h2 class="mt-3 fw-bold">Crediturbo</h2>
-      <p class="text-white-50">Analizamos tus movimientos para ofrecerte un crédito personalizado.</p>
+      <p class="text-white-50">Analizamos tus movimientos bancarios para ofrecerte un credito personalizado.</p>
     </div>
 
-    <!-- Paso 1: conectar -->
     <div class="row justify-content-center fade-in show" id="stepConnect">
       <div class="col-md-8 col-lg-6">
         <div class="card-custom text-center p-5">
           <i class="bi bi-bank2 mb-4 d-block" style="font-size: 3rem; color: var(--primary);"></i>
-          <h4 class="mb-3">Calcula tu crédito</h4>
-          <p class="text-white-50 small mb-4">Basado en tus ingresos registrados en Tidi, calculamos tu capacidad de endeudamiento real.</p>
+          <h4 class="mb-3">Conecta tu banco</h4>
+          <p class="text-white-50 small mb-4">Estás en un entorno de pruebas seguro (Sandbox). Simula la conexión de tu cuenta para calcular tu capacidad de endeudamiento real.</p>
           <button class="btn btn-gradient w-100 rounded-pill py-3 fw-bold shadow-sm fs-5" id="btnConnectBank">
-            Calcular mi crédito
+             Conectar cuenta de banco
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Paso 2: resultado -->
     <div class="row justify-content-center fade-in show d-none" id="stepResult">
       <div class="col-md-8 col-lg-6">
         <div class="balance text-center p-5">
-          <h6 class="text-white-50 text-uppercase mb-2">Cupo Aprobado</h6>
+          <h6 class="text-white-50 text-uppercase tracking-wide mb-2">Cupo Aprobado</h6>
           <h1 class="display-3 fw-bold mb-4" id="cupoDisplay">$0</h1>
 
           <div class="d-flex justify-content-around mb-5 p-3" style="background: rgba(0,0,0,0.2); border-radius: 15px; flex-direction: column;">
-            <div class="mb-3">
-              <small class="text-white-50 d-block mb-1">Promedio de Ingresos</small>
-              <strong class="fs-5" id="ingresosDisplay">$0</strong>
-            </div>
-            <div class="pt-3 border-top border-secondary" id="cuotaContainer"></div>
+              <div class="mb-3">
+                  <small class="text-white-50 d-block mb-1">Promedio de Ingresos</small>
+                  <strong class="fs-5" id="ingresosDisplay">$0</strong>
+              </div>
+              <div class="pt-3 border-top border-secondary" id="cuotaContainer">
+              </div>
           </div>
 
-          <button class="btn w-100 rounded-pill py-3 fw-bold shadow-sm fs-5 text-white" style="background: #25D366; border: none;" id="btnWhatsApp">
+          <button class="btn w-100 rounded-pill py-3 fw-bold shadow-sm fs-5 text-white" style="background: #25D366; border: none; transition: 0.3s;" id="btnWhatsApp">
             <i class="bi bi-whatsapp me-2"></i> Me interesa (Hablar con asesor)
-          </button>
-
-          <button class="btn btn-outline-light w-100 rounded-pill py-2 mt-3" id="btnRecalculate">
-            Recalcular
           </button>
         </div>
       </div>
@@ -120,6 +114,31 @@
       </div>
       <div class="nav-item" style="cursor: pointer;" onclick="window.location.href='config.html'">
         <i class="bi bi-gear"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL SELECCIÓN DE BANCO -->
+  <div class="modal fade" id="bankModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content custom-modal text-center p-4">
+        <div class="modal-header border-0 pb-0 justify-content-end">
+          <button type="button" class="btn-close btn-close-white opacity-50" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body pt-0">
+          <i class="bi bi-bank2 mb-3 d-block" style="font-size: 3rem; color: var(--primary);"></i>
+          <h5 class="mb-4">¿Qué banco usas?</h5>
+
+          <div class="d-flex flex-column gap-3 mb-4">
+            <button class="btn btn-outline-light rounded-pill py-2 bank-option" data-bank="Bancolombia" style="border-color: rgba(255,255,255,0.2);">Bancolombia</button>
+            <button class="btn btn-outline-light rounded-pill py-2 bank-option" data-bank="Banco de Bogota" style="border-color: rgba(255,255,255,0.2);">Nequi</button>
+            <button class="btn btn-outline-light rounded-pill py-2 bank-option" data-bank="Banco Popular" style="border-color: rgba(255,255,255,0.2);">Nu Bank</button>
+          </div>
+
+          <button class="btn btn-gradient w-100 rounded-pill py-2 shadow-sm" id="btnConfirmBank" disabled>
+            Conectar Cuenta
+          </button>
+        </div>
       </div>
     </div>
   </div>
