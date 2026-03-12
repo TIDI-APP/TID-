@@ -1,37 +1,47 @@
-const { Pool } = require('pg');
+const { createClient } = require('@supabase/supabase-js');
 
-// Crea el POOL de conexiones usando las variables de entorno
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL || 'postgres://user:password@localhost:5432/tidi' // Añade esto en tu .env real
-});
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_KEY
+);
 
 /**
  * Busca a un usuario en la tabla por su Email
  */
 const getUserByEmail = async (email) => {
-    const res = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    return res.rows[0];
+    const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .single();
+    if (error && error.code !== 'PGRST116') throw error;
+    return data;
 };
 
 /**
  * Registra un usuario de forma Manual desde el Formulario
  */
 const createUserManual = async (email, passwordHash, firstName, lastName) => {
-    const query = `
-        INSERT INTO users (email, password_hash, first_name, last_name)
-        VALUES ($1, $2, $3, $4)
-        RETURNING id, email, first_name, last_name;
-    `;
-    const res = await pool.query(query, [email, passwordHash, firstName, lastName]);
-    return res.rows[0];
+    const { data, error } = await supabase
+        .from('users')
+        .insert({ email, password_hash: passwordHash, first_name: firstName, last_name: lastName })
+        .select('id, email, first_name, last_name')
+        .single();
+    if (error) throw error;
+    return data;
 };
 
 /**
  * Busca a un usuario por Google ID (Para inicio de sesión con OAuth)
  */
 const getUserByGoogleId = async (googleId) => {
-    const res = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
-    return res.rows[0];
+    const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('google_id', googleId)
+        .single();
+    if (error && error.code !== 'PGRST116') throw error;
+    return data;
 };
 
 /**
@@ -39,32 +49,93 @@ const getUserByGoogleId = async (googleId) => {
  * Si el usuario ya existe con ese correo pero no tiene el google_id conectado, lo actualiza.
  * Si no existe, lo inserta de cero.
  */
-const createOrUpdateGoogleUser = async (email, googleId, firstName, lastName) => {
-    // Verificar si el correo ya existe
+const createOrUpdateGoogleUser = async (email, googleId, firstName, lastName, avatarUrl) => {
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
-        // Actualiza agregando el Google ID
-        const updateQuery = `
-            UPDATE users SET google_id = $1 WHERE email = $2 RETURNING id, email, first_name, last_name, google_id;
-        `;
-        const res = await pool.query(updateQuery, [googleId, email]);
-        return res.rows[0];
+        const { data, error } = await supabase
+            .from('users')
+            .update({ google_id: googleId, avatar_url: avatarUrl })
+            .eq('email', email)
+            .select('id, email, first_name, last_name, google_id, avatar_url')
+            .single();
+        if (error) throw error;
+        return data;
     } else {
-        // Crearlo desde cero si no existe (al pasarlo como Google ya no se envía contraseña)
-        const insertQuery = `
-            INSERT INTO users (email, google_id, first_name, last_name)
-            VALUES ($1, $2, $3, $4)
-            RETURNING id, email, first_name, last_name, google_id;
-        `;
-        const res = await pool.query(insertQuery, [email, googleId, firstName, lastName]);
-        return res.rows[0];
+        const { data, error } = await supabase
+            .from('users')
+            .insert({ email, google_id: googleId, first_name: firstName, last_name: lastName, avatar_url: avatarUrl })
+            .select('id, email, first_name, last_name, google_id, avatar_url')
+            .single();
+        if (error) throw error;
+        return data;
     }
+};
+
+const updateUserProfile = async (userId, firstName, lastName) => {
+    const { data, error } = await supabase
+        .from('users')
+        .update({ first_name: firstName, last_name: lastName })
+        .eq('id', userId)
+        .select('id, email, first_name, last_name, google_id, avatar_url')
+        .single();
+    if (error) throw error;
+    return data;
+};
+
+const getUserById = async (userId) => {
+    const { data, error } = await supabase
+        .from('users')
+        .select('id, email, first_name, last_name, google_id, avatar_url')
+        .eq('id', userId)
+        .single();
+    if (error && error.code !== 'PGRST116') throw error;
+    return data;
+};
+
+/**
+ * Guarda una transacción con data JSONB vinculada al usuario
+ */
+const createTransaction = async (userId, data) => {
+    const { data: row, error } = await supabase
+        .from('transactions')
+        .insert({ user_id: userId, data })
+        .select('id, user_id, data, created_at')
+        .single();
+    if (error) throw error;
+    return row;
+};
+
+/**
+ * Obtiene todas las transacciones de un usuario ordenadas por fecha
+ */
+const getTransactionsByUser = async (userId) => {
+    const { data, error } = await supabase
+        .from('transactions')
+        .select('id, data, created_at')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+    if (error) throw error;
+    return data;
+};
+
+const deleteTransaction = async (txId, userId) => {
+    const { error } = await supabase
+        .from('transactions')
+        .delete()
+        .eq('id', txId)
+        .eq('user_id', userId);
+    if (error) throw error;
 };
 
 module.exports = {
     getUserByEmail,
+    getUserById,
     createUserManual,
     getUserByGoogleId,
-    createOrUpdateGoogleUser
+    createOrUpdateGoogleUser,
+    updateUserProfile,
+    createTransaction,
+    getTransactionsByUser,
+    deleteTransaction
 };

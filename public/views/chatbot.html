@@ -9,92 +9,160 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="/public/css/dashboard.css">
   <style>
-    .chat-container {
+    .chat-wrapper {
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 120px);
+      height: calc(100dvh - 80px);
+      max-height: calc(100dvh - 80px);
     }
+
     .chat-messages {
-      flex-grow: 1;
+      flex: 1 1 0;
       overflow-y: auto;
-      padding: 20px;
+      padding: 16px 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
     }
+
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
     .chat-bubble {
-      max-width: 80%;
-      padding: 15px 20px;
-      border-radius: 20px;
-      margin-bottom: 15px;
-      line-height: 1.5;
+      max-width: 78%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      line-height: 1.55;
+      font-size: 0.92rem;
+      word-break: break-word;
+      animation: bubbleIn 0.2s ease;
     }
+
+    @keyframes bubbleIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .chat-bubble.bot {
       background: var(--card);
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.06);
       align-self: flex-start;
-      border-bottom-left-radius: 5px;
+      border-bottom-left-radius: 4px;
     }
+
     .chat-bubble.user {
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       color: white;
       align-self: flex-end;
-      border-bottom-right-radius: 5px;
-      margin-left: auto;
+      border-bottom-right-radius: 4px;
     }
+
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 14px 18px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      align-self: flex-start;
+      width: fit-content;
+    }
+
+    .typing-indicator span {
+      width: 7px;
+      height: 7px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      animation: typing 1.2s infinite ease-in-out;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+
     .chat-input-container {
       background: var(--card);
-      padding: 15px;
+      padding: 10px 12px;
       border-radius: 20px;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
-      border: 1px solid rgba(255,255,255,0.05);
-      margin-top: 20px;
+      border: 1px solid rgba(255,255,255,0.07);
+      margin-top: 10px;
+      flex-shrink: 0;
     }
+
     .chat-input {
       background: transparent;
       border: none;
       color: white;
       flex-grow: 1;
-      padding: 10px;
+      padding: 8px 6px;
+      font-size: 0.92rem;
+      resize: none;
+      max-height: 100px;
+      line-height: 1.4;
     }
-    .chat-input:focus {
-      outline: none;
-    }
+
+    .chat-input::placeholder { color: rgba(255,255,255,0.3); }
+    .chat-input:focus { outline: none; }
+
     .btn-send {
       background: var(--primary);
       border: none;
       color: white;
-      width: 45px;
-      height: 45px;
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: .3s;
+      transition: .2s;
+      cursor: pointer;
     }
-    .btn-send:hover {
-      background: var(--primary-light);
-      transform: scale(1.1);
+
+    .btn-send:hover { opacity: 0.85; transform: scale(1.05); }
+    .btn-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .bot-avatar {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+      align-self: flex-end;
+      margin-right: 6px;
     }
+
+    .msg-row { display: flex; align-items: flex-end; }
+    .msg-row.user { justify-content: flex-end; }
   </style>
 </head>
 
 <body>
 
-  <!-- Overlay -->
   <div class="menu-overlay" id="menuOverlay"></div>
 
   <!-- SIDEBAR DESKTOP -->
   <div class="desktop-sidebar d-none d-lg-block">
-    <div class="sidebar-header">
-      <h5>Tidi</h5>
-    </div>
+    <div class="sidebar-header"><h5>Tidi</h5></div>
     <div class="sidebar-links">
       <a href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a>
       <a href="#" class="text-primary"><i class="bi bi-robot"></i> Chatbot</a>
-      <a href="baul.html"><i class="bi bi-piggy-bank"></i> Baul</a>
-      <a href="dashboard.html"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
       <a href="config.html"><i class="bi bi-gear"></i> Configuración</a>
-      <a href="login.html" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+      <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
     </div>
   </div>
 
@@ -107,41 +175,32 @@
     <div class="sidebar-links">
       <a href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a>
       <a href="#" class="text-primary"><i class="bi bi-robot"></i> Chatbot</a>
-      <a href="baul.html"><i class="bi bi-piggy-bank"></i> Baul</a>
-      <a href="dashboard.html"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
       <a href="config.html"><i class="bi bi-gear"></i> Configuración</a>
-      <a href="login.html" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+      <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
     </div>
   </div>
 
   <!-- CONTENIDO PRINCIPAL -->
-  <div class="app-content">
+  <div class="app-content" style="display:flex; flex-direction:column; height:100dvh; padding-bottom:0;">
 
     <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div class="d-flex align-items-center gap-3">
-        <i class="bi bi-list d-lg-none" id="menuToggle" style="font-size:26px; cursor:pointer;"></i>
-        <h5 class="mb-0">Tidi AI Chatbot</h5>
+    <div class="d-flex align-items-center gap-3 mb-3" style="flex-shrink:0;">
+      <i class="bi bi-list d-lg-none" id="menuToggle" style="font-size:26px; cursor:pointer;"></i>
+      <div>
+        <h5 class="mb-0">Tidi AI</h5>
+        <small class="opacity-50" style="font-size:0.75rem;">Asistente financiero</small>
       </div>
     </div>
 
-    <!-- Chat Area -->
-    <div class="chat-container fade-in show">
-      
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-bubble bot">
-          ¡Hola, Jhonatan! Soy Tidi, tu asistente financiero. ¿En qué puedo ayudarte hoy? Puedes preguntarme sobre tus gastos, pedirme consejos de ahorro o consultar tu balance.
-        </div>
-      </div>
-
+    <!-- Chat -->
+    <div class="chat-wrapper">
+      <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-input-container">
-        <i class="bi bi-plus-circle text-muted fs-4 ms-2" style="cursor: pointer;"></i>
-        <input type="text" class="chat-input" id="messageInput" placeholder="Escribe un mensaje...">
+        <textarea class="chat-input" id="messageInput" placeholder="Escribe un mensaje..." rows="1"></textarea>
         <button class="btn-send" id="btnSend">
-          <i class="bi bi-send-fill"></i>
+          <i class="bi bi-send-fill" style="font-size:15px;"></i>
         </button>
       </div>
-
     </div>
 
   </div>
@@ -149,79 +208,128 @@
   <!-- Bottom Bar (Mobile) -->
   <div class="bottom-container d-lg-none">
     <div class="bottom-bar">
-      <div class="nav-item">
-        <a href="chatbot.html" class="text-primary"><i class="bi bi-robot"></i></a>
-      </div>
-      <div class="nav-item">
-        <a href="dashboard.html" class="text-white"><i class="bi bi-house"></i></a>
-      </div>
+      <div class="nav-item"><a href="chatbot.html" class="text-primary"><i class="bi bi-robot"></i></a></div>
+      <div class="nav-item"><a href="dashboard.html" class="text-white"><i class="bi bi-house"></i></a></div>
       <div class="spacer"></div>
-      <div class="nav-item">
-        <a href="baul.html" class="text-white"><i class="bi bi-cash-stack"></i></a>
-      </div>
-      <div class="nav-item">
-        <a href="config.html" class="text-white"><i class="bi bi-person"></i></a>
-      </div>
+      <div class="nav-item"><a href="transactions.html" class="text-white"><i class="bi bi-list-ul"></i></a></div>
+      <div class="nav-item"><a href="config.html" class="text-white"><i class="bi bi-person"></i></a></div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  
+  <script src="/public/js/auth.js"></script>
   <script>
-    // Sidebar logic
+    requireAuth();
+
+    const user = getUser();
+    const userName = user?.first_name || user?.email?.split('@')[0] || 'Usuario';
+
+    const chatMessages = document.getElementById('chatMessages');
+    const messageInput = document.getElementById('messageInput');
+    const btnSend = document.getElementById('btnSend');
+
+    let history = [];
+
+    function addBubble(text, role) {
+      const row = document.createElement('div');
+      row.className = `msg-row ${role}`;
+
+      if (role === 'bot') {
+        const avatar = document.createElement('div');
+        avatar.className = 'bot-avatar';
+        avatar.innerHTML = '<i class="bi bi-robot"></i>';
+        row.appendChild(avatar);
+      }
+
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble ${role}`;
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      chatMessages.appendChild(row);
+      scrollToBottom();
+      return bubble;
+    }
+
+    function showTyping() {
+      const row = document.createElement('div');
+      row.className = 'msg-row bot';
+      row.id = 'typingRow';
+      const avatar = document.createElement('div');
+      avatar.className = 'bot-avatar';
+      avatar.innerHTML = '<i class="bi bi-robot"></i>';
+      const indicator = document.createElement('div');
+      indicator.className = 'typing-indicator';
+      indicator.innerHTML = '<span></span><span></span><span></span>';
+      row.appendChild(avatar);
+      row.appendChild(indicator);
+      chatMessages.appendChild(row);
+      scrollToBottom();
+    }
+
+    function hideTyping() {
+      const row = document.getElementById('typingRow');
+      if (row) row.remove();
+    }
+
+    function scrollToBottom() {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = messageInput.value.trim();
+      if (!text || btnSend.disabled) return;
+
+      addBubble(text, 'user');
+      messageInput.value = '';
+      messageInput.style.height = 'auto';
+      btnSend.disabled = true;
+      showTyping();
+
+      history.push({ role: 'user', content: text });
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, history: history.slice(-10) })
+        });
+        const data = await res.json();
+        hideTyping();
+        const reply = data.reply || 'No pude responder en este momento.';
+        addBubble(reply, 'bot');
+        history.push({ role: 'assistant', content: reply });
+      } catch {
+        hideTyping();
+        addBubble('Error de conexión. Intenta de nuevo.', 'bot');
+      }
+
+      btnSend.disabled = false;
+      messageInput.focus();
+    }
+
+    btnSend.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+
+    messageInput.addEventListener('input', () => {
+      messageInput.style.height = 'auto';
+      messageInput.style.height = Math.min(messageInput.scrollHeight, 100) + 'px';
+    });
+
+    // Sidebar
     const sidebar = document.getElementById("mobileSidebar");
     const overlay = document.getElementById("menuOverlay");
     const closeSidebar = document.getElementById("closeSidebar");
     const menuToggle = document.getElementById("menuToggle");
+    const closeMenu = () => { sidebar.classList.remove("active"); overlay.classList.remove("active"); };
+    if (menuToggle) menuToggle.addEventListener("click", () => { sidebar.classList.add("active"); overlay.classList.add("active"); });
+    if (closeSidebar) closeSidebar.addEventListener("click", closeMenu);
+    if (overlay) overlay.addEventListener("click", closeMenu);
 
-    if(menuToggle) {
-        menuToggle.addEventListener("click", () => {
-            sidebar.classList.add("active");
-            overlay.classList.add("active");
-        });
-    }
-
-    if(closeSidebar && overlay) {
-        const closeMenu = () => {
-            sidebar.classList.remove("active");
-            overlay.classList.remove("active");
-        };
-        closeSidebar.addEventListener("click", closeMenu);
-        overlay.addEventListener("click", closeMenu);
-    }
-
-    // Simple Chat Logic
-    const btnSend = document.getElementById('btnSend');
-    const messageInput = document.getElementById('messageInput');
-    const chatMessages = document.getElementById('chatMessages');
-
-    const sendMessage = () => {
-        const text = messageInput.value.trim();
-        if(text) {
-            // User message
-            const userMsg = document.createElement('div');
-            userMsg.className = 'chat-bubble user fade-in show';
-            userMsg.textContent = text;
-            chatMessages.appendChild(userMsg);
-            
-            messageInput.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Simulate Bot Response
-            setTimeout(() => {
-                const botMsg = document.createElement('div');
-                botMsg.className = 'chat-bubble bot fade-in show';
-                botMsg.textContent = "Eso suena muy interesante. Como IA, sigo aprendiendo para poder darte la mejor respuesta a eso muy pronto.";
-                chatMessages.appendChild(botMsg);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 1000);
-        }
-    };
-
-    btnSend.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') sendMessage();
-    });
+    // Mensaje de bienvenida con nombre real
+    addBubble(`¡Hola, ${userName}! 👋 Soy Tidi, tu asistente financiero personal. ¿En qué puedo ayudarte hoy? Puedes preguntarme sobre gastos, ahorros, presupuestos o cualquier duda financiera.`, 'bot');
+    messageInput.focus();
   </script>
 </body>
 

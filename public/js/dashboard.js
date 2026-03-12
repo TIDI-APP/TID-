@@ -1,3 +1,22 @@
+// Si viene con token en la URL (Google OAuth), guardarlo ANTES del guard
+const _urlParams = new URLSearchParams(window.location.search);
+const _urlToken = _urlParams.get('token');
+if (_urlToken) {
+    saveToken(_urlToken);
+    window.history.replaceState({}, document.title, window.location.pathname);
+}
+
+// Protección de ruta
+requireAuth();
+
+// Nombre de usuario dinámico
+const _user = getUser();
+if (_user) {
+    const name = _user.first_name || _user.email.split('@')[0];
+    const welcomeMsg = document.getElementById('welcomeMsg');
+    if (welcomeMsg) welcomeMsg.textContent = `Hola, ${name}`;
+}
+
 const financeModalEl = document.getElementById('financeModal');
 const financeModal = financeModalEl ? new bootstrap.Modal(financeModalEl) : null;
 const modalTitle = document.getElementById('modalTitle');
@@ -27,8 +46,64 @@ document.getElementById('openExpense')?.addEventListener('click', () => {
 
 const financeForm = document.getElementById('financeForm');
 if (financeForm) {
-    financeForm.addEventListener('submit', (e) => {
+    financeForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        const valor = financeForm.querySelector('input[type="number"]').value;
+        const titulo = financeForm.querySelector('input[type="text"]').value.trim();
+        const activeCategory = financeForm.querySelector('.category-badge.active');
+        const categoria = activeCategory ? activeCategory.textContent.trim() : 'Otros';
+        const saveBtn = document.getElementById('btnSaveTransaction');
+
+        if (!valor || parseFloat(valor) <= 0) return;
+
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Guardando...';
+
+        try {
+            const res = await fetch('/api/transactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
+                },
+                body: JSON.stringify({
+                    tipo: currentType,
+                    titulo: titulo || categoria,
+                    valor: parseFloat(valor),
+                    categoria
+                })
+            });
+            if (res.ok) {
+                const { transaction } = await res.json();
+                renderTransaction(transaction, true);
+
+                const v = parseFloat(valor);
+                const tipo = currentType.toLowerCase();
+
+                // Actualizar balance
+                applyToBalance(currentType, v);
+
+                // Actualizar totales del mes
+                const now = new Date();
+                const txDate = new Date(transaction.created_at);
+                if (txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear()) {
+                    if (tipo === 'ingreso') {
+                        const elI2 = document.getElementById('totalIngresos');
+                        elI2.textContent = fmt((parseFloat(elI2.textContent.replace(/[^0-9.-]/g, '')) || 0) + v);
+                    } else if (tipo === 'gasto') {
+                        const elG2 = document.getElementById('totalGastos');
+                        elG2.textContent = fmt((parseFloat(elG2.textContent.replace(/[^0-9.-]/g, '')) || 0) + v);
+                    }
+                }
+            }
+        } catch (err) {
+            console.error('Error saving transaction:', err);
+        }
+
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Guardar';
+        financeForm.reset();
         if (financeModal) financeModal.hide();
     });
 }
@@ -62,12 +137,35 @@ if (editBalanceBtn && editBalanceModal) {
     });
 }
 if (btnUpdateBalance) {
-    btnUpdateBalance.addEventListener('click', () => {
+    btnUpdateBalance.addEventListener('click', async () => {
         const val = parseFloat(newBalanceInput.value);
-        if (!isNaN(val)) {
-            balanceValue.innerText = "$" + val.toFixed(2);
-            editBalanceModal.hide();
+        if (isNaN(val)) return;
+
+        try {
+            const res = await fetch('/api/transactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
+                },
+                body: JSON.stringify({
+                    tipo: 'Modificacion de balance',
+                    titulo: 'Ajuste de balance',
+                    valor: val,
+                    categoria: 'Balance'
+                })
+            });
+            if (res.ok) {
+                const { transaction } = await res.json();
+                renderTransaction(transaction, true);
+                currentBalance = val;
+                updateBalanceDisplay();
+            }
+        } catch (e) {
+            console.error('Error updating balance:', e);
         }
+
+        editBalanceModal.hide();
     });
 }
 
@@ -87,24 +185,115 @@ window.addEventListener("load", () => {
     });
 });
 
-// 💰 Contador animado balance
-function animateValue(obj, start, end, duration) {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        obj.innerHTML = "$" + (progress * (end - start) + start).toFixed(2);
-        if (progress < 1) {
-            window.requestAnimationFrame(step);
-        }
-    };
-    window.requestAnimationFrame(step);
+// Formato de moneda
+function fmt(val) {
+    return '$' + parseFloat(val || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-window.addEventListener("load", () => {
-    const balance = document.querySelector(".balance h2");
-    animateValue(balance, 0, 6741.60, 1500);
-});
+
+// Renderiza una transacción en la lista
+function renderTransaction(tx, prepend = false) {
+    const d = tx.data || {};
+    const tipo = (d.tipo || '').toLowerCase();
+    const isIngreso = tipo === 'ingreso';
+    const isBalance = tipo === 'modificacion de balance';
+    const titulo = d.titulo || d.categoria || 'Sin título';
+    const categoria = d.categoria || '';
+    const valor = parseFloat(d.valor || 0);
+
+    const colorClass = isIngreso ? 'text-success' : isBalance ? 'text-primary' : 'text-danger';
+    const prefix = isIngreso ? '+ ' : isBalance ? '' : '- ';
+
+    const fecha = new Date(tx.created_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
+
+    const el = document.createElement('div');
+    el.className = 'card-custom mb-3 d-flex justify-content-between align-items-center';
+    el.innerHTML = `
+        <div>
+          <strong>${titulo}</strong>
+          <div class="small opacity-50">${categoria} · ${fecha}</div>
+        </div>
+        <span class="${colorClass} fw-bold">${prefix}${fmt(valor)}</span>`;
+
+    const list = document.getElementById('transactionsList');
+    const empty = document.getElementById('noTransactions');
+    if (empty) empty.remove();
+
+    if (prepend) {
+        list.insertBefore(el, list.firstChild);
+    } else {
+        list.appendChild(el);
+    }
+}
+
+// Balance global
+let currentBalance = 0;
+
+function updateBalanceDisplay() {
+    const el = document.getElementById('balanceValue');
+    if (!el) return;
+    const isNeg = currentBalance < 0;
+    el.textContent = (isNeg ? '-' : '') + fmt(Math.abs(currentBalance));
+    el.style.color = isNeg ? '#f87171' : 'white';
+}
+
+function applyToBalance(tipo, valor) {
+    const t = (tipo || '').toLowerCase();
+    if (t === 'ingreso') currentBalance += valor;
+    else if (t === 'gasto') currentBalance -= valor;
+    else if (t === 'modificacion de balance') currentBalance = valor;
+    updateBalanceDisplay();
+}
+
+
+// Carga transacciones y calcula totales + balance
+async function loadTransactions() {
+    try {
+        const res = await fetch('/api/transactions', {
+            headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+        if (!res.ok) return;
+        // La API devuelve ordenadas DESC, invertimos para procesar balance cronológicamente
+        const transactions = (await res.json()).slice().reverse();
+
+        let ingresos = 0, gastos = 0;
+        const now = new Date();
+        currentBalance = 0;
+
+        transactions.forEach(tx => {
+            const d = tx.data || {};
+            const tipo = (d.tipo || '').toLowerCase();
+            const valor = parseFloat(d.valor || 0);
+            const txDate = new Date(tx.created_at);
+
+            // Calcular balance acumulado
+            if (tipo === 'ingreso') currentBalance += valor;
+            else if (tipo === 'gasto') currentBalance -= valor;
+            else if (tipo === 'modificacion de balance') currentBalance = valor;
+
+            // Totales del mes actual
+            if (txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear()) {
+                if (tipo === 'ingreso') ingresos += valor;
+                else if (tipo === 'gasto') gastos += valor;
+            }
+        });
+
+        // Renderizar las 4 más recientes en orden DESC
+        transactions.slice().reverse().slice(0, 4).forEach(tx => renderTransaction(tx));
+        document.getElementById('seeAllBtn').style.display = transactions.length > 4 ? '' : 'none';
+
+        updateBalanceDisplay();
+        const elI = document.getElementById('totalIngresos');
+        const elG = document.getElementById('totalGastos');
+        elI.textContent = fmt(ingresos);
+        elG.textContent = fmt(gastos);
+
+    } catch (e) {
+        console.error('Error loading transactions:', e);
+    }
+}
+
+loadTransactions();
 
 // 🎤 Voice Bottom Sheet & Speech Recognition API
 const voiceSheet = document.getElementById("voiceSheet");
@@ -136,17 +325,33 @@ const sendAudioToBackend = async (audioBlob) => {
         formData.append('audio', audioBlob, 'grabacion.webm');
 
         // Usamos una ruta absoluta por si abres el HTML desde Live Server o directamente desde archivos locales
-        const response = await fetch('http://localhost:3000/api/transcribe', {
+        const response = await fetch('/api/transcribe', {
             method: 'POST',
+            headers: { 'Authorization': `Bearer ${getToken()}` },
             body: formData
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            console.log("IA Transcripción completada:", data);
-            if (voiceTextDisplay) {
-                voiceTextDisplay.innerText = data.transcript || "¡Mensaje guardado!";
+            if (voiceTextDisplay) voiceTextDisplay.innerText = data.transcript || "¡Guardado!";
+            // Renderizar en dashboard y actualizar balance inmediatamente
+            if (data.record) {
+                renderTransaction(data.record, true);
+                const d = data.record.data || {};
+                applyToBalance(d.tipo, parseFloat(d.valor || 0));
+                const now = new Date();
+                const txDate = new Date(data.record.created_at);
+                if (txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear()) {
+                    const tipo = (d.tipo || '').toLowerCase();
+                    if (tipo === 'ingreso') {
+                        const elVI = document.getElementById('totalIngresos');
+                        elVI.textContent = fmt((parseFloat(elVI.textContent.replace(/[^0-9.-]/g, '')) || 0) + parseFloat(d.valor || 0));
+                    } else if (tipo === 'gasto') {
+                        const elVG = document.getElementById('totalGastos');
+                        elVG.textContent = fmt((parseFloat(elVG.textContent.replace(/[^0-9.-]/g, '')) || 0) + parseFloat(d.valor || 0));
+                    }
+                }
             }
         } else {
             console.error("Transcription error frontend:", data);

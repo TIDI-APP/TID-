@@ -215,10 +215,36 @@ body::before {
     transition: all .35s cubic-bezier(.4, .0, .2, 1);
 }
 
-/* Balance number animation */
+/* Animación al cambiar un número */
+@keyframes numPop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.18); opacity: .7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.num-pop {
+    animation: numPop .35s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+
+/* Balance number responsive */
 .balance h2 {
     font-weight: 600;
-    letter-spacing: 1px;
+    font-size: clamp(1.4rem, 6vw, 2.2rem);
+    word-break: break-all;
+    line-height: 1.2;
+}
+
+#totalIngresos,
+#totalGastos {
+    font-size: clamp(0.95rem, 3.5vw, 1.35rem);
+    word-break: break-all;
+    line-height: 1.2;
+}
+
+#balanceValue {
+    font-size: clamp(1.4rem, 6vw, 2.2rem);
+    word-break: break-all;
+    line-height: 1.2;
 }
 
 /* Bottom Sheet IA */

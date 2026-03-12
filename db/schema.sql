@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
 
+
 -- Función y disparador (Trigger) para actualizar automáticamente la fecha de 'updated_at' cada vez que el usuario modifica sus datos
 CREATE OR REPLACE FUNCTION update_modified_column()
 RETURNS TRIGGER AS $$

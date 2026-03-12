@@ -130,6 +130,44 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/theme-toggle.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        redirectIfLoggedIn();
+
+        document.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const inputs = e.target.querySelectorAll('input');
+            const firstName = inputs[0].value;
+            const lastName = inputs[1].value;
+            const email = inputs[2].value;
+            const password = inputs[3].value;
+            const btn = e.target.querySelector('button[type="submit"]');
+
+            btn.disabled = true;
+            btn.textContent = 'Creando cuenta...';
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ firstName, lastName, email, password })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    saveToken(data.token);
+                    window.location.href = '/public/views/dashboard.html';
+                } else {
+                    alert(data.error || 'Error al registrarse');
+                    btn.disabled = false;
+                    btn.textContent = 'Create Account';
+                }
+            } catch {
+                alert('Error de conexión');
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        });
+    </script>
 </body>
 
 </html>

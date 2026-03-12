@@ -25,7 +25,7 @@ router.post('/api/auth/register', async (req, res) => {
         const newUser = await db.createUserManual(email, passwordHash, firstName, lastName);
 
         const token = jwt.sign(
-            { id: newUser.id, email: newUser.email },
+            { id: newUser.id, email: newUser.email, first_name: newUser.first_name, last_name: newUser.last_name },
             JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -56,7 +56,7 @@ router.post('/api/auth/login', async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, avatar_url: user.avatar_url || null },
             JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -72,19 +72,27 @@ router.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// Google OAuth
+// Google OAuth — Login
 router.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// Google OAuth — Vincular cuenta existente
+router.get('/auth/google/link',
+    passport.authenticate('google', { scope: ['profile', 'email'], state: 'link' }));
 
 router.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/public/views/login.html' }),
     function (req, res) {
         const user = req.user;
         const token = jwt.sign(
-            { id: user.id, email: user.email },
+            { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, avatar_url: user.avatar_url || null },
             JWT_SECRET,
             { expiresIn: '7d' }
         );
+        // Si venía de "vincular cuenta", redirigir a config en lugar de dashboard
+        if (req.query.state === 'link') {
+            return res.redirect(`/public/views/config.html?token=${token}&linked=1`);
+        }
         res.redirect(`/public/views/dashboard.html?token=${token}`);
     });
 

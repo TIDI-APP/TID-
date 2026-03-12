@@ -13,8 +13,9 @@ passport.use(new GoogleStrategy({
             const firstName = profile.name.givenName || '';
             const lastName = profile.name.familyName || '';
             const googleId = profile.id;
+            const avatarUrl = (profile.photos && profile.photos[0]) ? profile.photos[0].value : null;
 
-            const user = await db.createOrUpdateGoogleUser(email, googleId, firstName, lastName);
+            const user = await db.createOrUpdateGoogleUser(email, googleId, firstName, lastName, avatarUrl);
             return cb(null, user);
         } catch (error) {
             return cb(error, null);

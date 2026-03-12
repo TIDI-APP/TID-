@@ -43,6 +43,6 @@ if (!fs.existsSync(uploadDir)) {
 app.use('/', authRoutes);
 app.use('/', apiRoutes);
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Backend server running on http://localhost:${PORT} (Modularized Version)`);
 });
