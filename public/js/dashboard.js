@@ -316,13 +316,12 @@ let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
 
-const sendAudioToBackend = async (audioBlob) => {
+const sendAudioToBackend = async (audioBlob, ext = 'webm') => {
     try {
         if (voiceTextDisplay) voiceTextDisplay.innerText = "Transcribiendo con IA...";
 
         const formData = new FormData();
-        // Le pasamos un nombre de archivo temporal para que Multer lo intercepte bien
-        formData.append('audio', audioBlob, 'grabacion.webm');
+        formData.append('audio', audioBlob, `grabacion.${ext}`);
 
         // Usamos una ruta absoluta por si abres el HTML desde Live Server o directamente desde archivos locales
         const response = await fetch('/api/transcribe', {
@@ -382,7 +381,11 @@ const setupMicBtn = (btn) => {
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
+
+            // Detectar el MIME type soportado por el navegador (iOS usa mp4, Chrome usa webm)
+            const preferredMime = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg']
+                .find(m => MediaRecorder.isTypeSupported(m)) || '';
+            mediaRecorder = preferredMime ? new MediaRecorder(stream, { mimeType: preferredMime }) : new MediaRecorder(stream);
 
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
@@ -391,9 +394,11 @@ const setupMicBtn = (btn) => {
             };
 
             mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const actualMime = mediaRecorder.mimeType || 'audio/webm';
+                const ext = actualMime.includes('mp4') ? 'mp4' : actualMime.includes('ogg') ? 'ogg' : 'webm';
+                const audioBlob = new Blob(audioChunks, { type: actualMime });
                 audioChunks = [];
-                sendAudioToBackend(audioBlob);
+                sendAudioToBackend(audioBlob, ext);
 
                 // Detener los hilos del micrófono para la privacidad
                 stream.getTracks().forEach(track => track.stop());

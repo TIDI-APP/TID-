@@ -11,14 +11,26 @@ const transcribeAudio = async (filePath) => {
     try {
         console.log("Enviando audio a Groq (Whisper)...");
 
-        // Groq a veces es estricto con las extensiones del temporal generado por Multer.
-        // Simularemos un archivo con extensión validada (.webm)
+        // Groq requiere extensión válida. Multer guarda sin extensión,
+        // así que detectamos el formato real leyendo los primeros bytes del archivo.
         const fs = require("fs");
         let validFilePath = filePath;
 
-        // Si multer lo guardó sin extensión, lo renombramos un momento
         if (!path.extname(filePath)) {
-            validFilePath = filePath + '.webm';
+            const buf = Buffer.alloc(12);
+            const fd = fs.openSync(filePath, 'r');
+            fs.readSync(fd, buf, 0, 12, 0);
+            fs.closeSync(fd);
+
+            let ext = '.webm';
+            // MP4/M4A: magic bytes "ftyp" en posición 4
+            if (buf[4] === 0x66 && buf[5] === 0x74 && buf[6] === 0x79 && buf[7] === 0x70) ext = '.mp4';
+            // OGG: magic bytes "OggS"
+            else if (buf[0] === 0x4F && buf[1] === 0x67 && buf[2] === 0x67 && buf[3] === 0x53) ext = '.ogg';
+            // WebM/EBML: magic bytes 0x1A 0x45 0xDF 0xA3
+            else if (buf[0] === 0x1A && buf[1] === 0x45 && buf[2] === 0xDF && buf[3] === 0xA3) ext = '.webm';
+
+            validFilePath = filePath + ext;
             fs.renameSync(filePath, validFilePath);
         }
 

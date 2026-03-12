@@ -72,9 +72,11 @@ router.post('/api/transcribe', authMiddleware, upload.single('audio'), async (re
 
     } catch (error) {
         console.error('Error in /api/transcribe:', error);
-        // Intentar borrar tanto la ruta original como la renombrada (.webm)
-        try { if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path); } catch (_) {}
-        try { if (req.file && fs.existsSync(req.file.path + '.webm')) fs.unlinkSync(req.file.path + '.webm'); } catch (_) {}
+        if (req.file) {
+            for (const ext of ['', '.webm', '.mp4', '.ogg']) {
+                try { if (fs.existsSync(req.file.path + ext)) fs.unlinkSync(req.file.path + ext); } catch (_) {}
+            }
+        }
         res.status(500).json({ error: 'Transcription failed.', details: error.message });
     }
 });
