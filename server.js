@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
 
 const app = express();
-const port = 3000;
+const port = 3007;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -110,7 +110,7 @@ app.get('/api/test-prometeo', async (req, res) => {
 
 
 app.get('/api/calcular-credito', async(req,res)=>{
-    let connectioDB;
+    let conexionDB;
     try{
         conexionDB = await mysql.createConnection({
             host: '157.180.40.190',
@@ -137,6 +137,16 @@ app.get('/api/calcular-credito', async(req,res)=>{
         const factorPrestamo = disponible / 24100;
         const prestamoAprobado = factorPrestamo * 1000000;
 
+
+        const tasaInteres = 0.012;
+        const meses = 168
+
+
+        const cuotaMensual = prestamoAprobado * (tasaInteres / (1 - Math.pow(1 + tasaInteres, -meses)));
+
+
+
+
         await conexionDB.end();
 
         // 4. Enviamos la respuesta estructurada al frontend
@@ -144,7 +154,8 @@ app.get('/api/calcular-credito', async(req,res)=>{
             status: 'success',
             promedio_ingresos_usd: promedioSueldoUSD,
             promedio_ingresos_cop: promedioPesos,
-            cupo_aprobado: prestamoAprobado
+            cupo_aprobado: prestamoAprobado,
+            cuota_mensual: cuotaMensual
         });
 
     } catch (error) {
