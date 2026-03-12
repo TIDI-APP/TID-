@@ -29,15 +29,15 @@ const menuOverlay = document.getElementById('menuOverlay');
 const closeSidebar = document.getElementById('closeSidebar');
 
 if (menuToggle) menuToggle.addEventListener('click', () => {
-    mobileSidebar.classList.add('open');
+    mobileSidebar.classList.add('active');
     menuOverlay.classList.add('active');
 });
 if (closeSidebar) closeSidebar.addEventListener('click', () => {
-    mobileSidebar.classList.remove('open');
+    mobileSidebar.classList.remove('active');
     menuOverlay.classList.remove('active');
 });
 if (menuOverlay) menuOverlay.addEventListener('click', () => {
-    mobileSidebar.classList.remove('open');
+    mobileSidebar.classList.remove('active');
     menuOverlay.classList.remove('active');
 });
 
