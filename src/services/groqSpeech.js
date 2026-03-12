@@ -70,4 +70,44 @@ Si algún valor no es claro, usa null, pero debes devolver la estructura JSON v�
     }
 };
 
-module.exports = { transcribeAudio, analyzeTranscript };
+const analyzeInvoice = async (base64Image, mimeType = 'image/jpeg') => {
+    try {
+        console.log("Analizando factura con Groq Vision...");
+        const response = await groq.chat.completions.create({
+            model: "meta-llama/llama-4-scout-17b-16e-instruct",
+            messages: [
+                {
+                    role: "user",
+                    content: [
+                        {
+                            type: "image_url",
+                            image_url: { url: `data:${mimeType};base64,${base64Image}` }
+                        },
+                        {
+                            type: "text",
+                            text: `Analiza esta factura o recibo y extrae la información. Responde ÚNICAMENTE con un JSON válido con esta estructura exacta:
+{
+  "tipo": "gasto",
+  "titulo": "Nombre del establecimiento o descripción breve",
+  "valor": <monto total como número sin símbolos>,
+  "categoria": "Categoría (Comida, Transporte, Supermercado, Farmacia, Entretenimiento, Servicios, Otros)"
+}
+Si no puedes leer el monto total, usa null. Solo el JSON, nada más.`
+                        }
+                    ]
+                }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.1,
+            max_tokens: 256
+        });
+
+        const content = response.choices[0]?.message?.content;
+        return JSON.parse(content || "{}");
+    } catch (error) {
+        console.error("Error analizando factura con Groq Vision:", error);
+        return null;
+    }
+};
+
+module.exports = { transcribeAudio, analyzeTranscript, analyzeInvoice };

@@ -435,6 +435,66 @@ const setupMicBtn = (btn) => {
 setupMicBtn(document.getElementById("iaButton"));
 setupMicBtn(document.getElementById("iaButtonDesktop"));
 
+// 📷 Escanear factura
+const invoiceFileInput = document.getElementById('invoiceFileInput');
+
+const setupScanBtn = (btn) => {
+    if (!btn) return;
+    btn.addEventListener('click', () => invoiceFileInput.click());
+};
+
+setupScanBtn(document.getElementById('scanButton'));
+setupScanBtn(document.getElementById('scanButtonDesktop'));
+
+invoiceFileInput.addEventListener('change', async () => {
+    const file = invoiceFileInput.files[0];
+    if (!file) return;
+    invoiceFileInput.value = '';
+
+    showVoiceSheet();
+    if (voiceTextDisplay) voiceTextDisplay.innerText = 'Analizando factura con IA...';
+    if (waveAnimation) waveAnimation.style.display = 'flex';
+
+    try {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await fetch('/api/scan-invoice', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${getToken()}` },
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.record) {
+            const d = data.analysis;
+            if (voiceTextDisplay) voiceTextDisplay.innerText = `✓ ${d.titulo || 'Factura'} — $${d.valor}`;
+            renderTransaction(data.record, true);
+            applyToBalance(d.tipo, parseFloat(d.valor || 0));
+            const now = new Date();
+            const txDate = new Date(data.record.created_at);
+            if (txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear()) {
+                const tipo = (d.tipo || '').toLowerCase();
+                if (tipo === 'ingreso') {
+                    const el = document.getElementById('totalIngresos');
+                    el.textContent = fmt((parseFloat(el.textContent.replace(/[^0-9.-]/g, '')) || 0) + parseFloat(d.valor));
+                } else if (tipo === 'gasto') {
+                    const el = document.getElementById('totalGastos');
+                    el.textContent = fmt((parseFloat(el.textContent.replace(/[^0-9.-]/g, '')) || 0) + parseFloat(d.valor));
+                }
+            }
+        } else {
+            if (voiceTextDisplay) voiceTextDisplay.innerText = data.error || 'No se pudo leer la factura.';
+        }
+    } catch (e) {
+        console.error('Scan invoice error:', e);
+        if (voiceTextDisplay) voiceTextDisplay.innerText = 'Error de conexión.';
+    }
+
+    setTimeout(() => hideVoiceSheet(), 3500);
+});
+
 // 🌊 Ripple effect
 document.querySelectorAll("button, .card-custom").forEach(el => {
     el.addEventListener("click", function (e) {

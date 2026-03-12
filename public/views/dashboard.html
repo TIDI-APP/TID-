@@ -133,6 +133,11 @@
       <i class="bi bi-mic-fill"></i>
     </div>
 
+    <!-- Desktop Scan Button -->
+    <div class="mic-floating desktop-mic d-none d-lg-flex" id="scanButtonDesktop" style="right: 120px; background: rgba(104,64,243,0.25); border: 1px solid rgba(104,64,243,0.5);" title="Escanear factura">
+      <i class="bi bi-camera-fill"></i>
+    </div>
+
     <!-- Bottom Bar -->
     <div class="bottom-container d-lg-none">
 
@@ -158,12 +163,20 @@
 
       </div>
 
-      <!-- Botón montaña separado -->
+      <!-- Botón micrófono -->
       <div class="mic-floating" id="iaButton">
         <i class="bi bi-mic-fill"></i>
       </div>
 
+      <!-- Botón escanear factura (mobile) -->
+      <div class="mic-floating" id="scanButton" style="left: calc(50% + 70px); background: rgba(104,64,243,0.25); border: 1px solid rgba(104,64,243,0.5); width:48px; height:48px; top:-28px; font-size:18px;">
+        <i class="bi bi-camera-fill"></i>
+      </div>
+
     </div>
+
+    <!-- Input oculto para imagen -->
+    <input type="file" id="invoiceFileInput" accept="image/*" style="display:none;">
 
     <!-- MODAL FINANZAS PRO NEW-->
     <div class="modal fade" id="financeModal" tabindex="-1">

@@ -3,15 +3,16 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
-const { transcribeAudio, analyzeTranscript } = require('../services/groqSpeech');
+const { transcribeAudio, analyzeTranscript, analyzeInvoice } = require('../services/groqSpeech');
 const Groq = require('groq-sdk');
 const db = require('../../db/queries');
 const authMiddleware = require('../controllers/middlewares/authMiddleware');
 
 const groq = new Groq();
 
-// Configuración de multer y data path
+// Multer: disco para audio, memoria para imágenes
 const upload = multer({ dest: 'uploads/' });
+const uploadImage = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 const dataDir = path.join(__dirname, '../../data');
 
 router.post('/api/voice-record', authMiddleware, async (req, res) => {
@@ -104,6 +105,32 @@ router.delete('/api/transactions/:id', authMiddleware, async (req, res) => {
     } catch (error) {
         console.error('Error deleting transaction:', error);
         res.status(500).json({ error: 'Error al eliminar la transacción' });
+    }
+});
+
+// Escanear factura con Groq Vision
+router.post('/api/scan-invoice', authMiddleware, uploadImage.single('image'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No se recibió ninguna imagen.' });
+    }
+
+    try {
+        const base64 = req.file.buffer.toString('base64');
+        const mimeType = req.file.mimetype || 'image/jpeg';
+
+        const analysis = await analyzeInvoice(base64, mimeType);
+
+        if (!analysis || !analysis.valor) {
+            return res.status(422).json({ error: 'No se pudo leer la factura. Asegúrate de que la imagen sea clara y muestre el monto total.' });
+        }
+
+        analysis.tipo = analysis.tipo || 'gasto';
+        const transaction = await db.createTransaction(req.user.id, analysis);
+
+        res.status(200).json({ message: 'Factura procesada.', analysis, record: transaction });
+    } catch (error) {
+        console.error('Error en scan-invoice:', error);
+        res.status(500).json({ error: 'Error al procesar la factura.', details: error.message });
     }
 });
 
