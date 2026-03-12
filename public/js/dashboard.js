@@ -448,13 +448,15 @@ const setupScanBtn = (btn) => {
 setupScanBtn(document.getElementById('scanButton'));
 setupScanBtn(document.getElementById('scanButtonDesktop'));
 
+const scanModalEl = document.getElementById('scanModal');
+
 document.getElementById('btnUseCamera').addEventListener('click', () => {
     scanModal.hide();
-    invoiceCameraInput.click();
+    scanModalEl.addEventListener('hidden.bs.modal', () => invoiceCameraInput.click(), { once: true });
 });
 document.getElementById('btnUploadFile').addEventListener('click', () => {
     scanModal.hide();
-    invoiceGalleryInput.click();
+    scanModalEl.addEventListener('hidden.bs.modal', () => invoiceGalleryInput.click(), { once: true });
 });
 
 const handleInvoiceFile = async (file) => {
