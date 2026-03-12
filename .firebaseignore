@@ -1,0 +1,8 @@
+node_modules
+.git
+uploads
+data
+*.webm
+*.wav
+diff.txt
+gitlog.txt
