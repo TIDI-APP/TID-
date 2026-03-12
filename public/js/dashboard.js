@@ -334,7 +334,7 @@ const sendAudioToBackend = async (audioBlob) => {
         const data = await response.json();
 
         if (response.ok) {
-            if (voiceTextDisplay) voiceTextDisplay.innerText = data.transcript || "¡Guardado!";
+            if (voiceTextDisplay) voiceTextDisplay.innerText = `✓ ${data.transcript || '¡Guardado!'}`;
             // Renderizar en dashboard y actualizar balance inmediatamente
             if (data.record) {
                 renderTransaction(data.record, true);
@@ -354,9 +354,8 @@ const sendAudioToBackend = async (audioBlob) => {
                 }
             }
         } else {
-            console.error("Transcription error frontend:", data);
             if (voiceTextDisplay) {
-                voiceTextDisplay.innerText = "Error: " + (data.error || "No se pudo transcribir.");
+                voiceTextDisplay.innerText = data.error || "No se pudo procesar el audio.";
             }
         }
     } catch (e) {

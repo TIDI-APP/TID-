@@ -43,11 +43,14 @@ router.post('/api/transcribe', authMiddleware, upload.single('audio'), async (re
         const transcriptionResult = await transcribeAudio(audioPath);
         const transcript = transcriptionResult.text;
 
-        fs.unlinkSync(transcriptionResult.finalPath);
+        try { fs.unlinkSync(transcriptionResult.finalPath); } catch (_) {}
 
         const analysis = await analyzeTranscript(transcript);
 
-        // Guardar en Supabase
+        if (!analysis || !analysis.tipo || !analysis.valor) {
+            return res.status(422).json({ error: 'No se pudo entender la transacción. Intenta ser más específico (ej: "gasté 50 pesos en comida").' });
+        }
+
         const transaction = await db.createTransaction(req.user.id, analysis);
 
         res.status(200).json({
@@ -58,8 +61,8 @@ router.post('/api/transcribe', authMiddleware, upload.single('audio'), async (re
 
     } catch (error) {
         console.error('Error in /api/transcribe:', error);
+        try { if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path); } catch (_) {}
         res.status(500).json({ error: 'Transcription failed.', details: error.message });
-        if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
     }
 });
 
