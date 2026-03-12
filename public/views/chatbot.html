@@ -159,8 +159,10 @@
   <div class="desktop-sidebar d-none d-lg-block">
     <div class="sidebar-header"><h5>Tidi</h5></div>
     <div class="sidebar-links">
-      <a href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a>
-      <a href="#" class="text-primary"><i class="bi bi-robot"></i> Chatbot</a>
+      <a href="dashboard.html"><i class="bi bi-house"></i> Inicio</a>
+      <a href="chatbot.html" class="active"><i class="bi bi-robot"></i> Chatbot</a>
+      <a href="transactions.html"><i class="bi bi-list-ul"></i> Transacciones</a>
+      <a href="crediturbo.html"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
       <a href="config.html"><i class="bi bi-gear"></i> Configuración</a>
       <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
     </div>
@@ -173,8 +175,10 @@
       <i class="bi bi-x-lg close-btn" id="closeSidebar"></i>
     </div>
     <div class="sidebar-links">
-      <a href="dashboard.html"><i class="bi bi-house"></i> Dashboard</a>
-      <a href="#" class="text-primary"><i class="bi bi-robot"></i> Chatbot</a>
+      <a href="dashboard.html"><i class="bi bi-house"></i> Inicio</a>
+      <a href="chatbot.html" class="active"><i class="bi bi-robot"></i> Chatbot</a>
+      <a href="transactions.html"><i class="bi bi-list-ul"></i> Transacciones</a>
+      <a href="crediturbo.html"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
       <a href="config.html"><i class="bi bi-gear"></i> Configuración</a>
       <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
     </div>
@@ -208,11 +212,19 @@
   <!-- Bottom Bar (Mobile) -->
   <div class="bottom-container d-lg-none">
     <div class="bottom-bar">
-      <div class="nav-item"><a href="chatbot.html" class="text-primary"><i class="bi bi-robot"></i></a></div>
-      <div class="nav-item"><a href="dashboard.html" class="text-white"><i class="bi bi-house"></i></a></div>
+      <div class="nav-item" style="cursor:pointer;" onclick="window.location.href='dashboard.html'">
+        <i class="bi bi-house"></i>
+      </div>
+      <div class="nav-item" style="cursor:pointer; color: var(--primary-light);">
+        <i class="bi bi-robot"></i>
+      </div>
       <div class="spacer"></div>
-      <div class="nav-item"><a href="transactions.html" class="text-white"><i class="bi bi-list-ul"></i></a></div>
-      <div class="nav-item"><a href="config.html" class="text-white"><i class="bi bi-person"></i></a></div>
+      <div class="nav-item" style="cursor:pointer;" onclick="window.location.href='crediturbo.html'">
+        <i class="bi bi-lightning-charge"></i>
+      </div>
+      <div class="nav-item" style="cursor:pointer;" onclick="window.location.href='config.html'">
+        <i class="bi bi-gear"></i>
+      </div>
     </div>
   </div>
 
