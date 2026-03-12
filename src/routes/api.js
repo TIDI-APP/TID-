@@ -34,12 +34,21 @@ router.post('/api/voice-record', authMiddleware, async (req, res) => {
     }
 });
 
+const AI_FREE_LIMIT = 15;
+
 router.post('/api/transcribe', authMiddleware, upload.single('audio'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No audio file provided.' });
     }
 
     try {
+        const aiCount = await db.countAiTransactions(req.user.id);
+        if (aiCount >= AI_FREE_LIMIT) {
+            try { if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path); } catch (_) {}
+            try { if (req.file && fs.existsSync(req.file.path + '.webm')) fs.unlinkSync(req.file.path + '.webm'); } catch (_) {}
+            return res.status(402).json({ error: 'limit_reached' });
+        }
+
         const audioPath = req.file.path;
         const transcriptionResult = await transcribeAudio(audioPath);
         const transcript = transcriptionResult.text;
@@ -52,6 +61,7 @@ router.post('/api/transcribe', authMiddleware, upload.single('audio'), async (re
             return res.status(422).json({ error: 'No se pudo entender la transacción. Intenta ser más específico (ej: "gasté 50 pesos en comida").' });
         }
 
+        analysis.source = 'voice';
         const transaction = await db.createTransaction(req.user.id, analysis);
 
         res.status(200).json({
@@ -117,6 +127,11 @@ router.post('/api/scan-invoice', authMiddleware, uploadImage.single('image'), as
     }
 
     try {
+        const aiCount = await db.countAiTransactions(req.user.id);
+        if (aiCount >= AI_FREE_LIMIT) {
+            return res.status(402).json({ error: 'limit_reached' });
+        }
+
         const base64 = req.file.buffer.toString('base64');
         const mimeType = req.file.mimetype || 'image/jpeg';
 
@@ -127,6 +142,7 @@ router.post('/api/scan-invoice', authMiddleware, uploadImage.single('image'), as
         }
 
         analysis.tipo = analysis.tipo || 'gasto';
+        analysis.source = 'camera';
         const transaction = await db.createTransaction(req.user.id, analysis);
 
         res.status(200).json({ message: 'Factura procesada.', analysis, record: transaction });

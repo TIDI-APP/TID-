@@ -333,6 +333,12 @@ const sendAudioToBackend = async (audioBlob) => {
 
         const data = await response.json();
 
+        if (response.status === 402) {
+            hideVoiceSheet();
+            premiumModal.show();
+            return;
+        }
+
         if (response.ok) {
             if (voiceTextDisplay) voiceTextDisplay.innerText = `✓ ${data.transcript || '¡Guardado!'}`;
             // Renderizar en dashboard y actualizar balance inmediatamente
@@ -437,6 +443,13 @@ setupMicBtn(document.getElementById("iaButtonDesktop"));
 
 // 📷 Escanear factura
 const scanModal = new bootstrap.Modal(document.getElementById('scanModal'));
+const premiumModal = new bootstrap.Modal(document.getElementById('premiumModal'));
+
+document.getElementById('btnGoToPremium').addEventListener('click', () => {
+    const numero = '573054671608';
+    const mensaje = 'Hola, quiero suscribirme a Tidi Premium por $19.900/mes para tener transacciones ilimitadas por voz y cámara.';
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
+});
 const invoiceCameraInput = document.getElementById('invoiceCameraInput');
 const invoiceGalleryInput = document.getElementById('invoiceGalleryInput');
 
@@ -477,6 +490,12 @@ const handleInvoiceFile = async (file) => {
         });
 
         const data = await response.json();
+
+        if (response.status === 402) {
+            hideVoiceSheet();
+            premiumModal.show();
+            return;
+        }
 
         if (response.ok && data.record) {
             const d = data.analysis;

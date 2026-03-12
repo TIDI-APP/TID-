@@ -94,6 +94,18 @@ const getUserById = async (userId) => {
 };
 
 /**
+ * Cuenta transacciones creadas por IA (voz o cámara) del usuario
+ */
+const countAiTransactions = async (userId) => {
+    const { data, error } = await supabase
+        .from('transactions')
+        .select('id, data')
+        .eq('user_id', userId);
+    if (error) throw error;
+    return (data || []).filter(t => t.data && (t.data.source === 'voice' || t.data.source === 'camera')).length;
+};
+
+/**
  * Guarda una transacción con data JSONB vinculada al usuario
  */
 const createTransaction = async (userId, data) => {
@@ -137,5 +149,6 @@ module.exports = {
     updateUserProfile,
     createTransaction,
     getTransactionsByUser,
-    deleteTransaction
+    deleteTransaction,
+    countAiTransactions
 };
