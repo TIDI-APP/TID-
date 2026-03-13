@@ -43,7 +43,8 @@ const analyzeTranscript = async (transcriptText) => {
   "tipo": "gasto" | "ingreso" | "modificacion de balance",
   "titulo": "Resumen breve o nombre de la entidad (ej: 'Compra supermercado' o 'Sueldo')",
   "valor": <número, ej: 15.5 o 1000>,
-  "categoria": "Categoría general del movimiento"
+  "categoria": "Categoría general del movimiento",
+  "moneda": "Código ISO de la moneda detectada (ej: 'COP', 'USD', 'EUR', 'MXN', 'BRL'). Si el usuario dice 'pesos' sin especificar, usa 'COP'. Si dice 'dólares' o '$' ambiguo en contexto latinoamericano, usa 'USD'. Por defecto usa 'COP'."
 }
 Si algún valor no es claro, usa null, pero debes devolver la estructura JSON válida.`
                 },

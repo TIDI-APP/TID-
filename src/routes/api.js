@@ -10,6 +10,22 @@ const authMiddleware = require('../controllers/middlewares/authMiddleware');
 
 const groq = new Groq();
 
+// Convierte un valor a COP usando frankfurter.app (sin API key)
+const convertirACOP = async (valor, moneda) => {
+    if (!moneda || moneda === 'COP') return { valorCOP: valor, convertido: false };
+    try {
+        const res = await fetch(`https://api.frankfurter.app/latest?from=${moneda}&to=COP`);
+        if (!res.ok) throw new Error('Exchange rate API error');
+        const data = await res.json();
+        const tasa = data.rates?.COP;
+        if (!tasa) throw new Error('No COP rate found');
+        return { valorCOP: Math.round(valor * tasa), convertido: true, tasa, monedaOriginal: moneda };
+    } catch (err) {
+        console.error('Error convirtiendo moneda:', err.message);
+        return { valorCOP: valor, convertido: false };
+    }
+};
+
 // Multer: disco para audio, memoria para imágenes
 const upload = multer({ dest: 'uploads/' });
 const uploadImage = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
@@ -23,6 +39,13 @@ router.post('/api/voice-record', authMiddleware, async (req, res) => {
     }
 
     const analysis = await analyzeTranscript(transcript);
+
+    // Convertir a COP si aplica
+    if (analysis && analysis.valor) {
+        const conversion = await convertirACOP(analysis.valor, analysis.moneda);
+        analysis.valor = conversion.valorCOP;
+        analysis.moneda = 'COP';
+    }
 
     // Guardar en Supabase
     try {
@@ -61,12 +84,24 @@ router.post('/api/transcribe', authMiddleware, upload.single('audio'), async (re
             return res.status(422).json({ error: 'No se pudo entender la transacción. Intenta ser más específico (ej: "gasté 50 pesos en comida").' });
         }
 
+        // Convertir a COP si la moneda detectada no es COP
+        const conversion = await convertirACOP(analysis.valor, analysis.moneda);
+        const valorOriginal = analysis.valor;
+        const monedaOriginal = analysis.moneda || 'COP';
+        analysis.valor = conversion.valorCOP;
+        analysis.moneda = 'COP';
+
         analysis.source = 'voice';
         const transaction = await db.createTransaction(req.user.id, analysis);
 
         res.status(200).json({
             message: 'Audio transcribed and saved.',
             transcript,
+            conversion: conversion.convertido ? {
+                de: `${valorOriginal} ${monedaOriginal}`,
+                a: `${conversion.valorCOP} COP`,
+                tasa: conversion.tasa
+            } : null,
             record: transaction
         });
 
