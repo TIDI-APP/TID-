@@ -13,7 +13,10 @@ const apiRoutes = require('./src/routes/api');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.get('/', (req, res) => {
+    res.redirect('/public/index.html');
+});
 app.use(express.json());
 app.use(cors());
 
