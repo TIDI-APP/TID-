@@ -10,11 +10,11 @@ const authMiddleware = require('../controllers/middlewares/authMiddleware');
 
 const groq = new Groq();
 
-// Convierte un valor a COP usando frankfurter.app (sin API key)
+// Convierte un valor a COP usando open.er-api.com (sin API key, incluye COP)
 const convertirACOP = async (valor, moneda) => {
     if (!moneda || moneda === 'COP') return { valorCOP: valor, convertido: false };
     try {
-        const res = await fetch(`https://api.frankfurter.app/latest?from=${moneda}&to=COP`);
+        const res = await fetch(`https://open.er-api.com/v6/latest/${moneda}`);
         if (!res.ok) throw new Error('Exchange rate API error');
         const data = await res.json();
         const tasa = data.rates?.COP;
