@@ -24,14 +24,13 @@
     <div class="sidebar-header">
       <h5>Tidi</h5>
     </div>
-
     <div class="sidebar-links">
-      <a href="dashboard.html" class="active"><i class="bi bi-house"></i> Inicio</a>
-      <a href="#" id="desktopChatbot"><i class="bi bi-robot"></i> Chatbot</a>
-      <a href="transactions.html"><i class="bi bi-list-ul"></i> Transacciones</a>
-      <a href="#" id="desktopCrediturbo"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
-      <a href="config.html"><i class="bi bi-gear"></i> Configuración</a>
-      <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+      <a href="dashboard.html" class="active"><i class="bi bi-house"></i> <span data-i18n="nav.home">Inicio</span></a>
+      <a href="#" id="desktopChatbot"><i class="bi bi-robot"></i> <span data-i18n="nav.chatbot">Chatbot</span></a>
+      <a href="transactions.html"><i class="bi bi-list-ul"></i> <span data-i18n="nav.transactions">Transacciones</span></a>
+      <a href="#" id="desktopCrediturbo"><i class="bi bi-lightning-charge"></i> <span data-i18n="nav.crediturbo">Crediturbo</span></a>
+      <a href="config.html"><i class="bi bi-gear"></i> <span data-i18n="nav.settings">Configuración</span></a>
+      <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> <span data-i18n="nav.logout">Cerrar Sesión</span></a>
     </div>
   </div>
 
@@ -41,26 +40,23 @@
       <h5>Tidi</h5>
       <i class="bi bi-x-lg close-btn" id="closeSidebar"></i>
     </div>
-
     <div class="sidebar-links">
-      <a href="dashboard.html" class="active"><i class="bi bi-house"></i> Inicio</a>
-      <a href="#" id="mobileChatbot"><i class="bi bi-robot"></i> Chatbot</a>
-      <a href="transactions.html"><i class="bi bi-list-ul"></i> Transacciones</a>
-      <a href="#" id="mobileCrediturbo"><i class="bi bi-lightning-charge"></i> Crediturbo</a>
-      <a href="config.html"><i class="bi bi-gear"></i> Configuración</a>
-      <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+      <a href="dashboard.html" class="active"><i class="bi bi-house"></i> <span data-i18n="nav.home">Inicio</span></a>
+      <a href="#" id="mobileChatbot"><i class="bi bi-robot"></i> <span data-i18n="nav.chatbot">Chatbot</span></a>
+      <a href="transactions.html"><i class="bi bi-list-ul"></i> <span data-i18n="nav.transactions">Transacciones</span></a>
+      <a href="#" id="mobileCrediturbo"><i class="bi bi-lightning-charge"></i> <span data-i18n="nav.crediturbo">Crediturbo</span></a>
+      <a href="config.html"><i class="bi bi-gear"></i> <span data-i18n="nav.settings">Configuración</span></a>
+      <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> <span data-i18n="nav.logout">Cerrar Sesión</span></a>
     </div>
   </div>
 
-  <!-- CONTENIDO PRINCIPAL -->
+  <!-- MAIN CONTENT -->
   <div class="app-content">
 
     <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center">
       <i class="bi bi-list d-lg-none" id="menuToggle" style="font-size:26px; cursor:pointer;"></i>
-
       <h5 id="welcomeMsg">Hola</h5>
-
       <button id="themeToggle" class="btn btn-sm btn-outline-light">
         <i class="bi bi-moon"></i>
       </button>
@@ -72,7 +68,7 @@
       <div class="balance mt-4 fade-in">
         <div class="d-flex justify-content-between align-items-start">
            <div>
-              <h6>Balance Total</h6>
+              <h6 data-i18n="dash.balance">Balance Total</h6>
               <div class="d-flex align-items-center">
                  <h2 id="balanceValue" class="mb-0">$0.00</h2>
                  <i class="bi bi-pencil-square ms-3 fs-5 opacity-75" style="cursor:pointer;" id="editBalanceBtn"></i>
@@ -81,47 +77,43 @@
         </div>
       </div>
 
-
-
       <div class="col-6">
         <div class="card-custom text-center h-100" id="openIncome">
           <i class="bi bi-arrow-down-circle fs-2 text-success mb-2"></i>
-          <h6>Ingresos</h6>
+          <h6 data-i18n="dash.income">Ingresos</h6>
           <h4 class="text-success" id="totalIngresos">$0.00</h4>
-          <small class="opacity-50">Este mes</small>
+          <small class="opacity-50" data-i18n="dash.thisMonth">Este mes</small>
         </div>
       </div>
 
       <div class="col-6">
         <div class="card-custom text-center h-100" id="openExpense">
           <i class="bi bi-arrow-up-circle fs-2 text-danger mb-2"></i>
-          <h6>Gastos</h6>
+          <h6 data-i18n="dash.expenses">Gastos</h6>
           <h4 class="text-danger" id="totalGastos">$0.00</h4>
-          <small class="opacity-50">Este mes</small>
+          <small class="opacity-50" data-i18n="dash.thisMonth">Este mes</small>
         </div>
       </div>
 
     </div>
 
-
     <div class="mt-5 fade-in">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0">Transacciones recientes</h5>
+        <h5 class="mb-0" data-i18n="dash.recentTx">Transacciones recientes</h5>
         <a href="transactions.html" class="small text-decoration-none" style="color: var(--primary-light);">Ver todas <i class="bi bi-arrow-right"></i></a>
       </div>
       <div id="transactionsList">
-        <p class="text-center opacity-50 small mt-4" id="noTransactions">Aún no hay transacciones</p>
+        <p class="text-center opacity-50 small mt-4" id="noTransactions" data-i18n="dash.noTx">Aún no hay transacciones</p>
       </div>
-      <a href="transactions.html" class="btn w-100 mt-3 rounded-pill py-2 fw-semibold" style="background: rgba(104,64,243,0.15); color: var(--primary-light); border: 1px solid rgba(104,64,243,0.3);" id="seeAllBtn">
+      <a href="transactions.html" class="btn w-100 mt-3 rounded-pill py-2 fw-semibold" style="background: rgba(104,64,243,0.15); color: var(--primary-light); border: 1px solid rgba(104,64,243,0.3);" id="seeAllBtn" data-i18n="dash.seeAll">
         Ver todas las transacciones
       </a>
     </div>
 
-    <!-- IA Button -->
-
+    <!-- Voice feedback sheet -->
     <div class="voice-sheet" id="voiceSheet">
       <div class="text-center">
-        <h5 id="voiceTextDisplay">Escuchando...</h5>
+        <h5 id="voiceTextDisplay" data-i18n="voice.listening">Escuchando...</h5>
         <div class="d-flex justify-content-center mt-4" id="waveAnimation">
           <div class="wave"></div>
           <div class="wave"></div>
@@ -131,59 +123,48 @@
       </div>
     </div>
 
-
-    <!-- Desktop IA Button -->
+    <!-- Desktop mic button -->
     <div class="mic-floating desktop-mic d-none d-lg-flex" id="iaButtonDesktop">
       <i class="bi bi-mic-fill"></i>
     </div>
 
-    <!-- Desktop Scan Button -->
-    <div class="mic-floating desktop-mic d-none d-lg-flex" id="scanButtonDesktop" style="right: 120px; background: rgba(104,64,243,0.25); border: 1px solid rgba(104,64,243,0.5);" title="Escanear factura">
+    <!-- Desktop scan button -->
+    <div class="mic-floating desktop-mic d-none d-lg-flex" id="scanButtonDesktop" style="right: 120px; background: rgba(104,64,243,0.25); border: 1px solid rgba(104,64,243,0.5);">
       <i class="bi bi-camera-fill"></i>
     </div>
 
     <!-- Bottom Bar -->
     <div class="bottom-container d-lg-none">
-
       <div class="bottom-bar">
-
         <div class="nav-item" id="bottomChatbot" style="cursor: pointer;">
           <i class="bi bi-robot"></i>
         </div>
-
         <div class="nav-item" style="cursor: pointer;" onclick="window.location.href='transactions.html'">
           <i class="bi bi-list-ul"></i>
         </div>
-
         <div class="spacer"></div>
-
         <div class="nav-item" id="bottomCrediturbo" style="cursor: pointer;">
           <i class="bi bi-lightning-charge"></i>
         </div>
-
         <div class="nav-item" style="cursor: pointer;" onclick="window.location.href='config.html'">
           <i class="bi bi-gear"></i>
         </div>
-
       </div>
-
-      <!-- Botón micrófono -->
+      <!-- Mobile mic button -->
       <div class="mic-floating" id="iaButton">
         <i class="bi bi-mic-fill"></i>
       </div>
-
-      <!-- Botón escanear factura (mobile) -->
+      <!-- Mobile scan button -->
       <div class="mic-floating" id="scanButton" style="left: calc(50% + 70px); background: rgba(104,64,243,0.25); border: 1px solid rgba(104,64,243,0.5); width:48px; height:48px; top:-28px; font-size:18px;">
         <i class="bi bi-camera-fill"></i>
       </div>
-
     </div>
 
-    <!-- Inputs ocultos para imagen -->
+    <!-- Hidden file inputs for invoice scanning -->
     <input type="file" id="invoiceCameraInput" accept="image/*" capture="environment" style="display:none;">
     <input type="file" id="invoiceGalleryInput" accept="image/*,application/pdf" style="display:none;">
 
-    <!-- MODAL ESCANEAR FACTURA -->
+    <!-- SCAN INVOICE MODAL -->
     <div class="modal fade" id="scanModal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content custom-modal border-0 shadow-lg p-3">
@@ -192,13 +173,13 @@
           </div>
           <div class="modal-body pt-1 text-center">
             <i class="bi bi-receipt fs-1 mb-3 d-block" style="color: var(--primary-light);"></i>
-            <h6 class="fw-bold mb-4">Escanear Factura</h6>
+            <h6 class="fw-bold mb-4" data-i18n="scan.title">Escanear Factura</h6>
             <div class="d-grid gap-3">
               <button id="btnUseCamera" class="btn btn-gradient rounded-pill py-2 text-white fw-semibold">
-                <i class="bi bi-camera-fill me-2"></i>Tomar foto
+                <i class="bi bi-camera-fill me-2"></i><span data-i18n="scan.camera">Tomar foto</span>
               </button>
               <button id="btnUploadFile" class="btn rounded-pill py-2 fw-semibold" style="background: rgba(255,255,255,0.07); color: var(--text); border: 1px solid var(--border);">
-                <i class="bi bi-folder2-open me-2"></i>Subir archivo
+                <i class="bi bi-folder2-open me-2"></i><span data-i18n="scan.upload">Subir archivo</span>
               </button>
             </div>
           </div>
@@ -206,7 +187,7 @@
       </div>
     </div>
 
-    <!-- MODAL FINANZAS PRO NEW-->
+    <!-- MANUAL TRANSACTION MODAL -->
     <div class="modal fade" id="financeModal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content custom-modal border-0 shadow-lg text-center p-3">
@@ -214,45 +195,37 @@
              <button type="button" class="btn-close btn-close-white opacity-50" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body pt-0">
-             
              <div class="mb-4" id="modalIconContainer">
                 <i class="bi bi-arrow-down-circle-fill text-success fs-1"></i>
              </div>
-             
-             <h5 class="modal-title mb-4" id="modalTitle">Nuevo Ingreso</h5>
-             
+             <h5 class="modal-title mb-4" id="modalTitle" data-i18n="finance.newIncome">Nuevo Ingreso</h5>
              <form id="financeForm" class="text-start">
-                
                 <div class="mb-4 text-center">
                   <div class="input-group input-group-lg justify-content-center">
                     <span class="input-group-text bg-transparent border-0 text-white-50 fs-2 px-1">$</span>
                     <input type="number" class="form-control bg-transparent border-0 text-white fs-1 text-center px-0 w-auto fw-bold focus-ring-none" placeholder="0.00" required style="max-width: 150px; outline:none; box-shadow:none;">
                   </div>
                 </div>
-
                 <div class="mb-4">
-                  <label class="small text-white-50 mb-2">Concepto / Categoría</label>
+                  <label class="small text-white-50 mb-2" data-i18n="finance.concept">Concepto / Categoría</label>
                   <div class="d-flex flex-wrap gap-2 justify-content-center" id="categoryButtons">
-                     <span class="badge rounded-pill px-3 py-2 cursor-pointer btn-outline-light text-white category-badge active" style="background: rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);">Salario</span>
-                     <span class="badge rounded-pill px-3 py-2 cursor-pointer btn-outline-light text-white category-badge" style="background: rgba(255,255,255,0.05); border:1px solid transparent;">Comida</span>
-                     <span class="badge rounded-pill px-3 py-2 cursor-pointer btn-outline-light text-white category-badge" style="background: rgba(255,255,255,0.05); border:1px solid transparent;">Transporte</span>
-                     <span class="badge rounded-pill px-3 py-2 cursor-pointer btn-outline-light text-white category-badge" style="background: rgba(255,255,255,0.05); border:1px solid transparent;">Otros</span>
+                     <span class="badge rounded-pill px-3 py-2 cursor-pointer btn-outline-light text-white category-badge active" style="background: rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);" data-i18n="cat.salary">Salario</span>
+                     <span class="badge rounded-pill px-3 py-2 cursor-pointer btn-outline-light text-white category-badge" style="background: rgba(255,255,255,0.05); border:1px solid transparent;" data-i18n="cat.food">Comida</span>
+                     <span class="badge rounded-pill px-3 py-2 cursor-pointer btn-outline-light text-white category-badge" style="background: rgba(255,255,255,0.05); border:1px solid transparent;" data-i18n="cat.transport">Transporte</span>
+                     <span class="badge rounded-pill px-3 py-2 cursor-pointer btn-outline-light text-white category-badge" style="background: rgba(255,255,255,0.05); border:1px solid transparent;" data-i18n="cat.other">Otros</span>
                   </div>
                 </div>
-
                 <div class="mb-4">
-                  <input type="text" class="form-control custom-input text-center rounded-pill py-2" placeholder="Nota opcional..." style="background: rgba(255,255,255,0.05);">
+                  <input type="text" class="form-control custom-input text-center rounded-pill py-2" data-i18n-placeholder="finance.notePh" placeholder="Nota opcional..." style="background: rgba(255,255,255,0.05);">
                 </div>
-
-                <button type="submit" class="btn w-100 rounded-pill py-3 fw-bold text-white shadow-sm" id="btnSaveTransaction" style="background: var(--primary);">Guardar</button>
+                <button type="submit" class="btn w-100 rounded-pill py-3 fw-bold text-white shadow-sm" id="btnSaveTransaction" style="background: var(--primary);" data-i18n="finance.save">Guardar</button>
              </form>
-
           </div>
         </div>
       </div>
     </div>
 
-    <!-- MODAL EDITAR BALANCE -->
+    <!-- EDIT BALANCE MODAL -->
     <div class="modal fade" id="editBalanceModal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content custom-modal text-center p-3">
@@ -261,24 +234,19 @@
           </div>
           <div class="modal-body pt-0">
             <i class="bi bi-wallet2 text-primary mb-2 d-block" style="font-size: 3rem;"></i>
-            <h5>Ajustar Balance</h5>
-            <p class="text-white-50 small mb-4">Ingresa tu nuevo balance total actualizado.</p>
+            <h5 data-i18n="balance.title">Ajustar Balance</h5>
+            <p class="text-white-50 small mb-4" data-i18n="balance.desc">Ingresa tu nuevo balance total actualizado.</p>
             <div class="input-group input-group-lg justify-content-center mb-4 border-bottom border-light pb-2">
               <span class="input-group-text bg-transparent border-0 text-white-50 fs-3 px-1">$</span>
               <input type="number" class="form-control bg-transparent border-0 text-white fs-2 text-center px-0 fw-bold" id="newBalanceInput" placeholder="0.00" required style="outline:none; box-shadow:none;">
             </div>
-            <button class="btn btn-gradient w-100 rounded-pill py-2" id="btnUpdateBalance">Actualizar Balance</button>
+            <button class="btn btn-gradient w-100 rounded-pill py-2" id="btnUpdateBalance" data-i18n="balance.btn">Actualizar Balance</button>
           </div>
         </div>
       </div>
     </div>
 
-
-
-
-
-
-    <!-- MODAL PREMIUM -->
+    <!-- PREMIUM MODAL -->
     <div class="modal fade" id="premiumModal" tabindex="-1" data-bs-backdrop="static">
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content custom-modal border-0 shadow-lg text-center p-3" style="background: linear-gradient(145deg, #1a1b2e, #12131c);">
@@ -286,25 +254,23 @@
             <button type="button" class="btn-close btn-close-white opacity-50" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body pt-0">
-            <h5 class="fw-bold mb-1">¡Límite alcanzado!</h5>
-            <p class="text-white-50 small mb-4">Has usado tus <strong class="text-white">15 registros gratuitos</strong> por voz y cámara.</p>
-
+            <h5 class="fw-bold mb-1" data-i18n="premium.title">¡Límite alcanzado!</h5>
+            <p class="text-white-50 small mb-4" data-i18n-html="premium.desc">Has usado tus <strong class="text-white">3 registros gratuitos</strong> por voz y cámara.</p>
             <div class="p-3 rounded-3 mb-4" style="background: rgba(104,64,243,0.15); border: 1px solid rgba(104,64,243,0.4);">
-              <p class="small text-white-50 mb-1 text-decoration-line-through">Antes: $24.900/mes</p>
-              <h3 class="fw-bold mb-0" style="color: var(--primary-light);">$19.900<span class="fs-6 fw-normal text-white-50">/mes</span></h3>
-              <p class="small text-white-50 mt-1 mb-3">Transacciones ilimitadas por voz y cámara</p>
+              <p class="small text-white-50 mb-1 text-decoration-line-through" data-i18n="premium.before">Antes: $24.900/mes</p>
+              <h3 class="fw-bold mb-0" style="color: var(--primary-light);"><span data-i18n="premium.price">$19.900</span><span class="fs-6 fw-normal text-white-50" data-i18n="premium.perMonth">/mes</span></h3>
+              <p class="small text-white-50 mt-1 mb-3" data-i18n="premium.unlimited">Transacciones ilimitadas por voz y cámara</p>
               <ul class="list-unstyled text-start small mb-0">
-                <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i>Voz ilimitada</li>
-                <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i>Escáner de facturas ilimitado</li>
-                <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i>Análisis con IA avanzada</li>
-                <li><i class="bi bi-check-circle-fill text-success me-2"></i>Soporte prioritario</li>
+                <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i><span data-i18n="premium.voice">Voz ilimitada</span></li>
+                <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i><span data-i18n="premium.scanner">Escáner de facturas ilimitado</span></li>
+                <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i><span data-i18n="premium.ai">Análisis con IA avanzada</span></li>
+                <li><i class="bi bi-check-circle-fill text-success me-2"></i><span data-i18n="premium.support">Soporte prioritario</span></li>
               </ul>
             </div>
-
             <button class="btn btn-gradient w-100 rounded-pill py-3 fw-bold text-white shadow-sm mb-2" id="btnGoToPremium">
-              <i class="bi bi-lightning-charge-fill me-2"></i>Quiero Premium
+              <i class="bi bi-lightning-charge-fill me-2"></i><span data-i18n="premium.btn">Quiero Premium</span>
             </button>
-            <button type="button" class="btn w-100 rounded-pill py-2 small opacity-50" data-bs-dismiss="modal" style="background:transparent; color:var(--text);">
+            <button type="button" class="btn w-100 rounded-pill py-2 small opacity-50" data-bs-dismiss="modal" style="background:transparent; color:var(--text);" data-i18n="premium.notNow">
               Ahora no
             </button>
           </div>
@@ -314,9 +280,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/public/js/auth.js"></script>
+    <script src="/public/js/i18n.js"></script>
     <script src="/public/js/dashboard.js"></script>
-
-  <script src="/public/js/pwa-handler.js"></script>
+    <script src="/public/js/pwa-handler.js"></script>
 </body>
 
 </html>

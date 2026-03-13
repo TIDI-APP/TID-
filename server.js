@@ -17,9 +17,11 @@ app.use(express.static(__dirname));
 app.use(express.json());
 app.use(cors());
 
+// Ensure sessions directory exists for file-based session storage
 const sessionsDir = path.join(__dirname, 'sessions');
 if (!fs.existsSync(sessionsDir)) fs.mkdirSync(sessionsDir);
 
+// Session middleware — only applied to non-API routes (OAuth flow uses sessions, API uses JWT)
 const sessionMiddleware = session({
     store: new FileStore({ path: sessionsDir, ttl: 86400, reapInterval: 3600, retries: 0 }),
     secret: process.env.SESSION_SECRET || 'secret',
@@ -27,18 +29,20 @@ const sessionMiddleware = session({
     saveUninitialized: false,
 });
 
-// Solo aplicar sesiones a rutas de auth (OAuth). Las rutas /api/* usan JWT y no las necesitan.
+// Scope session middleware to OAuth routes only; API routes use JWT and don't need sessions
 app.use((req, res, next) => {
     if (req.path.startsWith('/api/')) return next();
     sessionMiddleware(req, res, next);
 });
 
 app.use(passport.initialize());
+// Scope passport session to OAuth routes only
 app.use((req, res, next) => {
     if (req.path.startsWith('/api/')) return next();
     passport.session()(req, res, next);
 });
 
+// Ensure data and uploads directories exist
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
 const uploadDir = path.join(__dirname, 'uploads');
