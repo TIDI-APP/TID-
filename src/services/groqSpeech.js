@@ -1,6 +1,6 @@
 const Groq = require("groq-sdk");
+const { toFile } = require("groq-sdk");
 const fs = require("fs");
-
 const path = require("path");
 
 // Inicializa el cliente de Groq.
@@ -9,38 +9,20 @@ const groq = new Groq();
 
 const transcribeAudio = async (filePath) => {
     try {
-        console.log("Enviando audio a Groq (Whisper)...");
-
-        // Groq requiere extensión válida. Multer guarda sin extensión,
-        // así que detectamos el formato real leyendo los primeros bytes del archivo.
-        const fs = require("fs");
         let validFilePath = filePath;
-
         if (!path.extname(filePath)) {
-            const buf = Buffer.alloc(12);
-            const fd = fs.openSync(filePath, 'r');
-            fs.readSync(fd, buf, 0, 12, 0);
-            fs.closeSync(fd);
-
-            let ext = '.webm';
-            // MP4/M4A: magic bytes "ftyp" en posición 4
-            if (buf[4] === 0x66 && buf[5] === 0x74 && buf[6] === 0x79 && buf[7] === 0x70) ext = '.mp4';
-            // OGG: magic bytes "OggS"
-            else if (buf[0] === 0x4F && buf[1] === 0x67 && buf[2] === 0x67 && buf[3] === 0x53) ext = '.ogg';
-            // WebM/EBML: magic bytes 0x1A 0x45 0xDF 0xA3
-            else if (buf[0] === 0x1A && buf[1] === 0x45 && buf[2] === 0xDF && buf[3] === 0xA3) ext = '.webm';
-
-            validFilePath = filePath + ext;
+            validFilePath = filePath + '.webm';
             fs.renameSync(filePath, validFilePath);
         }
 
+        // El SDK nuevo usa fetch nativo y no maneja ReadStream; leer a Buffer es la forma segura.
+        const fileBuffer = fs.readFileSync(validFilePath);
         const transcription = await groq.audio.transcriptions.create({
-            file: fs.createReadStream(validFilePath),
-            model: "whisper-large-v3", // Modelo rápido y preciso de Whisper en Groq
-            language: "es",           // Para priorizar idioma español
+            file: await toFile(fileBuffer, path.basename(validFilePath), { type: 'audio/webm' }),
+            model: "whisper-large-v3",
+            language: "es",
         });
 
-        // devolvemos el flag validFilePath para que server.js sepa que borrar luego.
         return { text: transcription.text, finalPath: validFilePath };
     } catch (error) {
         console.error("Error desde Groq API:", error);

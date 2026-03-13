@@ -265,16 +265,13 @@ async function loadTransactions() {
             const tipo = (d.tipo || '').toLowerCase();
             const valor = parseFloat(d.valor || 0);
             const txDate = new Date(tx.created_at);
+            const esMesActual = txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear();
 
-            // Calcular balance acumulado
-            if (tipo === 'ingreso') currentBalance += valor;
-            else if (tipo === 'gasto') currentBalance -= valor;
-            else if (tipo === 'modificacion de balance') currentBalance = valor;
-
-            // Totales del mes actual
-            if (txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear()) {
-                if (tipo === 'ingreso') ingresos += valor;
-                else if (tipo === 'gasto') gastos += valor;
+            // Balance y totales solo del mes actual
+            if (esMesActual) {
+                if (tipo === 'ingreso') { currentBalance += valor; ingresos += valor; }
+                else if (tipo === 'gasto') { currentBalance -= valor; gastos += valor; }
+                else if (tipo === 'modificacion de balance') currentBalance = valor;
             }
         });
 
@@ -316,12 +313,13 @@ let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
 
-const sendAudioToBackend = async (audioBlob, ext = 'webm') => {
+const sendAudioToBackend = async (audioBlob) => {
     try {
         if (voiceTextDisplay) voiceTextDisplay.innerText = "Transcribiendo con IA...";
 
         const formData = new FormData();
-        formData.append('audio', audioBlob, `grabacion.${ext}`);
+        // Le pasamos un nombre de archivo temporal para que Multer lo intercepte bien
+        formData.append('audio', audioBlob, 'grabacion.webm');
 
         // Usamos una ruta absoluta por si abres el HTML desde Live Server o directamente desde archivos locales
         const response = await fetch('/api/transcribe', {
@@ -381,11 +379,7 @@ const setupMicBtn = (btn) => {
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-            // Detectar el MIME type soportado por el navegador (iOS usa mp4, Chrome usa webm)
-            const preferredMime = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg']
-                .find(m => MediaRecorder.isTypeSupported(m)) || '';
-            mediaRecorder = preferredMime ? new MediaRecorder(stream, { mimeType: preferredMime }) : new MediaRecorder(stream);
+            mediaRecorder = new MediaRecorder(stream);
 
             mediaRecorder.ondataavailable = (event) => {
                 if (event.data.size > 0) {
@@ -394,11 +388,9 @@ const setupMicBtn = (btn) => {
             };
 
             mediaRecorder.onstop = () => {
-                const actualMime = mediaRecorder.mimeType || 'audio/webm';
-                const ext = actualMime.includes('mp4') ? 'mp4' : actualMime.includes('ogg') ? 'ogg' : 'webm';
-                const audioBlob = new Blob(audioChunks, { type: actualMime });
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                 audioChunks = [];
-                sendAudioToBackend(audioBlob, ext);
+                sendAudioToBackend(audioBlob);
 
                 // Detener los hilos del micrófono para la privacidad
                 stream.getTracks().forEach(track => track.stop());

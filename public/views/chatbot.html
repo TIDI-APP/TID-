@@ -149,6 +149,9 @@
     .msg-row { display: flex; align-items: flex-end; }
     .msg-row.user { justify-content: flex-end; }
   </style>
+  <link rel="manifest" href="/public/manifest.json">
+  <link rel="apple-touch-icon" href="/public/assets/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#6840f3">
 </head>
 
 <body>
@@ -343,6 +346,7 @@
     addBubble(`¡Hola, ${userName}! 👋 Soy Tidi, tu asistente financiero personal. ¿En qué puedo ayudarte hoy? Puedes preguntarme sobre gastos, ahorros, presupuestos o cualquier duda financiera.`, 'bot');
     messageInput.focus();
   </script>
+  <script src="/public/js/pwa-handler.js"></script>
 </body>
 
 </html>

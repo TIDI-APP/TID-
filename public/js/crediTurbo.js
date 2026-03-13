@@ -41,6 +41,22 @@ if (menuOverlay) menuOverlay.addEventListener('click', () => {
     menuOverlay.classList.remove('active');
 });
 
+// Usuarios premium (whitelist)
+const PREMIUM_EMAILS = ['santigovanegas11@gmail.com'];
+
+const isPremium = () => {
+    const u = getUser();
+    return u && PREMIUM_EMAILS.includes((u.email || '').toLowerCase());
+};
+
+// Modal premium
+const premiumModal = new bootstrap.Modal(document.getElementById('premiumModal'));
+document.getElementById('btnGoToPremium').addEventListener('click', () => {
+    const numero = '573054671608';
+    const mensaje = 'Hola, quiero suscribirme a Tidi Premium por $19.900/mes para acceder a Crediturbo y transacciones ilimitadas.';
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
+});
+
 // Capturamos los elementos de la interfaz
 const btnConnectBank = document.getElementById('btnConnectBank');
 const bankModalElement = document.getElementById('bankModal');
@@ -56,6 +72,10 @@ let selectedBank = null;
 
 // 1. Abrir el modal personalizado al hacer clic en el botón principal
 btnConnectBank.addEventListener('click', () => {
+    if (!isPremium()) {
+        premiumModal.show();
+        return;
+    }
     bankModal.show();
 });
 

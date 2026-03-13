@@ -20,15 +20,24 @@ app.use(cors());
 const sessionsDir = path.join(__dirname, 'sessions');
 if (!fs.existsSync(sessionsDir)) fs.mkdirSync(sessionsDir);
 
-app.use(session({
-    store: new FileStore({ path: sessionsDir, ttl: 86400, reapInterval: 3600 }),
+const sessionMiddleware = session({
+    store: new FileStore({ path: sessionsDir, ttl: 86400, reapInterval: 3600, retries: 0 }),
     secret: process.env.SESSION_SECRET || 'secret',
     resave: false,
     saveUninitialized: false,
-}));
+});
+
+// Solo aplicar sesiones a rutas de auth (OAuth). Las rutas /api/* usan JWT y no las necesitan.
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api/')) return next();
+    sessionMiddleware(req, res, next);
+});
 
 app.use(passport.initialize());
-app.use(passport.session());
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api/')) return next();
+    passport.session()(req, res, next);
+});
 
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);

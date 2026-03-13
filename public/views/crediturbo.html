@@ -10,6 +10,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="/public/css/dashboard.css">
+  <link rel="manifest" href="/public/manifest.json">
+  <link rel="apple-touch-icon" href="/public/assets/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#6840f3">
 </head>
 
 <body>
@@ -118,6 +121,31 @@
     </div>
   </div>
 
+  <!-- MODAL PREMIUM -->
+  <div class="modal fade" id="premiumModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content custom-modal text-center p-4">
+        <div class="modal-header border-0 pb-0 justify-content-end">
+          <button type="button" class="btn-close btn-close-white opacity-50" data-bs-dismiss="modal" onclick="window.location.href='dashboard.html'"></button>
+        </div>
+        <div class="modal-body pt-0">
+          <h5 class="fw-bold mb-2">Crediturbo es Premium</h5>
+          <p class="text-white-50 small mb-3">Accede al análisis de crédito personalizado con inteligencia artificial suscribiéndote a Tidi Premium.</p>
+          <p class="text-decoration-line-through text-white-50 mb-1" style="font-size:0.85rem;">Antes: $24.900/mes</p>
+          <h3 class="fw-bold mb-1" style="color: var(--primary-light);">$19.900<span class="fs-6 text-white-50">/mes</span></h3>
+          <ul class="text-start text-white-50 small mb-4 ps-3">
+            <li>Análisis de crédito con IA</li>
+            <li>Transacciones ilimitadas por voz y cámara</li>
+            <li>Acceso completo a Crediturbo</li>
+          </ul>
+          <button class="btn btn-gradient w-100 rounded-pill py-2 fw-bold" id="btnGoToPremium">
+            <i class="bi bi-whatsapp me-2"></i> Quiero Premium
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL SELECCIÓN DE BANCO -->
   <div class="modal fade" id="bankModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -147,5 +175,6 @@
   <script src="/public/js/auth.js"></script>
   <script src="/public/js/crediTurbo.js"></script>
 
+  <script src="/public/js/pwa-handler.js"></script>
 </body>
 </html>
