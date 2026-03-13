@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html class="dark" lang="es">
+<html lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -58,9 +58,7 @@
                     href="#demo">Demo</a>
             </div>
             <div class="flex items-center gap-4">
-                <button class="theme-toggle p-2 text-neutral-gray hover:text-white transition-colors">
-                    <span class="material-symbols-outlined">light_mode</span>
-                </button>
+                <!-- Theme toggle button removed as requested -->
                 <a href="./views/register.html"
                     class="btn-gradient px-6 py-2.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity">
                     Get Started
@@ -288,115 +286,7 @@
         </div>
     </section>
     <!-- Final CTA -->
-    <!-- Pricing Section -->
-    <section class="py-24 px-6 border-y border-white/5" id="pricing">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4">Planes para tu libertad financiera</h2>
-                <p class="text-neutral-gray max-w-2xl mx-auto">Elige el plan que mejor se adapte a tus necesidades y
-                    comienza a transformar tus finanzas hoy mismo.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Basic Plan -->
-                <div class="glass-card p-8 rounded-xl flex flex-col h-full">
-                    <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">Gratis</h3>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-4xl font-black">$0</span>
-                            <span class="text-neutral-gray">/mes</span>
-                        </div>
-                        <p class="text-sm text-neutral-gray mt-4">Ideal para empezar.</p>
-                    </div>
-                    <ul class="space-y-4 mb-8 flex-1">
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-accent-teal text-lg">check_circle</span>
-                            Registro por voz básico
-                        </li>
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-accent-teal text-lg">check_circle</span>
-                            1 cuenta conectada
-                        </li>
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-accent-teal text-lg">check_circle</span>
-                            Reportes mensuales
-                        </li>
-                    </ul>
-                    <button
-                        class="w-full py-3 rounded-full border border-white/20 font-bold hover:bg-white/5 transition-colors">Empezar
-                        ahora</button>
-                </div>
-                <!-- Pro Plan (Featured) -->
-                <div
-                    class="glass-card p-8 rounded-xl flex flex-col h-full relative border-secondary-violet/50 shadow-[0_0_40px_rgba(123,63,242,0.15)]">
-                    <div
-                        class="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary-violet px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase">
-                        Popular
-                    </div>
-                    <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2 text-secondary-violet">Pro</h3>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-4xl font-black">$9.99</span>
-                            <span class="text-neutral-gray">/mes</span>
-                        </div>
-                        <p class="text-sm text-neutral-gray mt-4">Para usuarios avanzados.</p>
-                    </div>
-                    <ul class="space-y-4 mb-8 flex-1">
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
-                            IA avanzada de clasificación
-                        </li>
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
-                            Cuentas ilimitadas
-                        </li>
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
-                            Exportación de datos
-                        </li>
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
-                            Soporte prioritario
-                        </li>
-                    </ul>
-                    <button
-                        class="btn-gradient w-full py-3 rounded-full font-bold shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">Elegir
-                        Pro</button>
-                </div>
-                <!-- Business Plan -->
-                <div class="glass-card p-8 rounded-xl flex flex-col h-full">
-                    <div class="mb-8">
-                        <h3 class="text-xl font-bold mb-2">Business</h3>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-4xl font-black">$29.99</span>
-                            <span class="text-neutral-gray">/mes</span>
-                        </div>
-                        <p class="text-sm text-neutral-gray mt-4">Control total empresarial.</p>
-                    </div>
-                    <ul class="space-y-4 mb-8 flex-1">
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                            Múltiples usuarios
-                        </li>
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                            Gestión de nómina básica
-                        </li>
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                            API de integración
-                        </li>
-                        <li class="flex items-center gap-3 text-sm">
-                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                            Consultoría financiera trimestral
-                        </li>
-                    </ul>
-                    <button
-                        class="w-full py-3 rounded-full border border-white/20 font-bold hover:bg-white/5 transition-colors">Contactar
-                        ventas</button>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Pricing section removed -->
     <section class="py-32 px-6 text-center relative">
         <div class="max-w-3xl mx-auto">
             <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">Tu dinero merece inteligencia.</h2>
@@ -461,7 +351,7 @@
             </div>
         </div>
     </footer>
-    <script src="./js/theme-toggle.js"></script>
+    <!-- toggle js removed -->
 </body>
 
 </html>
