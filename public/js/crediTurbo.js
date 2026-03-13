@@ -1,14 +1,14 @@
-// Verificar autenticación
+// Route guard — redirect to login if not authenticated
 requireAuth();
 
-// Saludo
+// Display the user's name in the welcome message
 const user = getUser();
 const welcomeMsg = document.getElementById('welcomeMsg');
 if (welcomeMsg && user) {
     welcomeMsg.textContent = `Hola, ${user.first_name || user.email}`;
 }
 
-// Theme toggle
+// Theme toggle — persists preference in localStorage
 const themeToggle = document.getElementById('themeToggle');
 if (themeToggle) {
     const saved = localStorage.getItem('theme') || 'dark';
@@ -22,7 +22,7 @@ if (themeToggle) {
     });
 }
 
-// Sidebar móvil
+// Mobile sidebar toggle
 const menuToggle = document.getElementById('menuToggle');
 const mobileSidebar = document.getElementById('mobileSidebar');
 const menuOverlay = document.getElementById('menuOverlay');
@@ -41,36 +41,37 @@ if (menuOverlay) menuOverlay.addEventListener('click', () => {
     menuOverlay.classList.remove('active');
 });
 
-// Usuarios premium (whitelist)
+// Premium whitelist — emails that have access to Crediturbo
 const PREMIUM_EMAILS = ['santigovanegas11@gmail.com'];
 
+// Returns true if the current user is in the premium whitelist
 const isPremium = () => {
     const u = getUser();
     return u && PREMIUM_EMAILS.includes((u.email || '').toLowerCase());
 };
 
-// Modal premium
+// Premium upgrade modal — opens a WhatsApp chat to subscribe
 const premiumModal = new bootstrap.Modal(document.getElementById('premiumModal'));
 document.getElementById('btnGoToPremium').addEventListener('click', () => {
-    const numero = '573054671608';
-    const mensaje = 'Hola, quiero suscribirme a Tidi Premium por $19.900/mes para acceder a Crediturbo y transacciones ilimitadas.';
-    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    const phoneNumber = '573054671608';
+    const message = 'Hola, quiero suscribirme a Tidi Premium por $19.900/mes para acceder a Crediturbo y transacciones ilimitadas.';
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
 });
 
-// Capturamos los elementos de la interfaz
+// Bank connection modal elements
 const btnConnectBank = document.getElementById('btnConnectBank');
 const bankModalElement = document.getElementById('bankModal');
 const bankModal = new bootstrap.Modal(bankModalElement);
 const bankOptions = document.querySelectorAll('.bank-option');
 const btnConfirmBank = document.getElementById('btnConfirmBank');
 
-// Capturamos las pantallas para el cambio de vista
+// Step views — switch between the connection form and the result display
 const stepConnect = document.getElementById('stepConnect');
 const stepResult = document.getElementById('stepResult');
 
 let selectedBank = null;
 
-// 1. Abrir el modal personalizado al hacer clic en el botón principal
+// Open the bank selection modal — gated behind the premium check
 btnConnectBank.addEventListener('click', () => {
     if (!isPremium()) {
         premiumModal.show();
@@ -79,7 +80,7 @@ btnConnectBank.addEventListener('click', () => {
     bankModal.show();
 });
 
-// Selección de banco
+// Highlight the selected bank option
 bankOptions.forEach(button => {
     button.addEventListener('click', (e) => {
 
@@ -99,13 +100,13 @@ bankOptions.forEach(button => {
     });
 });
 
-// 3. Secuencia de carga, FETCH real al servidor y éxito
+// Connect to the selected bank: call the Prometeo API, calculate credit, and show the result
 btnConfirmBank.addEventListener('click', async () => {
     bankModal.hide();
 
     Swal.fire({
-        title: `Conectando con ${selectedBank}...`,
-        text: 'Analizando tus movimientos con Prometeo...',
+        title: `${t('crediturbo.connectBtn')}... (${selectedBank})`,
+        text: t('crediturbo.connectDesc'),
         background: '#12131c',
         color: '#fff',
         allowOutsideClick: false,
@@ -123,41 +124,44 @@ btnConfirmBank.addEventListener('click', async () => {
         if (data.status === 'success') {
             Swal.fire({
                 icon: 'success',
-                title: '¡Conexión exitosa!',
-                text: `Tu cuenta de ${selectedBank} está vinculada.`,
+                title: t('crediturbo.connectAccount'),
+                text: `${selectedBank}`,
                 background: '#12131c',
                 color: '#fff',
                 showConfirmButton: false,
                 timer: 2000
             }).then(() => {
 
+                // Switch to the results view
                 stepConnect.classList.add('d-none');
                 stepResult.classList.remove('d-none');
 
-                const cuotaMensual = data.cuota_mensual;
+                const monthlyPayment = data.cuota_mensual;
 
-                const formateadorCOP = new Intl.NumberFormat('es-CO', {
+                // Formatter for Colombian Peso amounts
+                const copFormatter = new Intl.NumberFormat('es-CO', {
                     style: 'currency',
                     currency: 'COP',
                     maximumFractionDigits: 0
                 });
 
-                document.getElementById('cupoDisplay').textContent = formateadorCOP.format(data.cupo_aprobado);
-                document.getElementById('ingresosDisplay').textContent = formateadorCOP.format(data.promedio_ingresos_cop);
+                document.getElementById('cupoDisplay').textContent = copFormatter.format(data.cupo_aprobado);
+                document.getElementById('ingresosDisplay').textContent = copFormatter.format(data.promedio_ingresos_cop);
 
                 document.getElementById('cuotaContainer').innerHTML = `
-                    <small class="text-white-50 d-block mb-1">Cuota estimada (168 meses)</small>
-                    <strong class="fs-4 text-warning">${formateadorCOP.format(cuotaMensual)} / mes</strong>
+                    <small class="text-white-50 d-block mb-1">${t('crediturbo.monthly')}</small>
+                    <strong class="fs-4 text-warning">${copFormatter.format(monthlyPayment)} / ${t('premium.perMonth').replace('/', '')}</strong>
                 `;
 
+                // WhatsApp button to contact an advisor with the pre-approved credit amount
                 const btnWhatsApp = document.getElementById('btnWhatsApp');
                 btnWhatsApp.onclick = () => {
-                    const montoFormat = formateadorCOP.format(data.cupo_aprobado);
-                    const mensaje = `Hola, acabo de simular mi crédito en la app Tidi y me salió un cupo pre-aprobado de ${montoFormat}. Me gustaría hablar con un asesor para continuar el proceso.`;
+                    const formattedAmount = copFormatter.format(data.cupo_aprobado);
+                    const message = `Hola, acabo de simular mi crédito en la app Tidi y me salió un cupo pre-aprobado de ${formattedAmount}. Me gustaría hablar con un asesor para continuar el proceso.`;
 
-                    const numeroAsesor = '573054671608';
-                    const urlWA = `https://wa.me/${numeroAsesor}?text=${encodeURIComponent(mensaje)}`;
-                    window.open(urlWA, '_blank');
+                    const advisorNumber = '573054671608';
+                    const whatsappUrl = `https://wa.me/${advisorNumber}?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappUrl, '_blank');
                 };
             });
         } else {
@@ -165,11 +169,11 @@ btnConfirmBank.addEventListener('click', async () => {
         }
 
     } catch (error) {
-        console.error("Error en la petición:", error);
+        console.error("Error in bank connection request:", error);
         Swal.fire({
             icon: 'error',
-            title: 'Error de conexión',
-            text: 'Fallo al conectarse con el servidor. Revisa si está encendido.',
+            title: t('error.connection'),
+            text: t('error.connection'),
             background: '#12131c',
             color: '#fff',
             confirmButtonColor: '#6840f3'

@@ -1,13 +1,12 @@
 const { createClient } = require('@supabase/supabase-js');
 
+// Initialize Supabase client with service key (bypasses row-level security)
 const supabase = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_KEY
 );
 
-/**
- * Busca a un usuario en la tabla por su Email
- */
+// Finds a user by their email address; returns null if not found (PGRST116 = not found, not an error)
 const getUserByEmail = async (email) => {
     const { data, error } = await supabase
         .from('users')
@@ -18,9 +17,7 @@ const getUserByEmail = async (email) => {
     return data;
 };
 
-/**
- * Registra un usuario de forma Manual desde el Formulario
- */
+// Creates a new user from the manual registration form (email + hashed password)
 const createUserManual = async (email, passwordHash, firstName, lastName) => {
     const { data, error } = await supabase
         .from('users')
@@ -31,9 +28,7 @@ const createUserManual = async (email, passwordHash, firstName, lastName) => {
     return data;
 };
 
-/**
- * Busca a un usuario por Google ID (Para inicio de sesión con OAuth)
- */
+// Finds a user by their Google OAuth ID; returns null if not found
 const getUserByGoogleId = async (googleId) => {
     const { data, error } = await supabase
         .from('users')
@@ -44,15 +39,14 @@ const getUserByGoogleId = async (googleId) => {
     return data;
 };
 
-/**
- * Crea o vincula una cuenta desde Google.
- * Si el usuario ya existe con ese correo pero no tiene el google_id conectado, lo actualiza.
- * Si no existe, lo inserta de cero.
- */
+// Creates or links a Google account:
+// - If the email already exists, updates the google_id and avatar_url on the existing account
+// - If the email doesn't exist, inserts a brand-new user record
 const createOrUpdateGoogleUser = async (email, googleId, firstName, lastName, avatarUrl) => {
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
+        // Link Google account to an existing email-based account
         const { data, error } = await supabase
             .from('users')
             .update({ google_id: googleId, avatar_url: avatarUrl })
@@ -62,6 +56,7 @@ const createOrUpdateGoogleUser = async (email, googleId, firstName, lastName, av
         if (error) throw error;
         return data;
     } else {
+        // Create a new user from Google sign-in
         const { data, error } = await supabase
             .from('users')
             .insert({ email, google_id: googleId, first_name: firstName, last_name: lastName, avatar_url: avatarUrl })
@@ -72,6 +67,7 @@ const createOrUpdateGoogleUser = async (email, googleId, firstName, lastName, av
     }
 };
 
+// Updates the first and last name of a user by their ID
 const updateUserProfile = async (userId, firstName, lastName) => {
     const { data, error } = await supabase
         .from('users')
@@ -83,6 +79,7 @@ const updateUserProfile = async (userId, firstName, lastName) => {
     return data;
 };
 
+// Returns a user's public profile fields by their ID
 const getUserById = async (userId) => {
     const { data, error } = await supabase
         .from('users')
@@ -93,9 +90,7 @@ const getUserById = async (userId) => {
     return data;
 };
 
-/**
- * Cuenta transacciones creadas por IA (voz o cámara) del usuario
- */
+// Counts how many AI-generated transactions (voice or camera) the user has created — used for the free tier limit
 const countAiTransactions = async (userId) => {
     const { data, error } = await supabase
         .from('transactions')
@@ -105,9 +100,7 @@ const countAiTransactions = async (userId) => {
     return (data || []).filter(t => t.data && (t.data.source === 'voice' || t.data.source === 'camera')).length;
 };
 
-/**
- * Guarda una transacción con data JSONB vinculada al usuario
- */
+// Inserts a new transaction as a JSONB data object linked to the user
 const createTransaction = async (userId, data) => {
     const { data: row, error } = await supabase
         .from('transactions')
@@ -118,9 +111,7 @@ const createTransaction = async (userId, data) => {
     return row;
 };
 
-/**
- * Obtiene todas las transacciones de un usuario ordenadas por fecha
- */
+// Returns all transactions for a user ordered by creation date descending
 const getTransactionsByUser = async (userId) => {
     const { data, error } = await supabase
         .from('transactions')
@@ -131,6 +122,7 @@ const getTransactionsByUser = async (userId) => {
     return data;
 };
 
+// Deletes a transaction by ID, scoped to the user (prevents deleting other users' data)
 const deleteTransaction = async (txId, userId) => {
     const { error } = await supabase
         .from('transactions')

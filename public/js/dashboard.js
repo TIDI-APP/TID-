@@ -1,4 +1,4 @@
-// Si viene con token en la URL (Google OAuth), guardarlo ANTES del guard
+// If a token is passed in the URL (Google OAuth redirect), save it before the auth guard runs
 const _urlParams = new URLSearchParams(window.location.search);
 const _urlToken = _urlParams.get('token');
 if (_urlToken) {
@@ -6,15 +6,15 @@ if (_urlToken) {
     window.history.replaceState({}, document.title, window.location.pathname);
 }
 
-// Protección de ruta
+// Route guard — redirect to login if not authenticated
 requireAuth();
 
-// Nombre de usuario dinámico
+// Display the user's first name in the welcome message
 const _user = getUser();
 if (_user) {
     const name = _user.first_name || _user.email.split('@')[0];
     const welcomeMsg = document.getElementById('welcomeMsg');
-    if (welcomeMsg) welcomeMsg.textContent = `Hola, ${name}`;
+    if (welcomeMsg) welcomeMsg.textContent = `Hola, ${name}`; // greeting stays in Spanish (proper noun pattern)
 }
 
 const financeModalEl = document.getElementById('financeModal');
@@ -26,19 +26,19 @@ const categoryButtons = document.querySelectorAll('.category-badge');
 
 let currentType = "";
 
-// Income
+// Open the modal pre-configured for a new income entry
 document.getElementById('openIncome')?.addEventListener('click', () => {
     currentType = "Ingreso";
-    if (modalTitle) modalTitle.innerText = "Nuevo Ingreso";
+    if (modalTitle) modalTitle.innerText = t('finance.newIncome');
     if (modalIconContainer) modalIconContainer.innerHTML = '<i class="bi bi-arrow-down-circle-fill text-success fs-1"></i>';
     if (btnSaveTransaction) btnSaveTransaction.style.background = "var(--primary)";
     if (financeModal) financeModal.show();
 });
 
-// Expense
+// Open the modal pre-configured for a new expense entry
 document.getElementById('openExpense')?.addEventListener('click', () => {
     currentType = "Gasto";
-    modalTitle.innerText = "Nuevo Gasto";
+    modalTitle.innerText = t('finance.newExpense');
     modalIconContainer.innerHTML = '<i class="bi bi-arrow-up-circle-fill text-danger fs-1"></i>';
     if (btnSaveTransaction) btnSaveTransaction.style.background = "var(--soft)";
     if (financeModal) financeModal.show();
@@ -46,19 +46,20 @@ document.getElementById('openExpense')?.addEventListener('click', () => {
 
 const financeForm = document.getElementById('financeForm');
 if (financeForm) {
+    // Handle manual transaction form submission
     financeForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const valor = financeForm.querySelector('input[type="number"]').value;
-        const titulo = financeForm.querySelector('input[type="text"]').value.trim();
+        const amount = financeForm.querySelector('input[type="number"]').value;
+        const title = financeForm.querySelector('input[type="text"]').value.trim();
         const activeCategory = financeForm.querySelector('.category-badge.active');
-        const categoria = activeCategory ? activeCategory.textContent.trim() : 'Otros';
+        const category = activeCategory ? activeCategory.textContent.trim() : 'Otros';
         const saveBtn = document.getElementById('btnSaveTransaction');
 
-        if (!valor || parseFloat(valor) <= 0) return;
+        if (!amount || parseFloat(amount) <= 0) return;
 
         saveBtn.disabled = true;
-        saveBtn.textContent = 'Guardando...';
+        saveBtn.textContent = t('finance.saving');
 
         try {
             const res = await fetch('/api/transactions', {
@@ -69,29 +70,29 @@ if (financeForm) {
                 },
                 body: JSON.stringify({
                     tipo: currentType,
-                    titulo: titulo || categoria,
-                    valor: parseFloat(valor),
-                    categoria
+                    titulo: title || category,
+                    valor: parseFloat(amount),
+                    categoria: category
                 })
             });
             if (res.ok) {
                 const { transaction } = await res.json();
                 renderTransaction(transaction, true);
 
-                const v = parseFloat(valor);
-                const tipo = currentType.toLowerCase();
+                const v = parseFloat(amount);
+                const type = currentType.toLowerCase();
 
-                // Actualizar balance
+                // Update the running balance
                 applyToBalance(currentType, v);
 
-                // Actualizar totales del mes
+                // Update the month totals if the transaction falls in the current month
                 const now = new Date();
                 const txDate = new Date(transaction.created_at);
                 if (txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear()) {
-                    if (tipo === 'ingreso') {
+                    if (type === 'ingreso') {
                         const elI2 = document.getElementById('totalIngresos');
                         elI2.textContent = fmt((parseFloat(elI2.textContent.replace(/[^0-9.-]/g, '')) || 0) + v);
-                    } else if (tipo === 'gasto') {
+                    } else if (type === 'gasto') {
                         const elG2 = document.getElementById('totalGastos');
                         elG2.textContent = fmt((parseFloat(elG2.textContent.replace(/[^0-9.-]/g, '')) || 0) + v);
                     }
@@ -102,13 +103,13 @@ if (financeForm) {
         }
 
         saveBtn.disabled = false;
-        saveBtn.textContent = 'Guardar';
+        saveBtn.textContent = t('finance.save');
         financeForm.reset();
         if (financeModal) financeModal.hide();
     });
 }
 
-// Category selection logic
+// Category selection — highlights the active badge and clears others
 categoryButtons.forEach(btn => {
     btn.addEventListener('click', () => {
         categoryButtons.forEach(b => {
@@ -122,7 +123,7 @@ categoryButtons.forEach(btn => {
     });
 });
 
-// Edit Balance Logic
+// Edit Balance modal — allows the user to manually set the current balance
 const editBalanceModalEl = document.getElementById('editBalanceModal');
 const editBalanceModal = editBalanceModalEl ? new bootstrap.Modal(editBalanceModalEl) : null;
 const editBalanceBtn = document.getElementById('editBalanceBtn');
@@ -169,51 +170,46 @@ if (btnUpdateBalance) {
     });
 }
 
-
-
-
-// 🌗 Modo oscuro/claro
+// Theme toggle — switches between dark and light mode
 document.getElementById("themeToggle").addEventListener("click", () => {
     document.body.classList.toggle("light-mode");
 });
 
-
-// ✨ Fade in progresivo
+// Progressive fade-in animation for elements with the .fade-in class
 window.addEventListener("load", () => {
     document.querySelectorAll(".fade-in").forEach((el, i) => {
         setTimeout(() => el.classList.add("show"), i * 180);
     });
 });
 
-// Formato de moneda
+// Formats a number as a currency string (e.g. $1,234.56)
 function fmt(val) {
     return '$' + parseFloat(val || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-
-// Renderiza una transacción en la lista
+// Renders a single transaction card and appends or prepends it to the list
 function renderTransaction(tx, prepend = false) {
     const d = tx.data || {};
-    const tipo = (d.tipo || '').toLowerCase();
-    const isIngreso = tipo === 'ingreso';
-    const isBalance = tipo === 'modificacion de balance';
-    const titulo = d.titulo || d.categoria || 'Sin título';
-    const categoria = d.categoria || '';
-    const valor = parseFloat(d.valor || 0);
+    const type = (d.tipo || '').toLowerCase();
+    const isIncome = type === 'ingreso';
+    const isBalance = type === 'modificacion de balance';
+    const title = d.titulo || d.categoria || 'Sin título';
+    const category = d.categoria || '';
+    const amount = parseFloat(d.valor || 0);
 
-    const colorClass = isIngreso ? 'text-success' : isBalance ? 'text-primary' : 'text-danger';
-    const prefix = isIngreso ? '+ ' : isBalance ? '' : '- ';
+    const colorClass = isIncome ? 'text-success' : isBalance ? 'text-primary' : 'text-danger';
+    const prefix = isIncome ? '+ ' : isBalance ? '' : '- ';
 
-    const fecha = new Date(tx.created_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
+    const date = new Date(tx.created_at).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
 
     const el = document.createElement('div');
     el.className = 'card-custom mb-3 d-flex justify-content-between align-items-center';
     el.innerHTML = `
         <div>
-          <strong>${titulo}</strong>
-          <div class="small opacity-50">${categoria} · ${fecha}</div>
+          <strong>${title}</strong>
+          <div class="small opacity-50">${category} · ${date}</div>
         </div>
-        <span class="${colorClass} fw-bold">${prefix}${fmt(valor)}</span>`;
+        <span class="${colorClass} fw-bold">${prefix}${fmt(amount)}</span>`;
 
     const list = document.getElementById('transactionsList');
     const empty = document.getElementById('noTransactions');
@@ -226,9 +222,10 @@ function renderTransaction(tx, prepend = false) {
     }
 }
 
-// Balance global
+// Global running balance for the current month
 let currentBalance = 0;
 
+// Updates the balance display element with the current value, coloring it red if negative
 function updateBalanceDisplay() {
     const el = document.getElementById('balanceValue');
     if (!el) return;
@@ -237,53 +234,53 @@ function updateBalanceDisplay() {
     el.style.color = isNeg ? '#f87171' : 'white';
 }
 
-function applyToBalance(tipo, valor) {
-    const t = (tipo || '').toLowerCase();
-    if (t === 'ingreso') currentBalance += valor;
-    else if (t === 'gasto') currentBalance -= valor;
-    else if (t === 'modificacion de balance') currentBalance = valor;
+// Applies a transaction to the running balance based on its type
+function applyToBalance(type, amount) {
+    const t = (type || '').toLowerCase();
+    if (t === 'ingreso') currentBalance += amount;
+    else if (t === 'gasto') currentBalance -= amount;
+    else if (t === 'modificacion de balance') currentBalance = amount;
     updateBalanceDisplay();
 }
 
-
-// Carga transacciones y calcula totales + balance
+// Fetches all transactions from the API, computes the current-month balance and totals, and renders the 4 most recent
 async function loadTransactions() {
     try {
         const res = await fetch('/api/transactions', {
             headers: { 'Authorization': `Bearer ${getToken()}` }
         });
         if (!res.ok) return;
-        // La API devuelve ordenadas DESC, invertimos para procesar balance cronológicamente
+        // API returns DESC order; reverse to process balance chronologically
         const transactions = (await res.json()).slice().reverse();
 
-        let ingresos = 0, gastos = 0;
+        let incomes = 0, expenses = 0;
         const now = new Date();
         currentBalance = 0;
 
         transactions.forEach(tx => {
             const d = tx.data || {};
-            const tipo = (d.tipo || '').toLowerCase();
-            const valor = parseFloat(d.valor || 0);
+            const type = (d.tipo || '').toLowerCase();
+            const amount = parseFloat(d.valor || 0);
             const txDate = new Date(tx.created_at);
-            const esMesActual = txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear();
+            const isCurrentMonth = txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear();
 
-            // Balance y totales solo del mes actual
-            if (esMesActual) {
-                if (tipo === 'ingreso') { currentBalance += valor; ingresos += valor; }
-                else if (tipo === 'gasto') { currentBalance -= valor; gastos += valor; }
-                else if (tipo === 'modificacion de balance') currentBalance = valor;
+            // Only include current-month transactions in balance and totals
+            if (isCurrentMonth) {
+                if (type === 'ingreso') { currentBalance += amount; incomes += amount; }
+                else if (type === 'gasto') { currentBalance -= amount; expenses += amount; }
+                else if (type === 'modificacion de balance') currentBalance = amount;
             }
         });
 
-        // Renderizar las 4 más recientes en orden DESC
+        // Render the 4 most recent transactions in DESC order
         transactions.slice().reverse().slice(0, 4).forEach(tx => renderTransaction(tx));
         document.getElementById('seeAllBtn').style.display = transactions.length > 4 ? '' : 'none';
 
         updateBalanceDisplay();
         const elI = document.getElementById('totalIngresos');
         const elG = document.getElementById('totalGastos');
-        elI.textContent = fmt(ingresos);
-        elG.textContent = fmt(gastos);
+        elI.textContent = fmt(incomes);
+        elG.textContent = fmt(expenses);
 
     } catch (e) {
         console.error('Error loading transactions:', e);
@@ -292,14 +289,14 @@ async function loadTransactions() {
 
 loadTransactions();
 
-// 🎤 Voice Bottom Sheet & Speech Recognition API
+// Voice Bottom Sheet & MediaRecorder setup
 const voiceSheet = document.getElementById("voiceSheet");
-const voiceTextDisplay = document.getElementById("voiceTextDisplay"); // Make sure this element exists in HTML
+const voiceTextDisplay = document.getElementById("voiceTextDisplay");
 const waveAnimation = document.getElementById("waveAnimation");
 
 const showVoiceSheet = () => {
     voiceSheet.classList.add("active");
-    if (voiceTextDisplay) voiceTextDisplay.innerText = "Escuchando...";
+    if (voiceTextDisplay) voiceTextDisplay.innerText = t('voice.listening');
     if (waveAnimation) waveAnimation.style.display = "flex";
 };
 
@@ -308,20 +305,20 @@ const hideVoiceSheet = () => {
     if (waveAnimation) waveAnimation.style.display = "none";
 };
 
-// Web Audio API Setup
+// MediaRecorder state
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
 
+// Sends the recorded audio blob to the backend for transcription and saves the resulting transaction
 const sendAudioToBackend = async (audioBlob) => {
     try {
-        if (voiceTextDisplay) voiceTextDisplay.innerText = "Transcribiendo con IA...";
+        if (voiceTextDisplay) voiceTextDisplay.innerText = t('voice.transcribing');
 
         const formData = new FormData();
-        // Le pasamos un nombre de archivo temporal para que Multer lo intercepte bien
+        // Provide a filename so Multer can detect the file type correctly
         formData.append('audio', audioBlob, 'grabacion.webm');
 
-        // Usamos una ruta absoluta por si abres el HTML desde Live Server o directamente desde archivos locales
         const response = await fetch('/api/transcribe', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${getToken()}` },
@@ -331,6 +328,7 @@ const sendAudioToBackend = async (audioBlob) => {
         const data = await response.json();
 
         if (response.status === 402) {
+            // Free plan AI limit reached — show the premium upgrade modal
             hideVoiceSheet();
             premiumModal.show();
             return;
@@ -338,7 +336,7 @@ const sendAudioToBackend = async (audioBlob) => {
 
         if (response.ok) {
             if (voiceTextDisplay) voiceTextDisplay.innerText = `✓ ${data.transcript || '¡Guardado!'}`;
-            // Renderizar en dashboard y actualizar balance inmediatamente
+            // Immediately update the dashboard without a full reload
             if (data.record) {
                 renderTransaction(data.record, true);
                 const d = data.record.data || {};
@@ -346,11 +344,11 @@ const sendAudioToBackend = async (audioBlob) => {
                 const now = new Date();
                 const txDate = new Date(data.record.created_at);
                 if (txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear()) {
-                    const tipo = (d.tipo || '').toLowerCase();
-                    if (tipo === 'ingreso') {
+                    const type = (d.tipo || '').toLowerCase();
+                    if (type === 'ingreso') {
                         const elVI = document.getElementById('totalIngresos');
                         elVI.textContent = fmt((parseFloat(elVI.textContent.replace(/[^0-9.-]/g, '')) || 0) + parseFloat(d.valor || 0));
-                    } else if (tipo === 'gasto') {
+                    } else if (type === 'gasto') {
                         const elVG = document.getElementById('totalGastos');
                         elVG.textContent = fmt((parseFloat(elVG.textContent.replace(/[^0-9.-]/g, '')) || 0) + parseFloat(d.valor || 0));
                     }
@@ -364,15 +362,16 @@ const sendAudioToBackend = async (audioBlob) => {
     } catch (e) {
         console.error("Failed to send audio", e);
         if (voiceTextDisplay) {
-            voiceTextDisplay.innerText = "Error de conexión al servidor.";
+            voiceTextDisplay.innerText = t('error.connection');
         }
     }
 };
 
+// Attaches press-and-hold recording behavior to a microphone button
 const setupMicBtn = (btn) => {
     if (!btn) return;
 
-    // Iniciar el Grabador
+    // Start recording on button press
     const startRecording = async (e) => {
         if (e) e.preventDefault();
         if (isRecording) return;
@@ -392,7 +391,7 @@ const setupMicBtn = (btn) => {
                 audioChunks = [];
                 sendAudioToBackend(audioBlob);
 
-                // Detener los hilos del micrófono para la privacidad
+                // Release the microphone track for privacy
                 stream.getTracks().forEach(track => track.stop());
             };
 
@@ -401,15 +400,15 @@ const setupMicBtn = (btn) => {
             isRecording = true;
 
             showVoiceSheet();
-            if (voiceTextDisplay) voiceTextDisplay.innerText = "Te escucho. Habla ahora...";
+            if (voiceTextDisplay) voiceTextDisplay.innerText = t('voice.speak');
 
         } catch (err) {
             console.error("Microphone access denied or error:", err);
-            if (voiceTextDisplay) voiceTextDisplay.innerText = "Por favor acepta los permisos del micrófono.";
+            if (voiceTextDisplay) voiceTextDisplay.innerText = t('voice.micPerm');
         }
     };
 
-    // Detener el Grabador
+    // Stop recording on button release
     const stopRecording = (e) => {
         if (e) e.preventDefault();
         if (!isRecording) return;
@@ -419,17 +418,18 @@ const setupMicBtn = (btn) => {
             mediaRecorder.stop();
         }
 
+        // Keep the sheet visible for 3 seconds so the user can read the AI response
         setTimeout(() => {
             hideVoiceSheet();
-        }, 3000); // 3 seconds delay para que el usuario pueda leer la respuesta de la IA antes de que se esconda y ver que todo estä bien
+        }, 3000);
     };
 
-    // Desktop triggers
+    // Desktop triggers (mouse)
     btn.addEventListener("mousedown", startRecording);
     btn.addEventListener("mouseup", stopRecording);
-    btn.addEventListener("mouseleave", stopRecording); // Added safety catch if mouse leaves button
+    btn.addEventListener("mouseleave", stopRecording);
 
-    // Mobile touch triggers
+    // Mobile triggers (touch)
     btn.addEventListener("touchstart", startRecording, { passive: false });
     btn.addEventListener("touchend", stopRecording, { passive: false });
     btn.addEventListener("touchcancel", stopRecording, { passive: false });
@@ -438,14 +438,14 @@ const setupMicBtn = (btn) => {
 setupMicBtn(document.getElementById("iaButton"));
 setupMicBtn(document.getElementById("iaButtonDesktop"));
 
-// 📷 Escanear factura
+// Invoice scanner — opens a modal to choose camera or gallery
 const scanModal = new bootstrap.Modal(document.getElementById('scanModal'));
 const premiumModal = new bootstrap.Modal(document.getElementById('premiumModal'));
 
 document.getElementById('btnGoToPremium').addEventListener('click', () => {
-    const numero = '573054671608';
-    const mensaje = 'Hola, quiero suscribirme a Tidi Premium por $19.900/mes para tener transacciones ilimitadas por voz y cámara.';
-    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    const phoneNumber = '573054671608';
+    const message = 'Hola, quiero suscribirme a Tidi Premium por $19.900/mes para tener transacciones ilimitadas por voz y cámara.';
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
 });
 const invoiceCameraInput = document.getElementById('invoiceCameraInput');
 const invoiceGalleryInput = document.getElementById('invoiceGalleryInput');
@@ -469,11 +469,12 @@ document.getElementById('btnUploadFile').addEventListener('click', () => {
     scanModalEl.addEventListener('hidden.bs.modal', () => invoiceGalleryInput.click(), { once: true });
 });
 
+// Sends an invoice image to the backend, renders the resulting transaction, and updates the balance
 const handleInvoiceFile = async (file) => {
     if (!file) return;
 
     showVoiceSheet();
-    if (voiceTextDisplay) voiceTextDisplay.innerText = 'Analizando factura con IA...';
+    if (voiceTextDisplay) voiceTextDisplay.innerText = t('scan.analyzing');
     if (waveAnimation) waveAnimation.style.display = 'flex';
 
     try {
@@ -489,6 +490,7 @@ const handleInvoiceFile = async (file) => {
         const data = await response.json();
 
         if (response.status === 402) {
+            // Free plan AI limit reached — show the premium upgrade modal
             hideVoiceSheet();
             premiumModal.show();
             return;
@@ -502,11 +504,11 @@ const handleInvoiceFile = async (file) => {
             const now = new Date();
             const txDate = new Date(data.record.created_at);
             if (txDate.getMonth() === now.getMonth() && txDate.getFullYear() === now.getFullYear()) {
-                const tipo = (d.tipo || '').toLowerCase();
-                if (tipo === 'ingreso') {
+                const type = (d.tipo || '').toLowerCase();
+                if (type === 'ingreso') {
                     const el = document.getElementById('totalIngresos');
                     el.textContent = fmt((parseFloat(el.textContent.replace(/[^0-9.-]/g, '')) || 0) + parseFloat(d.valor));
-                } else if (tipo === 'gasto') {
+                } else if (type === 'gasto') {
                     const el = document.getElementById('totalGastos');
                     el.textContent = fmt((parseFloat(el.textContent.replace(/[^0-9.-]/g, '')) || 0) + parseFloat(d.valor));
                 }
@@ -516,7 +518,7 @@ const handleInvoiceFile = async (file) => {
         }
     } catch (e) {
         console.error('Scan invoice error:', e);
-        if (voiceTextDisplay) voiceTextDisplay.innerText = 'Error de conexión.';
+        if (voiceTextDisplay) voiceTextDisplay.innerText = t('error.connection');
     }
 
     setTimeout(() => hideVoiceSheet(), 3500);
@@ -531,7 +533,7 @@ invoiceGalleryInput.addEventListener('change', () => {
     invoiceGalleryInput.value = '';
 });
 
-// 🌊 Ripple effect
+// Ripple click effect on buttons and cards
 document.querySelectorAll("button, .card-custom").forEach(el => {
     el.addEventListener("click", function (e) {
         const circle = document.createElement("span");
@@ -548,13 +550,13 @@ const sidebar = document.getElementById("mobileSidebar");
 const overlay = document.getElementById("menuOverlay");
 const closeSidebar = document.getElementById("closeSidebar");
 
-/* Abre desde botón del header */
+// Open mobile sidebar
 document.getElementById("menuToggle").addEventListener("click", () => {
     sidebar.classList.add("active");
     overlay.classList.add("active");
 });
 
-/* Cerrar */
+// Close mobile sidebar
 closeSidebar.addEventListener("click", closeMenu);
 overlay.addEventListener("click", closeMenu);
 
@@ -563,7 +565,7 @@ function closeMenu() {
     overlay.classList.remove("active");
 }
 
-// --------- Modals & Sidebar Actions --------- //
+// Attach navigation listeners to sidebar links for a given prefix (desktop/mobile/bottom)
 const addSidebarListeners = (prefix) => {
     const chatbotBtn = document.getElementById(prefix + 'Chatbot');
     const crediturboBtn = document.getElementById(prefix + 'Crediturbo');
@@ -575,4 +577,3 @@ const addSidebarListeners = (prefix) => {
 addSidebarListeners('desktop');
 addSidebarListeners('mobile');
 addSidebarListeners('bottom');
-
