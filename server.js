@@ -13,7 +13,7 @@ const apiRoutes = require('./src/routes/api');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(cors());
 
