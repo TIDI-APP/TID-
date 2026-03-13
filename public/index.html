@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3B44F6",
+                        "secondary-violet": "#7B3FF2",
+                        "accent-teal": "#2DD4BF",
+                        "neutral-gray": "#CFCFD4",
+                        "background-light": "#f6f5f8",
+                        "background-dark": "#000000",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-dark text-white overflow-x-hidden font-display">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-card border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <img alt="Tidi Logo" class="h-8 w-auto" src="./assets/img/logo.png" />
+            </div>
+            <div class="hidden md:flex items-center gap-10">
+                <a class="text-neutral-gray hover:text-white transition-colors text-sm font-medium"
+                    href="#features">Features</a>
+                <a class="text-neutral-gray hover:text-white transition-colors text-sm font-medium"
+                    href="#how-it-works">How it works</a>
+                <a class="text-neutral-gray hover:text-white transition-colors text-sm font-medium"
+                    href="#demo">Demo</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="theme-toggle p-2 text-neutral-gray hover:text-white transition-colors">
+                    <span class="material-symbols-outlined">light_mode</span>
+                </button>
+                <a href="./views/register.html"
+                    class="btn-gradient px-6 py-2.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-20 px-6 hero-gradient overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border-primary/30 text-xs font-bold text-primary mb-8">
+                <span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                NUEVA IA FINANCIERA DISPONIBLE
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tight leading-[1.1] text-gradient">
+                Controla tus finanzas <br /> con tu voz.
+            </h1>
+            <p class="text-lg md:text-xl text-neutral-gray mb-10 max-w-2xl mx-auto leading-relaxed">
+                Tidi usa inteligencia artificial para registrar, organizar y analizar tus ingresos y gastos
+                automáticamente.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+                <button
+                    class="btn-gradient w-full sm:w-auto px-10 py-4 rounded-full text-base font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
+                    Probar ahora
+                </button>
+                <button
+                    class="w-full sm:w-auto px-10 py-4 rounded-full border border-white/20 text-base font-bold hover:bg-white/5 transition-colors">
+                    Ver cómo funciona
+                </button>
+            </div>
+            <!-- Mockup Container -->
+            <div class="relative max-w-4xl mx-auto px-4">
+                <div class="absolute -inset-10 bg-primary/20 blur-[100px] rounded-full opacity-50"></div>
+                <div class="relative flex justify-center">
+                    <img alt="Tidi App Mockup" class="max-w-full h-auto drop-shadow-2xl" src="./assets/img/celularapp.png" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Cómo Funciona -->
+    <section class="py-24 px-6 border-y border-white/5" id="how-it-works">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold mb-16 text-center">Cómo Funciona</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-symbols-outlined text-primary text-3xl">mic</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Habla</h3>
+                    <p class="text-neutral-gray">Simplemente di tus gastos en voz alta como si hablaras con un amigo.
+                    </p>
+                </div>
+                <!-- Step 2 -->
+                <div class="flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-secondary-violet/10 flex items-center justify-center mb-6 group-hover:bg-secondary-violet/20 transition-colors">
+                        <span class="material-symbols-outlined text-secondary-violet text-3xl">psychology</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">La IA organiza</h3>
+                    <p class="text-neutral-gray">Nuestra inteligencia procesa el lenguaje y categoriza cada transacción.
+                    </p>
+                </div>
+                <!-- Step 3 -->
+                <div class="flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-accent-teal/10 flex items-center justify-center mb-6 group-hover:bg-accent-teal/20 transition-colors">
+                        <span class="material-symbols-outlined text-accent-teal text-3xl">analytics</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Visualiza tus resultados</h3>
+                    <p class="text-neutral-gray">Recibe insights inmediatos y reportes detallados de tu salud
+                        financiera.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Features -->
+    <section class="py-24 px-6 bg-white/[0.01]" id="features">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold mb-4">Funciones Inteligentes</h2>
+                <p class="text-neutral-gray">Todo lo que necesitas para dominar tu economía personal.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-8 rounded-xl hover:border-accent-teal/50 transition-all cursor-default group">
+                    <span class="material-symbols-outlined text-accent-teal mb-6">speech_to_text</span>
+                    <h4 class="text-xl font-bold mb-3">Registro por voz inteligente</h4>
+                    <p class="text-neutral-gray text-sm leading-relaxed">Olvida los formularios infinitos. Solo habla y
+                        Tidi hace el resto.</p>
+                </div>
+                <div
+                    class="glass-card p-8 rounded-xl hover:border-secondary-violet/50 transition-all cursor-default group">
+                    <span class="material-symbols-outlined text-secondary-violet mb-6">category</span>
+                    <h4 class="text-xl font-bold mb-3">Clasificación automática</h4>
+                    <p class="text-neutral-gray text-sm leading-relaxed">Algoritmos avanzados que aprenden de tus
+                        hábitos de gasto.</p>
+                </div>
+                <div class="glass-card p-8 rounded-xl hover:border-primary/50 transition-all cursor-default group">
+                    <span class="material-symbols-outlined text-primary mb-6">monitoring</span>
+                    <h4 class="text-xl font-bold mb-3">Dashboard en tiempo real</h4>
+                    <p class="text-neutral-gray text-sm leading-relaxed">Tu situación financiera actualizada al segundo
+                        con gráficos interactivos.</p>
+                </div>
+                <div class="glass-card p-8 rounded-xl hover:border-accent-teal/50 transition-all cursor-default group">
+                    <span class="material-symbols-outlined text-accent-teal mb-6">description</span>
+                    <h4 class="text-xl font-bold mb-3">Reportes financieros</h4>
+                    <p class="text-neutral-gray text-sm leading-relaxed">Exporta reportes detallados para tu contador o
+                        para tu propio análisis.</p>
+                </div>
+                <div
+                    class="glass-card p-8 rounded-xl hover:border-secondary-violet/50 transition-all cursor-default group lg:col-span-2">
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="flex-1">
+                            <span class="material-symbols-outlined text-secondary-violet mb-6">business_center</span>
+                            <h4 class="text-xl font-bold mb-3">Control personal y empresarial</h4>
+                            <p class="text-neutral-gray text-sm leading-relaxed">Separa tus gastos personales de los de
+                                tu negocio en una sola cuenta.</p>
+                        </div>
+                        <div class="flex-1 flex gap-2">
+                            <div
+                                class="h-20 w-full bg-white/5 rounded-lg border border-white/10 flex items-center justify-center text-xs">
+                                Personal</div>
+                            <div
+                                class="h-20 w-full bg-primary/20 rounded-lg border border-primary/30 flex items-center justify-center text-xs">
+                                Business</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Visual Demo Dashboard -->
+    <section class="py-24 px-6 relative overflow-hidden" id="demo">
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[120px] rounded-full">
+        </div>
+        <div class="max-w-6xl mx-auto relative">
+            <div class="glass-card rounded-2xl p-8 border-white/20 shadow-2xl">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+                    <div>
+                        <h3 class="text-2xl font-bold">Resumen Financiero</h3>
+                        <p class="text-neutral-gray text-sm">Octubre 2023</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="px-4 py-2 glass-card rounded-lg text-center">
+                            <p class="text-xs text-neutral-gray mb-1">Balance total</p>
+                            <p class="font-bold text-lg">$12,450.00</p>
+                        </div>
+                        <div class="px-4 py-2 glass-card border-accent-teal/30 rounded-lg text-center">
+                            <p class="text-xs text-accent-teal mb-1">Ingresos</p>
+                            <p class="font-bold text-lg text-accent-teal">+$4,200</p>
+                        </div>
+                        <div class="px-4 py-2 glass-card border-red-500/30 rounded-lg text-center">
+                            <p class="text-xs text-red-400 mb-1">Gastos</p>
+                            <p class="font-bold text-lg text-red-400">-$2,150</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mock Chart Area -->
+                <div class="grid md:grid-cols-2 gap-8 h-64">
+                    <div class="bg-white/5 rounded-xl border border-white/10 flex items-end justify-between p-6 gap-2">
+                        <div class="w-full bg-primary/40 h-[40%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/60 h-[65%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/40 h-[30%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/80 h-[90%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/60 h-[55%] rounded-t-sm"></div>
+                        <div class="w-full bg-primary/90 h-[100%] rounded-t-sm"></div>
+                    </div>
+                    <div class="bg-white/5 rounded-xl border border-white/10 p-6 flex flex-col justify-center">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Vivienda</span>
+                                <div class="w-1/2 bg-white/10 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-secondary-violet w-[70%] h-full"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Alimentación</span>
+                                <div class="w-1/2 bg-white/10 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-accent-teal w-[45%] h-full"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm">Ocio</span>
+                                <div class="w-1/2 bg-white/10 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-primary w-[30%] h-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Benefits -->
+    <section class="py-24 px-6 bg-white/[0.01]">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+            <div class="flex flex-col gap-4">
+                <span class="material-symbols-outlined text-primary">schedule</span>
+                <h5 class="font-bold">Ahorra tiempo</h5>
+                <p class="text-sm text-neutral-gray leading-relaxed">Reduce el tiempo de registro en un 90% comparado
+                    con apps manuales.</p>
+            </div>
+            <div class="flex flex-col gap-4">
+                <span class="material-symbols-outlined text-accent-teal">verified_user</span>
+                <h5 class="font-bold">Reduce errores</h5>
+                <p class="text-sm text-neutral-gray leading-relaxed">La IA garantiza que no olvides registrar ninguna
+                    transacción importante.</p>
+            </div>
+            <div class="flex flex-col gap-4">
+                <span class="material-symbols-outlined text-secondary-violet">insights</span>
+                <h5 class="font-bold">Toma mejores decisiones</h5>
+                <p class="text-sm text-neutral-gray leading-relaxed">Insights basados en datos reales para optimizar tu
+                    capacidad de ahorro.</p>
+            </div>
+            <div class="flex flex-col gap-4">
+                <span class="material-symbols-outlined text-primary">settings_suggest</span>
+                <h5 class="font-bold">Automatiza todo</h5>
+                <p class="text-sm text-neutral-gray leading-relaxed">Conexión con bancos y contabilidad automatizada sin
+                    esfuerzo.</p>
+            </div>
+        </div>
+    </section>
+    <!-- Final CTA -->
+    <!-- Pricing Section -->
+    <section class="py-24 px-6 border-y border-white/5" id="pricing">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Planes para tu libertad financiera</h2>
+                <p class="text-neutral-gray max-w-2xl mx-auto">Elige el plan que mejor se adapte a tus necesidades y
+                    comienza a transformar tus finanzas hoy mismo.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Basic Plan -->
+                <div class="glass-card p-8 rounded-xl flex flex-col h-full">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-2">Gratis</h3>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-4xl font-black">$0</span>
+                            <span class="text-neutral-gray">/mes</span>
+                        </div>
+                        <p class="text-sm text-neutral-gray mt-4">Ideal para empezar.</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-accent-teal text-lg">check_circle</span>
+                            Registro por voz básico
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-accent-teal text-lg">check_circle</span>
+                            1 cuenta conectada
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-accent-teal text-lg">check_circle</span>
+                            Reportes mensuales
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full py-3 rounded-full border border-white/20 font-bold hover:bg-white/5 transition-colors">Empezar
+                        ahora</button>
+                </div>
+                <!-- Pro Plan (Featured) -->
+                <div
+                    class="glass-card p-8 rounded-xl flex flex-col h-full relative border-secondary-violet/50 shadow-[0_0_40px_rgba(123,63,242,0.15)]">
+                    <div
+                        class="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary-violet px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase">
+                        Popular
+                    </div>
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-2 text-secondary-violet">Pro</h3>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-4xl font-black">$9.99</span>
+                            <span class="text-neutral-gray">/mes</span>
+                        </div>
+                        <p class="text-sm text-neutral-gray mt-4">Para usuarios avanzados.</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
+                            IA avanzada de clasificación
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
+                            Cuentas ilimitadas
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
+                            Exportación de datos
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-secondary-violet text-lg">check_circle</span>
+                            Soporte prioritario
+                        </li>
+                    </ul>
+                    <button
+                        class="btn-gradient w-full py-3 rounded-full font-bold shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">Elegir
+                        Pro</button>
+                </div>
+                <!-- Business Plan -->
+                <div class="glass-card p-8 rounded-xl flex flex-col h-full">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-2">Business</h3>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-4xl font-black">$29.99</span>
+                            <span class="text-neutral-gray">/mes</span>
+                        </div>
+                        <p class="text-sm text-neutral-gray mt-4">Control total empresarial.</p>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Múltiples usuarios
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Gestión de nómina básica
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            API de integración
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                            Consultoría financiera trimestral
+                        </li>
+                    </ul>
+                    <button
+                        class="w-full py-3 rounded-full border border-white/20 font-bold hover:bg-white/5 transition-colors">Contactar
+                        ventas</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-32 px-6 text-center relative">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">Tu dinero merece inteligencia.</h2>
+            <p class="text-neutral-gray text-lg mb-12">Únete a miles de personas que ya transformaron su relación con el
+                dinero.</p>
+            <a href="./views/register.html"
+                class="btn-gradient px-12 py-5 rounded-full text-lg font-bold shadow-2xl shadow-primary/40 hover:scale-105 transition-transform">
+                Empieza gratis
+            </a>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-16 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <img alt="Tidi Logo" class="h-8 w-auto rounded-none" src="./assets/img/logo.png" />
+                </div>
+                <p class="text-neutral-gray text-sm max-w-sm leading-relaxed">
+                    La plataforma financiera de próxima generación impulsada por IA. Gestiona tu dinero con el poder de
+                    tu voz.
+                </p>
+                <div class="flex gap-4 mt-8">
+                    <a class="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">language</span>
+                    </a>
+                    <a class="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">share</span>
+                    </a>
+                    <a class="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:bg-white/10 transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">alternate_email</span>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h6 class="font-bold mb-6 text-white">Producto</h6>
+                <ul class="space-y-4 text-sm text-neutral-gray">
+                    <li><a class="hover:text-white transition-colors" href="#">Funcionalidades</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Precios</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">API</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Seguridad</a></li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-bold mb-6 text-white">Legal</h6>
+                <ul class="space-y-4 text-sm text-neutral-gray">
+                    <li><a class="hover:text-white transition-colors" href="#">Privacidad</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Términos</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-gray/50">
+            <p>© 2024 Tidi AI Technologies Inc. Todos los derechos reservados.</p>
+            <div class="flex gap-6">
+                <a class="hover:text-white transition-colors" href="#">Status</a>
+                <a class="hover:text-white transition-colors" href="#">Soporte</a>
+            </div>
+        </div>
+    </footer>
+    <script src="./js/theme-toggle.js"></script>
+</body>
+
+</html>

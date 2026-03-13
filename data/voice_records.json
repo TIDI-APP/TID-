@@ -1,0 +1,220 @@
+[
+  {
+    "id": "1772864103908",
+    "timestamp": "2026-03-07T06:15:03.908Z",
+    "text": "Modo de simulación activado (Habla ahora)..."
+  },
+  {
+    "id": "1772864132611",
+    "timestamp": "2026-03-07T06:15:32.611Z",
+    "text": "Esto es una prueba de transcripción simulada porque la API de voz no está conectada."
+  },
+  {
+    "id": "1772864167583",
+    "timestamp": "2026-03-07T06:16:07.583Z",
+    "text": "Esto es una prueba de transcripción simulada porque la API de voz no está conectada."
+  },
+  {
+    "id": "1772866469095",
+    "timestamp": "2026-03-07T06:54:29.095Z",
+    "text": " Hola, hola, hola, hola, hola."
+  },
+  {
+    "id": "1772866562436",
+    "timestamp": "2026-03-07T06:56:02.436Z",
+    "text": " Los dos me la pelan y me sacan toda la leche"
+  },
+  {
+    "id": "1772866592162",
+    "timestamp": "2026-03-07T06:56:32.162Z",
+    "text": " Charlie Kirky por siempre a las 1 y 56 de la mañana"
+  },
+  {
+    "id": "1772866620874",
+    "timestamp": "2026-03-07T06:57:00.874Z",
+    "text": " Charlie Kirky por siempre a la 1 y 56 ¡Ah!"
+  },
+  {
+    "id": "1772866637588",
+    "timestamp": "2026-03-07T06:57:17.588Z",
+    "text": " Charlie Kirky a la 1 y 57 de la mañana"
+  },
+  {
+    "id": "1772866690047",
+    "timestamp": "2026-03-07T06:58:10.047Z",
+    "text": " Charlie Kirk a la 1 y 58 de la mañana"
+  },
+  {
+    "id": "1772866784470",
+    "timestamp": "2026-03-07T06:59:44.470Z",
+    "text": " Mucho FIFA, poco código."
+  },
+  {
+    "id": "1772867025198",
+    "timestamp": "2026-03-07T07:03:45.198Z",
+    "text": " Me acabo de gastar 50 mil pesos colombianos en un arroz con pollo."
+  },
+  {
+    "id": "1772894970438",
+    "timestamp": "2026-03-07T14:49:30.438Z",
+    "text": " Pero primero le di permitir. ¿Sabes qué digo? Ya me está escuchando. Ya. Y vuelva a leer. Sí."
+  },
+  {
+    "id": "1772930743570",
+    "timestamp": "2026-03-08T00:45:43.571Z",
+    "text": " ¡Gracias!"
+  },
+  {
+    "id": "1772930762298",
+    "timestamp": "2026-03-08T00:46:02.298Z",
+    "text": " Te amo mucho, titos."
+  },
+  {
+    "id": "1772930787705",
+    "timestamp": "2026-03-08T00:46:27.705Z",
+    "text": " Me acaba de gastar 50 mil dólares en mi novia."
+  },
+  {
+    "id": "1772933530617",
+    "timestamp": "2026-03-08T01:32:10.617Z",
+    "text": " Hoy me gasté tres mil pesos en el metro."
+  },
+  {
+    "id": "1772943367300",
+    "timestamp": "2026-03-08T04:16:07.300Z",
+    "text": " Dígalo, ¿vienes o no? ¿Cómo vamos?"
+  },
+  {
+    "id": "1773244532080",
+    "timestamp": "2026-03-11T15:55:32.081Z",
+    "text": " Acabo de gastar 50 mil en salchipapas.",
+    "analysis": null
+  },
+  {
+    "id": "1773244543995",
+    "timestamp": "2026-03-11T15:55:43.995Z",
+    "text": " Acabo de gastar 50 mil en zapatos.",
+    "analysis": null
+  },
+  {
+    "id": "1773244625743",
+    "timestamp": "2026-03-11T15:57:05.743Z",
+    "text": " Acabo de gastar 50 mil en salchipapas.",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Salchipapas",
+      "valor": 50000,
+      "categoria": "Comida"
+    }
+  },
+  {
+    "id": "1773244963717",
+    "timestamp": "2026-03-11T16:02:43.717Z",
+    "text": " quiero que modifiques el balance y agregarle 10.000 más",
+    "analysis": {
+      "tipo": "modificacion de balance",
+      "titulo": "Modificación de balance",
+      "valor": 10000,
+      "categoria": null
+    }
+  },
+  {
+    "id": "1773244982022",
+    "timestamp": "2026-03-11T16:03:02.022Z",
+    "text": " Quiero que ingreses 3000 que me acaba de dar mi mamá.",
+    "analysis": {
+      "tipo": "ingreso",
+      "titulo": "Dinero de mi mamá",
+      "valor": 3000,
+      "categoria": null
+    }
+  },
+  {
+    "id": "1773245077868",
+    "timestamp": "2026-03-11T16:04:37.868Z",
+    "text": " Acabo de gastar 50 mil en una hamburguesa.",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Hamburguesa",
+      "valor": 50000,
+      "categoria": null
+    }
+  },
+  {
+    "id": "1773245097030",
+    "timestamp": "2026-03-11T16:04:57.030Z",
+    "text": " Acaba de gastar 50 mil en un restaurante",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Gasto en restaurante",
+      "valor": 50000,
+      "categoria": "Comida"
+    }
+  },
+  {
+    "id": "1773262786513",
+    "timestamp": "2026-03-11T20:59:46.513Z",
+    "text": " Hola, muy buenas tardes",
+    "analysis": {
+      "tipo": null,
+      "titulo": "Hola, muy buenas tardes",
+      "valor": null,
+      "categoria": null
+    }
+  },
+  {
+    "id": "1773262833325",
+    "timestamp": "2026-03-11T21:00:33.325Z",
+    "text": " me acabo de gastar 30 mil en la barbería",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Barbería",
+      "valor": 30000,
+      "categoria": "Servicios personales"
+    }
+  },
+  {
+    "id": "1773262854188",
+    "timestamp": "2026-03-11T21:00:54.188Z",
+    "text": " Me acaba de gastar 120 mil en una cuota de Parque de Ríos.",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Cuota Parque de Ríos",
+      "valor": 120000,
+      "categoria": "Servicios"
+    }
+  },
+  {
+    "id": "1773263683351",
+    "timestamp": "2026-03-11T21:14:43.351Z",
+    "text": " I just spent $20 on the barber shop.",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Barber shop",
+      "valor": 20,
+      "categoria": null
+    }
+  },
+  {
+    "id": "1773267940644",
+    "timestamp": "2026-03-11T22:25:40.644Z",
+    "text": " me gaste 30 mil en una motilada",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Motilada",
+      "valor": 30000,
+      "categoria": null
+    }
+  },
+  {
+    "id": "1773268052212",
+    "timestamp": "2026-03-11T22:27:32.212Z",
+    "text": " Me acabo de gastar un millón en un portátil.",
+    "analysis": {
+      "tipo": "gasto",
+      "titulo": "Portátil",
+      "valor": 1000000,
+      "categoria": null
+    }
+  }
+]

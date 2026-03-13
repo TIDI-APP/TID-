@@ -1,0 +1,25 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(59, 68, 246, 0.15) 0%, transparent 70%);
+}
+
+.text-gradient {
+background: linear-gradient(to right, #FFFFFF, #CFCFD4);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.btn-gradient {
+background: linear-gradient(135deg, #3B44F6 0%, #7B3FF2 100%);
+}

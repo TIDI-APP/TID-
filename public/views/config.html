@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración – TIDI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/dashboard.css">
+  <link rel="manifest" href="/public/manifest.json">
+  <link rel="apple-touch-icon" href="/public/assets/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#6840f3">
+</head>
+
+<body>
+
+  <!-- Overlay -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- SIDEBAR DESKTOP -->
+  <div class="desktop-sidebar d-none d-lg-block">
+    <div class="sidebar-header">
+      <h5>Tidi</h5>
+    </div>
+    <div class="sidebar-links">
+      <a href="dashboard.html"><i class="bi bi-house"></i> <span data-i18n="nav.home">Inicio</span></a>
+      <a href="chatbot.html"><i class="bi bi-robot"></i> <span data-i18n="nav.chatbot">Chatbot</span></a>
+      <a href="transactions.html"><i class="bi bi-list-ul"></i> <span data-i18n="nav.transactions">Transacciones</span></a>
+      <a href="crediturbo.html"><i class="bi bi-lightning-charge"></i> <span data-i18n="nav.crediturbo">Crediturbo</span></a>
+      <a href="config.html" class="active"><i class="bi bi-gear"></i> <span data-i18n="nav.settings">Configuración</span></a>
+      <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> <span data-i18n="nav.logout">Cerrar Sesión</span></a>
+    </div>
+  </div>
+
+  <!-- SIDEBAR MOBILE -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="sidebar-header">
+      <h5>Tidi</h5>
+      <i class="bi bi-x-lg close-btn" id="closeSidebar"></i>
+    </div>
+    <div class="sidebar-links">
+      <a href="dashboard.html"><i class="bi bi-house"></i> <span data-i18n="nav.home">Inicio</span></a>
+      <a href="chatbot.html"><i class="bi bi-robot"></i> <span data-i18n="nav.chatbot">Chatbot</span></a>
+      <a href="transactions.html"><i class="bi bi-list-ul"></i> <span data-i18n="nav.transactions">Transacciones</span></a>
+      <a href="crediturbo.html"><i class="bi bi-lightning-charge"></i> <span data-i18n="nav.crediturbo">Crediturbo</span></a>
+      <a href="config.html" class="active"><i class="bi bi-gear"></i> <span data-i18n="nav.settings">Configuración</span></a>
+      <a href="#" onclick="logout()" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> <span data-i18n="nav.logout">Cerrar Sesión</span></a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="app-content">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-list d-lg-none" id="menuToggle" style="font-size:26px; cursor:pointer;"></i>
+        <h5 class="mb-0" data-i18n="config.title">Configuración</h5>
+      </div>
+      <button id="themeToggle" class="btn btn-sm btn-outline-light">
+        <i class="bi bi-moon"></i>
+      </button>
+    </div>
+
+    <!-- Profile card -->
+    <div class="card-custom text-center mb-4 fade-in">
+      <div id="avatarContainer" class="mx-auto mb-3" style="width:90px; height:90px; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:700; background: var(--primary); color:#fff;">
+        <span id="avatarInitials"></span>
+        <img id="avatarImg" src="" alt="foto" style="display:none; width:100%; height:100%; object-fit:cover;">
+      </div>
+      <h4 id="profileName" class="mb-1">—</h4>
+      <p id="profileEmail" class="small opacity-50 mb-1">—</p>
+      <p id="profileAuthType" class="small opacity-50 mb-4"></p>
+      <div class="d-flex gap-2 justify-content-center flex-wrap">
+        <button class="btn btn-gradient rounded-pill px-4 py-2 text-white fw-semibold" id="btnEditProfile">
+          <i class="bi bi-pencil-square me-1"></i> <span data-i18n="config.editProfile">Editar Perfil</span>
+        </button>
+        <a href="/auth/google/link" id="btnLinkGoogle" class="btn rounded-pill px-4 py-2 fw-semibold" style="background: rgba(255,255,255,0.08); color: var(--text); border: 1px solid var(--border); display:none;">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;">
+          <span data-i18n="config.connectGoogle">Conectar con Google</span>
+        </a>
+      </div>
+      <p id="linkedMsg" class="small text-success mt-2" style="display:none;"><i class="bi bi-check-circle me-1"></i><span data-i18n="config.linked">Cuenta de Google vinculada correctamente</span></p>
+    </div>
+
+    <!-- Language selector -->
+    <div class="card-custom fade-in mb-4">
+      <h6 class="opacity-50 mb-2 small text-uppercase" data-i18n="config.language">Idioma</h6>
+      <p class="small opacity-50 mb-3" data-i18n="config.languageDesc">Elige el idioma de la aplicación</p>
+      <div class="d-flex gap-2">
+        <button id="btnLangES" class="btn rounded-pill px-4 py-2 fw-semibold flex-fill" style="border: 1px solid var(--border);">
+          🇨🇴 Español
+        </button>
+        <button id="btnLangEN" class="btn rounded-pill px-4 py-2 fw-semibold flex-fill" style="border: 1px solid var(--border);">
+          🇺🇸 English
+        </button>
+      </div>
+    </div>
+
+    <!-- Account details -->
+    <div class="card-custom fade-in">
+      <h6 class="opacity-50 mb-3 small text-uppercase" data-i18n="config.account">Cuenta</h6>
+      <div class="mb-3 p-3 rounded d-flex justify-content-between align-items-center" style="background: var(--input-bg); border: 1px solid var(--border);">
+        <div>
+          <strong data-i18n="config.email">Correo electrónico</strong>
+          <div class="small opacity-50" id="detailEmail">—</div>
+        </div>
+        <i class="bi bi-envelope opacity-25"></i>
+      </div>
+      <div class="mb-3 p-3 rounded d-flex justify-content-between align-items-center" style="background: var(--input-bg); border: 1px solid var(--border);">
+        <div>
+          <strong data-i18n="config.accessMethod">Método de acceso</strong>
+          <div class="small opacity-50" id="detailAuthMethod">—</div>
+        </div>
+        <i id="detailAuthIcon" class="opacity-25 fs-5"></i>
+      </div>
+      <div class="p-3 rounded d-flex justify-content-between align-items-center" style="background: var(--input-bg); border: 1px solid var(--border);">
+        <div>
+          <strong data-i18n="config.logoutLabel">Cerrar sesión</strong>
+          <div class="small opacity-50" data-i18n="config.logoutDesc">Salir de tu cuenta en este dispositivo</div>
+        </div>
+        <button onclick="logout()" class="btn btn-sm" style="background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3);">
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="bottom-container d-lg-none">
+    <div class="bottom-bar">
+      <div class="nav-item" style="cursor:pointer;" onclick="window.location.href='dashboard.html'">
+        <i class="bi bi-house"></i>
+      </div>
+      <div class="nav-item" style="cursor:pointer;" onclick="window.location.href='chatbot.html'">
+        <i class="bi bi-robot"></i>
+      </div>
+      <div class="spacer"></div>
+      <div class="nav-item" style="cursor:pointer;" onclick="window.location.href='crediturbo.html'">
+        <i class="bi bi-lightning-charge"></i>
+      </div>
+      <div class="nav-item" style="cursor:pointer; color: var(--primary-light);">
+        <i class="bi bi-gear"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT PROFILE MODAL -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content custom-modal border-0 shadow-lg p-3">
+        <div class="modal-header border-0 pb-0 justify-content-end">
+          <button type="button" class="btn-close btn-close-white opacity-50" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body pt-0">
+          <h5 class="text-center mb-4 fw-bold" data-i18n="config.editProfileTitle">Editar Perfil</h5>
+          <div class="mb-3">
+            <label class="small opacity-50 mb-1" data-i18n="config.firstName">Nombre</label>
+            <input type="text" id="inputFirstName" class="form-control custom-input" data-i18n-placeholder="config.firstNamePh" placeholder="Tu nombre">
+          </div>
+          <div class="mb-4">
+            <label class="small opacity-50 mb-1" data-i18n="config.lastName">Apellido</label>
+            <input type="text" id="inputLastName" class="form-control custom-input" data-i18n-placeholder="config.lastNamePh" placeholder="Tu apellido">
+          </div>
+          <button id="btnSaveProfile" class="btn btn-gradient w-100 rounded-pill py-2 text-white fw-semibold" data-i18n="config.saveChanges">
+            Guardar cambios
+          </button>
+          <p id="editProfileError" class="text-danger small text-center mt-2" style="display:none;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/js/auth.js"></script>
+  <script src="/public/js/i18n.js"></script>
+  <script src="/public/js/config.js"></script>
+  <script src="/public/js/pwa-handler.js"></script>
+</body>
+
+</html>
