@@ -1,6 +1,6 @@
 requireAuth();
 
-// Theme toggle
+// Theme toggle — persists preference in localStorage
 document.getElementById('themeToggle').addEventListener('click', () => {
     document.body.classList.toggle('light-mode');
     localStorage.setItem('lightMode', document.body.classList.contains('light-mode'));
@@ -9,7 +9,7 @@ if (localStorage.getItem('lightMode') === 'true') {
     document.body.classList.add('light-mode');
 }
 
-// Mobile sidebar
+// Mobile sidebar toggle
 const sidebar  = document.getElementById('mobileSidebar');
 const overlay  = document.getElementById('menuOverlay');
 const closeBtn = document.getElementById('closeSidebar');
@@ -24,14 +24,14 @@ function closeMenu() {
 closeBtn.addEventListener('click', closeMenu);
 overlay.addEventListener('click', closeMenu);
 
-// Fade in
+// Progressive fade-in animation for elements with the .fade-in class
 window.addEventListener('load', () => {
     document.querySelectorAll('.fade-in').forEach((el, i) => {
         setTimeout(() => el.classList.add('show'), i * 120);
     });
 });
 
-// Handle redirect after Google link
+// Handle redirect after Google account linking — save new token and show success banner
 (function handleLinkReturn() {
     const params = new URLSearchParams(window.location.search);
     const newToken = params.get('token');
@@ -49,9 +49,51 @@ window.addEventListener('load', () => {
     }
 })();
 
-// Load profile
+// ── Language toggle ──────────────────────────────────────────────────────────
+
+const btnLangES = document.getElementById('btnLangES');
+const btnLangEN = document.getElementById('btnLangEN');
+
+// Highlights the button for the active language and dims the other
+function updateLangButtons() {
+    const lang = getLang();
+    const activeStyle   = { background: 'var(--primary)', color: '#fff', borderColor: 'var(--primary)' };
+    const inactiveStyle = { background: 'rgba(255,255,255,0.08)', color: 'var(--text)', borderColor: 'var(--border)' };
+
+    const applyStyle = (btn, style) => {
+        btn.style.background   = style.background;
+        btn.style.color        = style.color;
+        btn.style.borderColor  = style.borderColor;
+    };
+
+    if (lang === 'es') {
+        applyStyle(btnLangES, activeStyle);
+        applyStyle(btnLangEN, inactiveStyle);
+    } else {
+        applyStyle(btnLangEN, activeStyle);
+        applyStyle(btnLangES, inactiveStyle);
+    }
+}
+
+btnLangES.addEventListener('click', () => {
+    localStorage.setItem('lang', 'es');
+    applyLanguage();
+    updateLangButtons();
+});
+
+btnLangEN.addEventListener('click', () => {
+    localStorage.setItem('lang', 'en');
+    applyLanguage();
+    updateLangButtons();
+});
+
+updateLangButtons();
+
+// ── Profile ──────────────────────────────────────────────────────────────────
+
 const editModal = new bootstrap.Modal(document.getElementById('editProfileModal'));
 
+// Fetches and renders the user's profile data from the API
 async function loadProfile() {
     try {
         const res = await fetch('/api/profile', {
@@ -65,6 +107,7 @@ async function loadProfile() {
     }
 }
 
+// Populates all profile UI elements (name, email, auth method, avatar) from the user object
 function renderProfile(user) {
     const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || user.email.split('@')[0];
     const initials = ((user.first_name || '')[0] || '') + ((user.last_name || '')[0] || '') || (user.email[0] || '?');
@@ -74,13 +117,13 @@ function renderProfile(user) {
     document.getElementById('detailEmail').textContent = user.email;
 
     if (user.google_id) {
-        document.getElementById('profileAuthType').textContent = 'Cuenta de Google';
-        document.getElementById('detailAuthMethod').textContent = 'Google';
+        document.getElementById('profileAuthType').textContent = t('profile.googleAccount');
+        document.getElementById('detailAuthMethod').textContent = t('profile.google');
         document.getElementById('detailAuthIcon').className = 'bi bi-google opacity-25 fs-5';
         document.getElementById('btnLinkGoogle').style.display = 'none';
     } else {
-        document.getElementById('profileAuthType').textContent = 'Cuenta con contraseña';
-        document.getElementById('detailAuthMethod').textContent = 'Email y contraseña';
+        document.getElementById('profileAuthType').textContent = t('profile.passwordAccount');
+        document.getElementById('detailAuthMethod').textContent = t('profile.emailPassword');
         document.getElementById('detailAuthIcon').className = 'bi bi-lock opacity-25 fs-5';
         document.getElementById('btnLinkGoogle').style.display = '';
     }
@@ -104,6 +147,7 @@ document.getElementById('btnEditProfile').addEventListener('click', () => {
     editModal.show();
 });
 
+// Saves the updated profile name and refreshes the stored JWT with the new data
 document.getElementById('btnSaveProfile').addEventListener('click', async () => {
     const btn = document.getElementById('btnSaveProfile');
     const errEl = document.getElementById('editProfileError');
@@ -117,7 +161,7 @@ document.getElementById('btnSaveProfile').addEventListener('click', async () => 
     }
 
     btn.disabled = true;
-    btn.textContent = 'Guardando...';
+    btn.textContent = t('common.saving');
     errEl.style.display = 'none';
 
     try {
@@ -135,7 +179,7 @@ document.getElementById('btnSaveProfile').addEventListener('click', async () => 
             errEl.textContent = result.error || 'Error al guardar.';
             errEl.style.display = '';
         } else {
-            // Save new token with updated name
+            // Save the new token returned by the server (contains updated name)
             localStorage.setItem('tidi_token', result.token);
             editModal.hide();
             renderProfile(result.user);
@@ -146,7 +190,7 @@ document.getElementById('btnSaveProfile').addEventListener('click', async () => 
     }
 
     btn.disabled = false;
-    btn.textContent = 'Guardar cambios';
+    btn.textContent = t('config.saveChanges');
 });
 
 loadProfile();
