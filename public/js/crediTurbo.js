@@ -41,13 +41,10 @@ if (menuOverlay) menuOverlay.addEventListener('click', () => {
     menuOverlay.classList.remove('active');
 });
 
-// Premium whitelist — emails that have access to Crediturbo
-const PREMIUM_EMAILS = ['santigovanegas11@gmail.com'];
-
-// Returns true if the current user is in the premium whitelist
+// Returns true if the current user is marked as premium in the database
 const isPremium = () => {
     const u = getUser();
-    return u && PREMIUM_EMAILS.includes((u.email || '').toLowerCase());
+    return u && (u.is_premium === true || u.is_premium === 'true');
 };
 
 // Premium upgrade modal — opens a WhatsApp chat to subscribe

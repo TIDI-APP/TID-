@@ -22,7 +22,7 @@ const createUserManual = async (email, passwordHash, firstName, lastName) => {
     const { data, error } = await supabase
         .from('users')
         .insert({ email, password_hash: passwordHash, first_name: firstName, last_name: lastName })
-        .select('id, email, first_name, last_name')
+        .select('id, email, first_name, last_name, is_premium')
         .single();
     if (error) throw error;
     return data;
@@ -51,7 +51,7 @@ const createOrUpdateGoogleUser = async (email, googleId, firstName, lastName, av
             .from('users')
             .update({ google_id: googleId, avatar_url: avatarUrl })
             .eq('email', email)
-            .select('id, email, first_name, last_name, google_id, avatar_url')
+            .select('id, email, first_name, last_name, google_id, avatar_url, is_premium')
             .single();
         if (error) throw error;
         return data;
@@ -60,7 +60,7 @@ const createOrUpdateGoogleUser = async (email, googleId, firstName, lastName, av
         const { data, error } = await supabase
             .from('users')
             .insert({ email, google_id: googleId, first_name: firstName, last_name: lastName, avatar_url: avatarUrl })
-            .select('id, email, first_name, last_name, google_id, avatar_url')
+            .select('id, email, first_name, last_name, google_id, avatar_url, is_premium')
             .single();
         if (error) throw error;
         return data;
@@ -73,7 +73,7 @@ const updateUserProfile = async (userId, firstName, lastName) => {
         .from('users')
         .update({ first_name: firstName, last_name: lastName })
         .eq('id', userId)
-        .select('id, email, first_name, last_name, google_id, avatar_url')
+        .select('id, email, first_name, last_name, google_id, avatar_url, is_premium')
         .single();
     if (error) throw error;
     return data;
@@ -83,7 +83,7 @@ const updateUserProfile = async (userId, firstName, lastName) => {
 const getUserById = async (userId) => {
     const { data, error } = await supabase
         .from('users')
-        .select('id, email, first_name, last_name, google_id, avatar_url')
+        .select('id, email, first_name, last_name, google_id, avatar_url, is_premium')
         .eq('id', userId)
         .single();
     if (error && error.code !== 'PGRST116') throw error;

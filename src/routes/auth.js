@@ -27,7 +27,7 @@ router.post('/api/auth/register', async (req, res) => {
 
         // Issue a JWT so the user is immediately logged in after registering
         const token = jwt.sign(
-            { id: newUser.id, email: newUser.email, first_name: newUser.first_name, last_name: newUser.last_name },
+            { id: newUser.id, email: newUser.email, first_name: newUser.first_name, last_name: newUser.last_name, is_premium: newUser.is_premium },
             JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -59,7 +59,7 @@ router.post('/api/auth/login', async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, avatar_url: user.avatar_url || null },
+            { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, avatar_url: user.avatar_url || null, is_premium: user.is_premium },
             JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -89,7 +89,7 @@ router.get('/auth/google/callback',
     function (req, res) {
         const user = req.user;
         const token = jwt.sign(
-            { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, avatar_url: user.avatar_url || null },
+            { id: user.id, email: user.email, first_name: user.first_name, last_name: user.last_name, avatar_url: user.avatar_url || null, is_premium: user.is_premium },
             JWT_SECRET,
             { expiresIn: '7d' }
         );

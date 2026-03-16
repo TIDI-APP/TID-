@@ -215,7 +215,7 @@ router.patch('/api/profile', authMiddleware, async (req, res) => {
         const jwt = require('jsonwebtoken');
         const JWT_SECRET = process.env.JWT_SECRET || 'jwt_super_secret_tidi';
         const token = jwt.sign(
-            { id: updated.id, email: updated.email, first_name: updated.first_name, last_name: updated.last_name, avatar_url: updated.avatar_url || null },
+            { id: updated.id, email: updated.email, first_name: updated.first_name, last_name: updated.last_name, avatar_url: updated.avatar_url || null, is_premium: updated.is_premium },
             JWT_SECRET,
             { expiresIn: '7d' }
         );

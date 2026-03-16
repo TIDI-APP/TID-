@@ -22,6 +22,9 @@ CREATE TABLE IF NOT EXISTS users (
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     
+    -- Usuario con acceso a funcionalidades premium (como Crediturbo)
+    is_premium BOOLEAN DEFAULT FALSE,
+    
     -- Control de fechas
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
